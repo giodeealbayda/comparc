@@ -253,27 +253,56 @@ public class COMPARC {
                 break;
 
             case "DSRLV":
+                opcode = 0;
+                rs = 0;
+                rt = Integer.valueOf(rsString.substring(1, rsString.length()));
+                rd = Integer.valueOf(rdString.substring(1, rdString.length()));
+                imm = 56;
+                
                 break;
 
             case "SLT":
                 break;
 
             case "BEQ":
+                opcode = 4;
+                rs = Integer.valueOf(rsString.substring(1, rsString.length()));
+                rt = Integer.valueOf(rtString.substring(1, rtString.length()));
+                // imm = offset
+                
                 break;
 
             case "LW":
+                opcode = 35;
+                rs = Integer.valueOf(rsString.substring(1, rsString.length()));
+                rd = Integer.valueOf(rdString.substring(1, rdString.length()));
+                // imm = offset
                 break;
 
             case "LWU":
+                opcode = 39;
+                rs = Integer.valueOf(rsString.substring(1, rsString.length()));
+                rd = Integer.valueOf(rdString.substring(1, rdString.length()));
+                // imm = offset
                 break;
 
             case "SW":
+                opcode = 43;
+                rs = Integer.valueOf(rsString.substring(1, rsString.length()));
+                rd = Integer.valueOf(rdString.substring(1, rdString.length()));
+                // imm = offset
                 break;
 
             case "DADDIU":
+                opcode = 25;
+                rs = Integer.valueOf(rsString.substring(1, rsString.length()));
+                rd = Integer.valueOf(rdString.substring(1, rdString.length()));
+                // imm = offset
                 break;
 
             case "J":
+                opcode = 2;
+                // imm = offset sa label
                 break;
             default:
                 System.out.println("ERROR");
