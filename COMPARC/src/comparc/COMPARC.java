@@ -13,7 +13,7 @@ public class COMPARC {
      */
     public static void main(String[] args) {
         // TODO code application logic here        
-        MainFrame mf = new MainFrame();
+        NewJFrame mf = new NewJFrame();
         mf.setVisible(true);
     }
     
