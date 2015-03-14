@@ -5,6 +5,8 @@
  */
 package comparc;
 
+import java.util.Arrays;
+
 /**
  *
  * @author Danica
@@ -14,11 +16,32 @@ public class NewJFrame extends javax.swing.JFrame {
     /**
      * Creates new form NewJFrame
      */
-    
-    int rd, rs, rt;
-    int imm, opcode;
+    int rd = 0, rs = 0, rt = 0;
+    int imm = 0, opcode = 0;
     String label;
+    byte[] byteInstruction = new byte[32];
+    String instruction = "DSUBU";
+
+    private void setByteAt(int num, int start, int end) {
+        for (int j = end; end >= start; end--) {
+            if (num != 0) {
+                if (num % 2 == 1) {
+                    System.out.println("dito");
+                    byteInstruction[j] = 1;
+                } else {
+                    byteInstruction[j] = 0;
+                }
+                num/=2;
+            } else {
+                byteInstruction[j] = 0;
+            }
+        }
+    }
     
+    private byte[] getByte(){
+        return byteInstruction;
+    }
+
     public NewJFrame() {
         initComponents();
     }
@@ -76,6 +99,7 @@ public class NewJFrame extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jPanel10 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
+        jLabel18 = new javax.swing.JLabel();
 
         jLabel12.setText("jLabel12");
 
@@ -444,6 +468,11 @@ public class NewJFrame extends javax.swing.JFrame {
         jPanel3.add(jPanel9, "card2");
 
         jButton1.setText("Submit");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -479,13 +508,20 @@ public class NewJFrame extends javax.swing.JFrame {
 
         jLabel8.setText("Opcode");
 
+        jLabel18.setText("<opcode here>");
+
         javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
         jPanel10.setLayout(jPanel10Layout);
         jPanel10Layout.setHorizontalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel10Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel8)
+                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel10Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel8))
+                    .addGroup(jPanel10Layout.createSequentialGroup()
+                        .addGap(145, 145, 145)
+                        .addComponent(jLabel18)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel10Layout.setVerticalGroup(
@@ -493,7 +529,9 @@ public class NewJFrame extends javax.swing.JFrame {
             .addGroup(jPanel10Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel8)
-                .addContainerGap(204, Short.MAX_VALUE))
+                .addGap(67, 67, 67)
+                .addComponent(jLabel18)
+                .addContainerGap(121, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -516,116 +554,211 @@ public class NewJFrame extends javax.swing.JFrame {
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
         // TODO add your handling code here:
-        String instruction = jComboBox1.getSelectedItem().toString();
+        instruction = jComboBox1.getSelectedItem().toString();
         //System.out.println(instruction);
-        
+
         //removing panel
         jPanel3.removeAll();
         jPanel3.repaint();
         jPanel3.revalidate();
-        
-        if(instruction.matches("DSUBU") || instruction.matches("AND") || 
-                instruction.matches("DSRLV") || instruction.matches("SLT")) {
+
+        if (instruction.matches("DSUBU") || instruction.matches("AND")
+                || instruction.matches("DSRLV") || instruction.matches("SLT")) {
             jPanel3.add(jPanel4);
             jPanel3.repaint();
             jPanel3.revalidate();
-        }
-        else if(instruction.matches("DDIV")) {
+
+        } else if (instruction.matches("DDIV")) {
             jPanel3.add(jPanel5);
             jPanel3.repaint();
             jPanel3.revalidate();
-        }
-        else if(instruction.matches("BEQ")) {
+
+            opcode = 0;
+            rs = 0;
+            rt = 0; // pero rs dapat
+            rd = rd;
+
+            int shf = 0;
+            // shift
+
+            imm = 56;
+        } else if (instruction.matches("BEQ")) {
             jPanel3.add(jPanel6);
             jPanel3.repaint();
             jPanel3.revalidate();
-        }
-        else if(instruction.matches("LW") || instruction.matches("LWU") || instruction.matches("SW")) {
+
+        } else if (instruction.matches("LW") || instruction.matches("LWU") || instruction.matches("SW")) {
             jPanel3.add(jPanel7);
             jPanel3.repaint();
             jPanel3.revalidate();
-        }
-        else if(instruction.matches("DADDIU") || instruction.matches("ORI")) {
+
+        } else if (instruction.matches("DADDIU") || instruction.matches("ORI")) {
             jPanel3.add(jPanel8);
             jPanel3.repaint();
             jPanel3.revalidate();
-        }
-        else if(instruction.matches("J")) {
+
+        } else if (instruction.matches("J")) {
             jPanel3.add(jPanel9);
             jPanel3.repaint();
             jPanel3.revalidate();
         }
     }//GEN-LAST:event_jComboBox1ActionPerformed
-    
+
     private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
         // TODO add your handling code here:
-        rs = (int)jComboBox2.getSelectedItem();
+        rs = jComboBox2.getSelectedIndex();
     }//GEN-LAST:event_jComboBox2ActionPerformed
 
     private void jComboBox5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox5ActionPerformed
         // TODO add your handling code here:
-        rs = (int)jComboBox5.getSelectedItem();
+        rt = jComboBox5.getSelectedIndex();
     }//GEN-LAST:event_jComboBox5ActionPerformed
 
     private void jComboBox4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox4ActionPerformed
         // TODO add your handling code here:
-        rd = (int)jComboBox4.getSelectedItem();
+        rd = jComboBox4.getSelectedIndex();
     }//GEN-LAST:event_jComboBox4ActionPerformed
 
     private void jComboBox7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox7ActionPerformed
         // TODO add your handling code here:
-        rs = (int)jComboBox7.getSelectedItem();
+
     }//GEN-LAST:event_jComboBox7ActionPerformed
 
     private void jComboBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox3ActionPerformed
         // TODO add your handling code here:
-        rt = (int)jComboBox3.getSelectedItem();
+        rt = jComboBox3.getSelectedIndex();
     }//GEN-LAST:event_jComboBox3ActionPerformed
 
     private void jComboBox6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox6ActionPerformed
         // TODO add your handling code here:
-        rt = (int)jComboBox6.getSelectedItem();
+        rs = jComboBox6.getSelectedIndex();
     }//GEN-LAST:event_jComboBox6ActionPerformed
 
     private void jComboBox8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox8ActionPerformed
         // TODO add your handling code here:
-        rt = (int)jComboBox8.getSelectedItem();
+
     }//GEN-LAST:event_jComboBox8ActionPerformed
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
         // TODO add your handling code here:
-        label = jTextField1.getText();
+
     }//GEN-LAST:event_jTextField1ActionPerformed
 
     private void jComboBox9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox9ActionPerformed
         // TODO add your handling code here:
-        rd = (int)jComboBox9.getSelectedItem();
+        rs = jComboBox9.getSelectedIndex();
     }//GEN-LAST:event_jComboBox9ActionPerformed
 
     private void jComboBox10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox10ActionPerformed
         // TODO add your handling code here:
-        rs = (int)jComboBox10.getSelectedItem();
+        rt = jComboBox10.getSelectedIndex();
     }//GEN-LAST:event_jComboBox10ActionPerformed
 
     private void jComboBox11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox11ActionPerformed
         // TODO add your handling code here:
-        rd = (int)jComboBox11.getSelectedItem();
+        rd = jComboBox11.getSelectedIndex();
     }//GEN-LAST:event_jComboBox11ActionPerformed
 
     private void jComboBox12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox12ActionPerformed
         // TODO add your handling code here:
-        rs = (int)jComboBox12.getSelectedItem();
+        rs = jComboBox12.getSelectedIndex();
     }//GEN-LAST:event_jComboBox12ActionPerformed
 
     private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
         // TODO add your handling code here:
-        imm = Integer.parseInt(jTextField3.getText());
+        imm = Integer.valueOf(jTextField3.getText());
     }//GEN-LAST:event_jTextField3ActionPerformed
 
     private void jTextField4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField4ActionPerformed
         // TODO add your handling code here:
-        label = jTextField4.getText();
+        imm = Integer.valueOf(jTextField4.getText());
     }//GEN-LAST:event_jTextField4ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+
+        System.out.println(instruction);
+        System.out.println(rd + " " + rs + " " + rt);
+
+        if (instruction.matches("DSUBU") || instruction.matches("AND")
+                || instruction.matches("DSRLV") || instruction.matches("SLT")) {
+
+            opcode = 0;
+
+            if (instruction.matches("DSUBU")) {
+                imm = 47;
+            } else if (instruction.matches("AND")) {
+                imm = 36;
+            } else if (instruction.matches("DSRLV")) {
+                imm = 22;
+            } else {
+                imm = 42;
+            }
+
+            setByteAt(opcode, 0, 5);
+            setByteAt(rs, 6, 10);
+            setByteAt(rt, 11, 15);
+            setByteAt(rd, 16, 20);
+            setByteAt(0, 21, 25);
+            setByteAt(imm, 26, 31);
+            System.out.println(imm);
+            
+            System.out.println(Arrays.toString(getByte()));
+
+        } else if (instruction.matches("DDIV")) {
+
+            opcode = 0;
+            rs = 0;
+            rt = 0; // pero rs dapat
+            rd = rd;
+
+            int shf = 0;
+            // shift
+
+            imm = 56;
+        } else if (instruction.matches("BEQ")) {
+
+            opcode = 4;
+            rs = rs;
+            rt = rt;
+            imm = imm; //offset(16)
+        } else if (instruction.matches("LW") || instruction.matches("LWU") || instruction.matches("SW")) {
+
+            if (instruction.matches("LW")) {
+                opcode = 35;
+                rs = rs;
+                rt = rd;
+                imm = imm; //offset(16)
+            } else if (instruction.matches("LWU")) {
+                opcode = 39;
+                rs = rs;
+                rt = rd;
+                imm = imm; //ofset(16)
+            } else if (instruction.matches("SW")) {
+                opcode = 43;
+                rs = rs;
+                rt = rt;
+                imm = imm; //offset(16)
+            }
+        } else if (instruction.matches("DADDIU") || instruction.matches("ORI")) {
+
+            if (instruction.matches("DADDIU")) {
+                opcode = 25;
+                rs = rs;
+                rt = rd;
+                imm = imm; //offset(16)
+            } else {
+                opcode = 13;
+                rs = rs;
+                rt = rd;
+                imm = imm; //offset(16)
+            }
+        } else if (instruction.matches("J")) {
+            jPanel3.add(jPanel9);
+            jPanel3.repaint();
+            jPanel3.revalidate();
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -685,6 +818,7 @@ public class NewJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

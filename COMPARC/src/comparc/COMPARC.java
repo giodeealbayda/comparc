@@ -11,7 +11,7 @@ public class COMPARC {
 
     /**
      * @param args the command line arguments
-     */
+     */ 
     public static void main(String[] args) {
         // TODO code application logic here        
         NewJFrame mf = new NewJFrame();
@@ -258,6 +258,22 @@ public class COMPARC {
                 rt = Integer.valueOf(rsString.substring(1, rsString.length()));
                 rd = Integer.valueOf(rdString.substring(1, rdString.length()));
                 imm = 56;
+                
+                  // for opcode (5) 0...5
+                for (j = 10; j >= 6; j--) {
+                    if (opcode != 0) {
+                        if (opcode % 2 == 1) {
+                            instructionByte[j] = 1;
+                        } else {
+                            instructionByte[j] = 0;
+                        }
+                        opcode /= 2;
+                    } else {
+                        instructionByte[j] = 0;
+                    }
+                }
+                
+                
                 
                 break;
 
