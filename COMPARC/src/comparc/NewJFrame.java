@@ -670,6 +670,7 @@ public class NewJFrame extends javax.swing.JFrame {
 
         System.out.println(instruction);
         System.out.println(rd + " " + rs + " " + rt);
+        String offset;
 
         if (instruction.matches("DSUBU") || instruction.matches("AND")
                 || instruction.matches("DSRLV") || instruction.matches("SLT")) {
@@ -715,10 +716,18 @@ public class NewJFrame extends javax.swing.JFrame {
             rs = jComboBox7.getSelectedIndex();
             rt = jComboBox8.getSelectedIndex();
             imm = Integer.valueOf(jTextField1.getText());
-            
+
             setByteAt(opcode, 0, 5);
             setByteAt(rs, 6, 10);
             setByteAt(rt, 11, 15);
+
+            offset = jTextField1.getText();
+
+            setByteAt(Integer.valueOf(offset.charAt(0)), 16, 19);
+            setByteAt(Integer.valueOf(offset.charAt(1)), 20, 23);
+            setByteAt(Integer.valueOf(offset.charAt(2)), 24, 27);
+            setByteAt(Integer.valueOf(offset.charAt(3)), 28, 31);
+
             // 16...31
         } else if (instruction.matches("LW") || instruction.matches("LWU") || instruction.matches("SW")) {
 
@@ -733,13 +742,18 @@ public class NewJFrame extends javax.swing.JFrame {
             rd = jComboBox9.getSelectedIndex();
             rt = jComboBox10.getSelectedIndex();
             imm = Integer.valueOf(jTextField2.getText());
-            
+
             setByteAt(opcode, 0, 5);
             setByteAt(rs, 6, 10);
             setByteAt(rt, 11, 15);
-            
-            // 16...31
 
+            offset = jTextField2.getText();
+            setByteAt(Integer.valueOf(offset.charAt(0)), 16, 19);
+            setByteAt(Integer.valueOf(offset.charAt(1)), 20, 23);
+            setByteAt(Integer.valueOf(offset.charAt(2)), 24, 27);
+            setByteAt(Integer.valueOf(offset.charAt(3)), 28, 31);
+
+            // 16...31
         } else if (instruction.matches("DADDIU") || instruction.matches("ORI")) {
 
             if (instruction.matches("DADDIU")) {
@@ -747,24 +761,31 @@ public class NewJFrame extends javax.swing.JFrame {
             } else {
                 opcode = 13;
             }
-            
+
             rd = jComboBox11.getSelectedIndex();
-            imm = Integer.valueOf(jTextField2.getText());
+            imm = Integer.valueOf(jTextField3.getText());
             rt = jComboBox10.getSelectedIndex();
-            
+
             setByteAt(opcode, 0, 5);
             setByteAt(rs, 6, 10);
             setByteAt(rd, 11, 15);
-            // 16...31
+
+            offset = jTextField3.getText();
+            setByteAt(Integer.valueOf(offset.charAt(0)), 16, 19);
+            setByteAt(Integer.valueOf(offset.charAt(1)), 20, 23);
+            setByteAt(Integer.valueOf(offset.charAt(2)), 24, 27);
+            setByteAt(Integer.valueOf(offset.charAt(3)), 28, 31);
             
+            // 16...31
+
         } else if (instruction.matches("J")) {
             jPanel3.add(jPanel9);
             jPanel3.repaint();
             jPanel3.revalidate();
-            
+
             opcode = 2;
             imm = Integer.valueOf(jTextField4.getText());
-            
+
             setByteAt(opcode, 0, 5);
             // 6...31
         }
