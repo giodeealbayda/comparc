@@ -843,21 +843,10 @@ public class NewJFrame extends javax.swing.JFrame {
                 rtbin = temp + rtbin;
 
                 //offset
-                //label
-                offsetbin1 = Integer.toBinaryString(Integer.valueOf(jTextField1.getText().charAt(0)));
-                offsetbin1 = offsetbin1.substring(2, offsetbin1.length());
-
-                offsetbin2 = Integer.toBinaryString(Integer.valueOf(jTextField1.getText().charAt(1)));
-                offsetbin2 = offsetbin2.substring(2, offsetbin2.length());
-
-                offsetbin3 = Integer.toBinaryString(Integer.valueOf(jTextField1.getText().charAt(2)));
-                offsetbin3 = offsetbin3.substring(2, offsetbin3.length());
-
-                offsetbin4 = Integer.toBinaryString(Integer.valueOf(jTextField1.getText().charAt(3)));
-                offsetbin4 = offsetbin4.substring(2, offsetbin4.length());
+                String jumpTo = jTextField1.getText();
 
                 //address in binary
-                addressbin = opcodebin + rsbin + rtbin + offsetbin1 + offsetbin2 + offsetbin3 + offsetbin4;
+                addressbin = opcodebin + rsbin + rtbin;
                 System.out.println(addressbin);
 
                 //convert to hex
@@ -873,6 +862,41 @@ public class NewJFrame extends javax.swing.JFrame {
 
                 labellist.add(label + " " + instruction + " R" + jComboBox7.getSelectedItem() + ", R" + jComboBox8.getSelectedItem() + " ," + jTextField1.getText());
                 opcodelist.add(addresshex);
+
+                String pcBin;
+
+                jumpTo = jTextField4.getText();
+                int pcTarget = 0;
+                System.out.println(jumpTo);
+                for (int i = 0; i < labellist.size(); i++) {
+                    if (labellist.get(i).contains(jumpTo)) {
+                        pcTarget = (pclist.get(i) - pc)/4; // actual pc of label - current pc
+                        System.out.println("HERE");
+                        break;
+                    } else {
+                        System.out.println(labellist.get(i));
+                    }
+                }
+                pcBin = Integer.toBinaryString(pcTarget);
+                System.out.println("PCTarget: " + pcBin);
+
+                addressbin = opcodebin + rsbin + rtbin + pcBin;
+
+                //address in hex
+                addresshex = new BigInteger(addressbin, 2).toString(16);
+                if (addresshex.length() != 8) {
+                    temp = "";
+                    for (int i = 0; i < 8 - addresshex.length(); i++) {
+                        temp = temp + "0";
+                    }
+                    addresshex = temp + addresshex;
+                }
+                jLabel18.setText(addresshex);
+
+                labellist.add(instruction + " R" + jComboBox7.getSelectedItem() + ", R" + jComboBox8.getSelectedItem() + ", " + jTextField4.getText());
+                opcodelist.add(addresshex);
+
+                System.out.println(addresshex);
             }
 
         } else if (instruction.matches("LW") || instruction.matches("LWU") || instruction.matches("SW")) {
@@ -1034,16 +1058,15 @@ public class NewJFrame extends javax.swing.JFrame {
                 System.out.println(jumpTo);
                 for (int i = 0; i < labellist.size(); i++) {
                     if (labellist.get(i).contains(jumpTo)) {
-                        pcTarget = pclist.get(i);
-                        System.out.println("HERE");
+                        pcTarget = (pclist.get(i) - pc) / 4; // actual pc - current pc
+                        //    System.out.println("HERE");
                         break;
                     } else {
                         System.out.println(labellist.get(i));
                     }
                 }
 
-                System.out.println("PCTarget: " + pcTarget);
-
+                //   System.out.println("PCTarget: " + pcTarget);
                 //opcode
                 opcode = 2;
                 opcodebin = Integer.toBinaryString(opcode);
@@ -1064,7 +1087,7 @@ public class NewJFrame extends javax.swing.JFrame {
                     }
                     pcBin = temp + pcBin;
                 }
-                
+
                 addressbin = opcodebin + pcBin;
 
                 //address in hex
@@ -1077,10 +1100,10 @@ public class NewJFrame extends javax.swing.JFrame {
                     addresshex = temp + addresshex;
                 }
                 jLabel18.setText(addresshex);
-                
+
                 labellist.add(instruction + " " + jTextField4.getText());
                 opcodelist.add(addresshex);
-                
+
                 System.out.println(addresshex);
 
             }
