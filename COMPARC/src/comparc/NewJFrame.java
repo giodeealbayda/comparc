@@ -828,9 +828,9 @@ public class NewJFrame extends javax.swing.JFrame {
             if (jTextField2.getText().matches("") && jTextField2.getText().length() != 4) { //special characters and letters g-z
                 jLabel18.setText("Invalid Offset");
             } else {
-                System.out.println(rs);
-                System.out.println(rd);
-                /*
+                rd = jComboBox9.getSelectedIndex();
+                rt = jComboBox10.getSelectedIndex();
+                
                 //opcode binary
                 if (instruction.matches("LW")) {
                     opcode = 35;
@@ -892,8 +892,6 @@ public class NewJFrame extends javax.swing.JFrame {
                     addresshex = temp + addresshex;
                 }
                 jLabel18.setText(addresshex);
-<<<<<<< HEAD
-                */
             }
                 
         }
@@ -954,7 +952,7 @@ public class NewJFrame extends javax.swing.JFrame {
          setByteAt(Integer.valueOf(offset.charAt(3)), 28, 31);
 
          // 16...31
-         } else if (instruction.matches("DADDIU") || instruction.matches("ORI")) {
+        }*/ else if (instruction.matches("DADDIU") || instruction.matches("ORI")) {
 
          if (instruction.matches("DADDIU")) {
          opcode = 25;
@@ -977,7 +975,7 @@ public class NewJFrame extends javax.swing.JFrame {
          setByteAt(Integer.valueOf(offset.charAt(3)), 28, 31);
             
          // 16...31
-=======
+
 
             }
         } else if (instruction.matches("DADDIU") || instruction.matches("ORI")) {
@@ -989,7 +987,6 @@ public class NewJFrame extends javax.swing.JFrame {
                 } else if (instruction.matches("ORI")) {
                     opcode = 13;
                 }
->>>>>>> f72ea036b3bef821231adebf8a3108b9b07b91be
 
                 opcodebin = Integer.toBinaryString(opcode);
                 if (opcodebin.length() != 6) {
