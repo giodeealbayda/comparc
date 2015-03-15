@@ -795,13 +795,13 @@ public class NewJFrame extends javax.swing.JFrame {
 
                 offsetbin1 = Integer.toBinaryString(Integer.valueOf(jTextField1.getText().charAt(0)));
                 offsetbin1 = offsetbin1.substring(2, offsetbin1.length());
-      
+
                 offsetbin2 = Integer.toBinaryString(Integer.valueOf(jTextField1.getText().charAt(1)));
                 offsetbin2 = offsetbin2.substring(2, offsetbin2.length());
-           
+
                 offsetbin3 = Integer.toBinaryString(Integer.valueOf(jTextField1.getText().charAt(2)));
                 offsetbin3 = offsetbin3.substring(2, offsetbin3.length());
-           
+
                 offsetbin4 = Integer.toBinaryString(Integer.valueOf(jTextField1.getText().charAt(3)));
                 offsetbin4 = offsetbin4.substring(2, offsetbin4.length());
 
@@ -830,7 +830,7 @@ public class NewJFrame extends javax.swing.JFrame {
             } else {
                 rd = jComboBox9.getSelectedIndex();
                 rt = jComboBox10.getSelectedIndex();
-                
+
                 //opcode binary
                 if (instruction.matches("LW")) {
                     opcode = 35;
@@ -869,16 +869,16 @@ public class NewJFrame extends javax.swing.JFrame {
 
                 offsetbin1 = Integer.toBinaryString(Integer.valueOf(jTextField2.getText().charAt(0)));
                 offsetbin1 = offsetbin1.substring(2, offsetbin1.length());
-            
+
                 offsetbin2 = Integer.toBinaryString(Integer.valueOf(jTextField2.getText().charAt(1)));
                 offsetbin2 = offsetbin2.substring(2, offsetbin2.length());
-            
+
                 offsetbin3 = Integer.toBinaryString(Integer.valueOf(jTextField2.getText().charAt(2)));
                 offsetbin3 = offsetbin3.substring(2, offsetbin3.length());
-            
+
                 offsetbin4 = Integer.toBinaryString(Integer.valueOf(jTextField2.getText().charAt(3)));
                 offsetbin4 = offsetbin4.substring(2, offsetbin4.length());
-            
+
                 //address in binary
                 addressbin = opcodebin + rsbin + rdbin + offsetbin1 + offsetbin2 + offsetbin3 + offsetbin4;
                 System.out.println(addressbin);
@@ -893,9 +893,8 @@ public class NewJFrame extends javax.swing.JFrame {
                 }
                 jLabel18.setText(addresshex);
             }
-                
-        }
-        /*else if (instruction.matches("DDIV")) {
+
+        } /*else if (instruction.matches("DDIV")) {
 
          opcode = 0;
          rs = jComboBox6.getSelectedIndex();
@@ -952,7 +951,7 @@ public class NewJFrame extends javax.swing.JFrame {
          setByteAt(Integer.valueOf(offset.charAt(3)), 28, 31);
 
          // 16...31
-        }*/ else if (instruction.matches("DADDIU") || instruction.matches("ORI")) {
+         } else if (instruction.matches("DADDIU") || instruction.matches("ORI")) {
 
          if (instruction.matches("DADDIU")) {
          opcode = 25;
@@ -973,12 +972,9 @@ public class NewJFrame extends javax.swing.JFrame {
          setByteAt(Integer.valueOf(offset.charAt(1)), 20, 23);
          setByteAt(Integer.valueOf(offset.charAt(2)), 24, 27);
          setByteAt(Integer.valueOf(offset.charAt(3)), 28, 31);
-            
+
          // 16...31
-
-
-            }
-        } else if (instruction.matches("DADDIU") || instruction.matches("ORI")) {
+         }*/ else if (instruction.matches("DADDIU") || instruction.matches("ORI")) {
             if (jTextField3.getText().matches("") || jTextField3.getText().length() != 4) {
                 jLabel18.setText("Invalid Offset.");
             } else {
@@ -1047,14 +1043,14 @@ public class NewJFrame extends javax.swing.JFrame {
                 jLabel18.setText(addresshex);
             }
 
-        }else if(instruction.matches("J")){
-            if(jTextField4.getText().matches("")){
+        } else if (instruction.matches("J")) {
+            if (jTextField4.getText().matches("")) {
                 jLabel18.setText("Invalid Offset");
-            }else{
+            } else {
                 // di ko na alam pano to HAHAHA
             }
         }
-        
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
@@ -1076,16 +1072,21 @@ public class NewJFrame extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(NewJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(NewJFrame.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(NewJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(NewJFrame.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(NewJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(NewJFrame.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(NewJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(NewJFrame.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
