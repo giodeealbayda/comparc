@@ -7,39 +7,34 @@ package comparc;
 
 import java.util.Arrays;
 
-/**
- *
- * @author Danica
- */
 public class NewJFrame extends javax.swing.JFrame {
 
     /**
      * Creates new form NewJFrame
      */
-    int rd = 0, rs = 0, rt = 0;
-    int imm = 0, opcode = 0;
+    int rd, rs, rt;
+    int imm, opcode;
     String label;
-    byte[] byteInstruction = new byte[32];
+    private byte[] byteInstruction = new byte[32];
     String instruction = "DSUBU";
 
     private void setByteAt(int num, int start, int end) {
-        for (int j = end; end >= start; end--) {
+        for (int j = end; j >= start; j--) {
             if (num != 0) {
                 if (num % 2 == 1) {
-                    System.out.println("dito");
                     byteInstruction[j] = 1;
                 } else {
                     byteInstruction[j] = 0;
                 }
-                num/=2;
             } else {
                 byteInstruction[j] = 0;
             }
+            num /= 2;
         }
     }
-    
-    private byte[] getByte(){
-        return byteInstruction;
+
+    private byte[] getByte() {
+        return this.byteInstruction;
     }
 
     public NewJFrame() {
@@ -696,14 +691,17 @@ public class NewJFrame extends javax.swing.JFrame {
             }
 
             setByteAt(opcode, 0, 5);
+            rs = jComboBox2.getSelectedIndex();
             setByteAt(rs, 6, 10);
+            rt = jComboBox3.getSelectedIndex();
             setByteAt(rt, 11, 15);
+            rd = jComboBox4.getSelectedIndex();
             setByteAt(rd, 16, 20);
             setByteAt(0, 21, 25);
             setByteAt(imm, 26, 31);
             System.out.println(imm);
-            
-            System.out.println(Arrays.toString(getByte()));
+
+            System.out.println(Arrays.toString(byteInstruction));
 
         } else if (instruction.matches("DDIV")) {
 
@@ -790,6 +788,7 @@ public class NewJFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
+                
                 new NewJFrame().setVisible(true);
             }
         });
