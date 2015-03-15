@@ -13,7 +13,7 @@ public class NewJFrame extends javax.swing.JFrame {
      * Creates new form NewJFrame
      */
     int rd, rs, rt;
-    int imm, opcode;
+    int imm, opcode, offset;
     String label;
     private byte[] byteInstruction = new byte[32];
     String instruction = "DSUBU";
@@ -31,10 +31,6 @@ public class NewJFrame extends javax.swing.JFrame {
             }
             num /= 2;
         }
-    }
-
-    private byte[] getByte() {
-        return this.byteInstruction;
     }
 
     public NewJFrame() {
@@ -699,63 +695,82 @@ public class NewJFrame extends javax.swing.JFrame {
             setByteAt(rd, 16, 20);
             setByteAt(0, 21, 25);
             setByteAt(imm, 26, 31);
-            System.out.println(imm);
-
-            System.out.println(Arrays.toString(byteInstruction));
 
         } else if (instruction.matches("DDIV")) {
 
             opcode = 0;
-            rs = 0;
-            rt = 0; // pero rs dapat
-            rd = rd;
-
-            int shf = 0;
-            // shift
+            rs = jComboBox6.getSelectedIndex();
+            rt = jComboBox5.getSelectedIndex();
 
             imm = 56;
+
+            setByteAt(opcode, 0, 5);
+            setByteAt(rs, 6, 10);
+            setByteAt(rt, 11, 15);
+            setByteAt(0, 16, 25);
+            setByteAt(imm, 26, 31);
         } else if (instruction.matches("BEQ")) {
 
             opcode = 4;
-            rs = rs;
-            rt = rt;
-            imm = imm; //offset(16)
+            rs = jComboBox7.getSelectedIndex();
+            rt = jComboBox8.getSelectedIndex();
+            imm = Integer.valueOf(jTextField1.getText());
+            
+            setByteAt(opcode, 0, 5);
+            setByteAt(rs, 6, 10);
+            setByteAt(rt, 11, 15);
+            // 16...31
         } else if (instruction.matches("LW") || instruction.matches("LWU") || instruction.matches("SW")) {
 
             if (instruction.matches("LW")) {
                 opcode = 35;
-                rs = rs;
-                rt = rd;
-                imm = imm; //offset(16)
             } else if (instruction.matches("LWU")) {
                 opcode = 39;
-                rs = rs;
-                rt = rd;
-                imm = imm; //ofset(16)
             } else if (instruction.matches("SW")) {
                 opcode = 43;
-                rs = rs;
-                rt = rt;
-                imm = imm; //offset(16)
             }
+
+            rd = jComboBox9.getSelectedIndex();
+            rt = jComboBox10.getSelectedIndex();
+            imm = Integer.valueOf(jTextField2.getText());
+            
+            setByteAt(opcode, 0, 5);
+            setByteAt(rs, 6, 10);
+            setByteAt(rt, 11, 15);
+            
+            // 16...31
+
         } else if (instruction.matches("DADDIU") || instruction.matches("ORI")) {
 
             if (instruction.matches("DADDIU")) {
                 opcode = 25;
-                rs = rs;
-                rt = rd;
-                imm = imm; //offset(16)
             } else {
                 opcode = 13;
-                rs = rs;
-                rt = rd;
-                imm = imm; //offset(16)
             }
+            
+            rd = jComboBox11.getSelectedIndex();
+            imm = Integer.valueOf(jTextField2.getText());
+            rt = jComboBox10.getSelectedIndex();
+            
+            setByteAt(opcode, 0, 5);
+            setByteAt(rs, 6, 10);
+            setByteAt(rd, 11, 15);
+            // 16...31
+            
         } else if (instruction.matches("J")) {
             jPanel3.add(jPanel9);
             jPanel3.repaint();
             jPanel3.revalidate();
+            
+            opcode = 2;
+            imm = Integer.valueOf(jTextField4.getText());
+            
+            setByteAt(opcode, 0, 5);
+            // 6...31
         }
+
+        System.out.println(Arrays.toString(byteInstruction));
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
@@ -788,7 +803,7 @@ public class NewJFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                
+
                 new NewJFrame().setVisible(true);
             }
         });
