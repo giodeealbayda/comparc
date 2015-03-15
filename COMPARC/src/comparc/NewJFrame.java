@@ -17,6 +17,7 @@ public class NewJFrame extends javax.swing.JFrame {
     int rd, rs, rt;
     int opcode;
     int pc = 0;
+    int targetpc = 0;
     String offset, label, imm;
     String instruction;
 
@@ -721,6 +722,14 @@ public class NewJFrame extends javax.swing.JFrame {
         String addbin = "", funcbin;
         String addressbin, addresshex;
 
+        //initialize label
+        String label;
+        if (jTextField5.getText().matches("")) {
+            label = "";
+        } else {
+            label = jTextField5.getText();
+        }
+
         if (instruction.matches("DSUBU") || instruction.matches("DDIV") || instruction.matches("AND")
                 || instruction.matches("DSRLV") || instruction.matches("SLT")) {
 
@@ -805,7 +814,7 @@ public class NewJFrame extends javax.swing.JFrame {
             //addresshex = Integer.toHexString(Integer.parseInt(addressbin));
             //System.out.println(addresshex);
 
-            labellist.add(instruction + " R" + jComboBox4.getSelectedItem() + ", R" + jComboBox2.getSelectedItem() + ", R" + jComboBox3.getSelectedItem());
+            labellist.add(label + " " + instruction + " R" + jComboBox4.getSelectedItem() + ", R" + jComboBox2.getSelectedItem() + ", R" + jComboBox3.getSelectedItem());
             opcodelist.add(addresshex);
         } else if (instruction.matches("BEQ")) {
             if (jTextField1.getText().matches("/^[A-z ]{2,20}$/")) { //special characters
@@ -862,7 +871,7 @@ public class NewJFrame extends javax.swing.JFrame {
                 }
                 jLabel18.setText(addresshex);
 
-                labellist.add(instruction + " R" + jComboBox7.getSelectedItem() + ", R" + jComboBox8.getSelectedItem() + " ," + jTextField1.getText());
+                labellist.add(label + " " + instruction + " R" + jComboBox7.getSelectedItem() + ", R" + jComboBox8.getSelectedItem() + " ," + jTextField1.getText());
                 opcodelist.add(addresshex);
             }
 
@@ -876,13 +885,13 @@ public class NewJFrame extends javax.swing.JFrame {
                 //opcode binary
                 if (instruction.matches("LW")) {
                     opcode = 35;
-                    labellist.add(instruction + " R" + jComboBox9.getSelectedItem() + " ," + jTextField1.getText() + "(" + jComboBox10.getSelectedItem() + ")");
+                    labellist.add(label + " " + instruction + " R" + jComboBox9.getSelectedItem() + " ," + jTextField1.getText() + "(" + jComboBox10.getSelectedItem() + ")");
                 } else if (instruction.matches("LWU")) {
                     opcode = 39;
-                    labellist.add(instruction + " R" + jComboBox9.getSelectedItem() + " ," + jTextField1.getText() + "(" + jComboBox10.getSelectedItem() + ")");
+                    labellist.add(label + " " + instruction + " R" + jComboBox9.getSelectedItem() + " ," + jTextField1.getText() + "(" + jComboBox10.getSelectedItem() + ")");
                 } else if (instruction.matches("SW")) {
                     opcode = 43;
-                    labellist.add(instruction + " R" + jComboBox10.getSelectedItem() + ", " + jTextField2.getText() + "(R" + jComboBox9.getSelectedItem() + ")");
+                    labellist.add(label + " " + instruction + " R" + jComboBox10.getSelectedItem() + ", " + jTextField2.getText() + "(R" + jComboBox9.getSelectedItem() + ")");
                 }
                 opcodebin = Integer.toBinaryString(opcode);
                 if (opcodebin.length() != 6) {
@@ -1010,7 +1019,7 @@ public class NewJFrame extends javax.swing.JFrame {
                 }
                 jLabel18.setText(addresshex);
 
-                labellist.add(instruction + " R" + jComboBox11.getSelectedItem() + ", R" + jComboBox12.getSelectedItem() + ", #" + jTextField3.getText());
+                labellist.add(label + " " + instruction + " R" + jComboBox11.getSelectedItem() + ", R" + jComboBox12.getSelectedItem() + ", #" + jTextField3.getText());
                 opcodelist.add(addresshex);
             }
 
@@ -1018,14 +1027,69 @@ public class NewJFrame extends javax.swing.JFrame {
             if (jTextField4.getText().matches("")) {
                 jLabel18.setText("Invalid Offset");
             } else {
-                // di ko na alam pano to HAHAHA
+                String pcBin;
+
+                String jumpTo = jTextField4.getText();
+                int pcTarget = 0;
+                System.out.println(jumpTo);
+                for (int i = 0; i < labellist.size(); i++) {
+                    if (labellist.get(i).contains(jumpTo)) {
+                        pcTarget = pclist.get(i);
+                        System.out.println("HERE");
+                        break;
+                    } else {
+                        System.out.println(labellist.get(i));
+                    }
+                }
+
+                System.out.println("PCTarget: " + pcTarget);
+
+                //opcode
+                opcode = 2;
+                opcodebin = Integer.toBinaryString(opcode);
+                if (opcodebin.length() != 6) {
+                    temp = "";
+                    for (int i = 0; i < 6 - opcodebin.length(); i++) {
+                        temp = temp + "0";
+                    }
+                    opcodebin = temp + opcodebin;
+                }
+
+                //label
+                pcBin = Integer.toBinaryString(pcTarget);
+                if (pcBin.length() != 26) {
+                    temp = "";
+                    for (int i = 0; i < 26 - pcBin.length(); i++) {
+                        temp = temp + "0";
+                    }
+                    pcBin = temp + pcBin;
+                }
+                
+                addressbin = opcodebin + pcBin;
+
+                //address in hex
+                addresshex = new BigInteger(addressbin, 2).toString(16);
+                if (addresshex.length() != 8) {
+                    temp = "";
+                    for (int i = 0; i < 8 - addresshex.length(); i++) {
+                        temp = temp + "0";
+                    }
+                    addresshex = temp + addresshex;
+                }
+                jLabel18.setText(addresshex);
+                
+                labellist.add(instruction + " " + jTextField4.getText());
+                opcodelist.add(addresshex);
+                
+                System.out.println(addresshex);
+
             }
         }
-
         pclist.add(pc);
         pc += 4;
+        // di ko sure yung pc dito kung +4 ba muna or 0 start hehe
 
-        
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
@@ -1035,12 +1099,12 @@ public class NewJFrame extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        
+
         System.out.println(pc);
         System.out.println(pclist.size());
         System.out.println(opcodelist.size());
         System.out.println(labellist.size());
-        
+
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
