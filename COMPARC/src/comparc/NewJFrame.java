@@ -16,29 +16,14 @@ public class NewJFrame extends javax.swing.JFrame {
      */
     int rd, rs, rt;
     int opcode;
+    int pc = 0;
     String offset, label, imm;
     String instruction;
-    
+
     ArrayList<String> labellist = new ArrayList<String>();
     ArrayList<String> opcodelist = new ArrayList<String>();
     ArrayList<Integer> pclist = new ArrayList<Integer>();
 
-    /*
-     private void setByteAt(int num, int start, int end) {
-     for (int j = end; j >= start; j--) {
-     if (num != 0) {
-     if (num % 2 == 1) {
-     byteInstruction[j] = 1;
-     } else {
-     byteInstruction[j] = 0;
-     }
-     } else {
-     byteInstruction[j] = 0;
-     }
-     num /= 2;
-     }
-     }
-     */
     public NewJFrame() {
         initComponents();
     }
@@ -555,6 +540,11 @@ public class NewJFrame extends javax.swing.JFrame {
         jLabel20.setText("Instructions");
 
         jButton2.setText("Submit");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -627,7 +617,7 @@ public class NewJFrame extends javax.swing.JFrame {
             jPanel3.add(jPanel5);
             jPanel3.repaint();
             jPanel3.revalidate();
-            
+
         } else if (instruction.matches("BEQ")) {
             jPanel3.add(jPanel6);
             jPanel3.repaint();
@@ -724,7 +714,7 @@ public class NewJFrame extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         instruction = jComboBox1.getSelectedItem().toString();
-        //System.out.println(rd + " " + rs + " " + rt);
+
         int func = 0;
         String rdbin, rsbin, rtbin, opcodebin, temp = "", offsetbin1, offsetbin2, offsetbin3, offsetbin4;
 
@@ -815,6 +805,8 @@ public class NewJFrame extends javax.swing.JFrame {
             //addresshex = Integer.toHexString(Integer.parseInt(addressbin));
             //System.out.println(addresshex);
 
+            labellist.add(instruction + " R" + jComboBox4.getSelectedItem() + ", R" + jComboBox2.getSelectedItem() + ", R" + jComboBox3.getSelectedItem());
+            opcodelist.add(addresshex);
         } else if (instruction.matches("BEQ")) {
             if (jTextField1.getText().matches("/^[A-z ]{2,20}$/")) { //special characters
                 //error message
@@ -870,6 +862,8 @@ public class NewJFrame extends javax.swing.JFrame {
                 }
                 jLabel18.setText(addresshex);
 
+                labellist.add(instruction + " R" + jComboBox7.getSelectedItem() + ", R" + jComboBox8.getSelectedItem() + " ," + jTextField1.getText());
+                opcodelist.add(addresshex);
             }
 
         } else if (instruction.matches("LW") || instruction.matches("LWU") || instruction.matches("SW")) {
@@ -882,10 +876,13 @@ public class NewJFrame extends javax.swing.JFrame {
                 //opcode binary
                 if (instruction.matches("LW")) {
                     opcode = 35;
+                    labellist.add(instruction + " R" + jComboBox9.getSelectedItem() + " ," + jTextField1.getText() + "(" + jComboBox10.getSelectedItem() + ")");
                 } else if (instruction.matches("LWU")) {
                     opcode = 39;
+                    labellist.add(instruction + " R" + jComboBox9.getSelectedItem() + " ," + jTextField1.getText() + "(" + jComboBox10.getSelectedItem() + ")");
                 } else if (instruction.matches("SW")) {
                     opcode = 43;
+                    labellist.add(instruction + " R" + jComboBox10.getSelectedItem() + ", " + jTextField2.getText() + "(R" + jComboBox9.getSelectedItem() + ")");
                 }
                 opcodebin = Integer.toBinaryString(opcode);
                 if (opcodebin.length() != 6) {
@@ -940,89 +937,11 @@ public class NewJFrame extends javax.swing.JFrame {
                     addresshex = temp + addresshex;
                 }
                 jLabel18.setText(addresshex);
+
+                opcodelist.add(addresshex);
             }
 
-        } /*else if (instruction.matches("DDIV")) {
-
-         opcode = 0;
-         rs = jComboBox6.getSelectedIndex();
-         rt = jComboBox5.getSelectedIndex();
-
-         imm = 56;
-
-         setByteAt(opcode, 0, 5);
-         setByteAt(rs, 6, 10);
-         setByteAt(rt, 11, 15);
-         setByteAt(0, 16, 25);
-         setByteAt(imm, 26, 31);
-         } else if (instruction.matches("BEQ")) {
-
-         opcode = 4;
-         rs = jComboBox7.getSelectedIndex();
-         rt = jComboBox8.getSelectedIndex();
-         imm = Integer.valueOf(jTextField1.getText());
-
-         setByteAt(opcode, 0, 5);
-         setByteAt(rs, 6, 10);
-         setByteAt(rt, 11, 15);
-
-         offset = jTextField1.getText();
-
-         setByteAt(Integer.valueOf(offset.charAt(0)), 16, 19);
-         setByteAt(Integer.valueOf(offset.charAt(1)), 20, 23);
-         setByteAt(Integer.valueOf(offset.charAt(2)), 24, 27);
-         setByteAt(Integer.valueOf(offset.charAt(3)), 28, 31);
-
-         // 16...31
-         } else if (instruction.matches("LW") || instruction.matches("LWU") || instruction.matches("SW")) {
-
-         if (instruction.matches("LW")) {
-         opcode = 35;
-         } else if (instruction.matches("LWU")) {
-         opcode = 39;
-         } else if (instruction.matches("SW")) {
-         opcode = 43;
-         }
-
-         rd = jComboBox9.getSelectedIndex();
-         rt = jComboBox10.getSelectedIndex();
-         imm = Integer.valueOf(jTextField2.getText());
-
-         setByteAt(opcode, 0, 5);
-         setByteAt(rs, 6, 10);
-         setByteAt(rt, 11, 15);
-
-         offset = jTextField2.getText();
-         setByteAt(Integer.valueOf(offset.charAt(0)), 16, 19);
-         setByteAt(Integer.valueOf(offset.charAt(1)), 20, 23);
-         setByteAt(Integer.valueOf(offset.charAt(2)), 24, 27);
-         setByteAt(Integer.valueOf(offset.charAt(3)), 28, 31);
-
-         // 16...31
-         } else if (instruction.matches("DADDIU") || instruction.matches("ORI")) {
-
-         if (instruction.matches("DADDIU")) {
-         opcode = 25;
-         } else {
-         opcode = 13;
-         }
-
-         rd = jComboBox11.getSelectedIndex();
-         imm = Integer.valueOf(jTextField3.getText());
-         rt = jComboBox10.getSelectedIndex();
-
-         setByteAt(opcode, 0, 5);
-         setByteAt(rs, 6, 10);
-         setByteAt(rd, 11, 15);
-
-         offset = jTextField3.getText();
-         setByteAt(Integer.valueOf(offset.charAt(0)), 16, 19);
-         setByteAt(Integer.valueOf(offset.charAt(1)), 20, 23);
-         setByteAt(Integer.valueOf(offset.charAt(2)), 24, 27);
-         setByteAt(Integer.valueOf(offset.charAt(3)), 28, 31);
-
-         // 16...31
-         }*/ else if (instruction.matches("DADDIU") || instruction.matches("ORI")) {
+        } else if (instruction.matches("DADDIU") || instruction.matches("ORI")) {
             if (jTextField3.getText().matches("") || jTextField3.getText().length() != 4) {
                 jLabel18.setText("Invalid Offset.");
             } else {
@@ -1090,6 +1009,9 @@ public class NewJFrame extends javax.swing.JFrame {
                     addresshex = temp + addresshex;
                 }
                 jLabel18.setText(addresshex);
+
+                labellist.add(instruction + " R" + jComboBox11.getSelectedItem() + ", R" + jComboBox12.getSelectedItem() + ", #" + jTextField3.getText());
+                opcodelist.add(addresshex);
             }
 
         } else if (instruction.matches("J")) {
@@ -1100,12 +1022,26 @@ public class NewJFrame extends javax.swing.JFrame {
             }
         }
 
+        pclist.add(pc);
+        pc += 4;
+
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
         // TODO add your handling code here:
         offset = jTextField2.getText();
     }//GEN-LAST:event_jTextField2ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        
+        System.out.println(pc);
+        System.out.println(pclist.size());
+        System.out.println(opcodelist.size());
+        System.out.println(labellist.size());
+        
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
