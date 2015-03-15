@@ -645,12 +645,12 @@ public class NewJFrame extends javax.swing.JFrame {
 
     private void jComboBox9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox9ActionPerformed
         // TODO add your handling code here:
-        rd = Integer.parseInt(jComboBox9.getSelectedItem().toString());
+        rd = jComboBox9.getSelectedIndex();
     }//GEN-LAST:event_jComboBox9ActionPerformed
 
     private void jComboBox10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox10ActionPerformed
         // TODO add your handling code here:
-        rs = Integer.parseInt(jComboBox10.getSelectedItem().toString());
+        rs = jComboBox10.getSelectedIndex();
     }//GEN-LAST:event_jComboBox10ActionPerformed
 
     private void jComboBox11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox11ActionPerformed
@@ -819,6 +819,9 @@ public class NewJFrame extends javax.swing.JFrame {
             if (offset.matches("") && offset.length() != 4) { //special characters and letters g-z
                 jLabel18.setText("Invalid Offset");
             } else {
+                System.out.println(rs);
+                System.out.println(rd);
+                /*
                 //opcode binary
                 if (instruction.matches("LW")) {
                     opcode = 35;
@@ -867,7 +870,9 @@ public class NewJFrame extends javax.swing.JFrame {
                     addresshex = temp + addresshex;
                 }
                 jLabel18.setText(addresshex);
+                */
             }
+                
         }
         /*else if (instruction.matches("DDIV")) {
 
