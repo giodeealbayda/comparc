@@ -14,28 +14,27 @@ public class NewJFrame extends javax.swing.JFrame {
      * Creates new form NewJFrame
      */
     int rd, rs, rt;
-    int opcode, offset;
-    String label, imm;
+    int opcode;
+    String offset, label, imm;
     //private byte[] byteInstruction = new byte[32];
     String instruction;
 
     /*
-    private void setByteAt(int num, int start, int end) {
-        for (int j = end; j >= start; j--) {
-            if (num != 0) {
-                if (num % 2 == 1) {
-                    byteInstruction[j] = 1;
-                } else {
-                    byteInstruction[j] = 0;
-                }
-            } else {
-                byteInstruction[j] = 0;
-            }
-            num /= 2;
-        }
-    }
-    */
-
+     private void setByteAt(int num, int start, int end) {
+     for (int j = end; j >= start; j--) {
+     if (num != 0) {
+     if (num % 2 == 1) {
+     byteInstruction[j] = 1;
+     } else {
+     byteInstruction[j] = 0;
+     }
+     } else {
+     byteInstruction[j] = 0;
+     }
+     num /= 2;
+     }
+     }
+     */
     public NewJFrame() {
         initComponents();
     }
@@ -314,6 +313,12 @@ public class NewJFrame extends javax.swing.JFrame {
             }
         });
 
+        jTextField2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField2ActionPerformed(evt);
+            }
+        });
+
         jComboBox10.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "0", "1", "2", "3", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" }));
         jComboBox10.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -564,17 +569,17 @@ public class NewJFrame extends javax.swing.JFrame {
             jPanel3.add(jPanel5);
             jPanel3.repaint();
             jPanel3.revalidate();
-/*
-            opcode = 0;
-            rs = 0;
-            rt = 0; // pero rs dapat
-            rd = rd;
+            /*
+             opcode = 0;
+             rs = 0;
+             rt = 0; // pero rs dapat
+             rd = rd;
 
-            int shf = 0;
-            // shift
+             int shf = 0;
+             // shift
 
-            imm = 56;
-*/
+             imm = 56;
+             */
         } else if (instruction.matches("BEQ")) {
             jPanel3.add(jPanel6);
             jPanel3.repaint();
@@ -640,12 +645,12 @@ public class NewJFrame extends javax.swing.JFrame {
 
     private void jComboBox9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox9ActionPerformed
         // TODO add your handling code here:
-        rs = Integer.parseInt(jComboBox9.getSelectedItem().toString());
+        rd = Integer.parseInt(jComboBox9.getSelectedItem().toString());
     }//GEN-LAST:event_jComboBox9ActionPerformed
 
     private void jComboBox10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox10ActionPerformed
         // TODO add your handling code here:
-        rt = Integer.parseInt(jComboBox10.getSelectedItem().toString());
+        rs = Integer.parseInt(jComboBox10.getSelectedItem().toString());
     }//GEN-LAST:event_jComboBox10ActionPerformed
 
     private void jComboBox11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox11ActionPerformed
@@ -672,87 +677,86 @@ public class NewJFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         instruction = jComboBox1.getSelectedItem().toString();
         //System.out.println(rd + " " + rs + " " + rt);
-        int func=0;
-        String rdbin, rsbin, rtbin, opcodebin, temp="";
-        String addbin="", funcbin;
+        int func = 0;
+        String rdbin, rsbin, rtbin, opcodebin, temp = "";
+        String addbin = "", funcbin;
         String addressbin, addresshex;
-        
+
         if (instruction.matches("DSUBU") || instruction.matches("DDIV") || instruction.matches("AND")
                 || instruction.matches("DSRLV") || instruction.matches("SLT")) {
 
             //opcode binary
             opcode = 0;
             opcodebin = "00000" + Integer.toBinaryString(opcode);
-            
+
             //rs binary
             rsbin = Integer.toBinaryString(rs);
-            if(rsbin.length()!=5) {
-                for(int i=0; i<5-rsbin.length(); i++) {
+            if (rsbin.length() != 5) {
+                for (int i = 0; i < 5 - rsbin.length(); i++) {
                     temp = temp + "0";
                 }
             }
             rsbin = temp + rsbin;
-            
+
             //rt binary
-            temp="";
+            temp = "";
             rtbin = Integer.toBinaryString(rt);
-            if(rtbin.length()!=5) {
-                for(int i=0; i<5-rtbin.length(); i++) {
+            if (rtbin.length() != 5) {
+                for (int i = 0; i < 5 - rtbin.length(); i++) {
                     temp = temp + "0";
                 }
             }
             rtbin = temp + rtbin;
-            
+
             //rd binary
-            if(instruction.matches("DDIV")) {
+            if (instruction.matches("DDIV")) {
                 rdbin = "00000";
-            }
-            else {
-                temp="";
+            } else {
+                temp = "";
                 rdbin = Integer.toBinaryString(rd);
-                if(rdbin.length()!=5) {
-                    for(int i=0; i<5-rdbin.length(); i++) {
+                if (rdbin.length() != 5) {
+                    for (int i = 0; i < 5 - rdbin.length(); i++) {
                         temp = temp + "0";
                     }
                 }
                 rdbin = temp + rdbin;
             }
-            
+
             //additional 5 bits
             addbin = "00000";
-            
+
             //function
-            if(instruction.matches("DSUBU")) {
+            if (instruction.matches("DSUBU")) {
                 func = 47;
-            } else if(instruction.matches("DDIV")) {
+            } else if (instruction.matches("DDIV")) {
                 func = 30;
-            } else if(instruction.matches("AND")) {
+            } else if (instruction.matches("AND")) {
                 func = 36;
-            } else if(instruction.matches("DSRLV")) {
+            } else if (instruction.matches("DSRLV")) {
                 func = 22;
-            } else if(instruction.matches("SLT")) {
+            } else if (instruction.matches("SLT")) {
                 func = 42;
             }
             funcbin = Integer.toBinaryString(func);
-            if(funcbin.length()!=6) {
-                temp="";
-                if(funcbin.length()!=5) {
-                    for(int i=0; i<5-funcbin.length(); i++) {
+            if (funcbin.length() != 6) {
+                temp = "";
+                if (funcbin.length() != 5) {
+                    for (int i = 0; i < 5 - funcbin.length(); i++) {
                         temp = temp + "0";
                     }
                 }
                 funcbin = temp + funcbin;
             }
-            
+
             //address in binary
             addressbin = opcodebin + rsbin + rtbin + rdbin + addbin + funcbin;
-            System.out.println(addressbin);
-            
+            //System.out.println(addressbin);
+
             //convert to hex
             addresshex = new BigInteger(addressbin, 2).toString(16);
-            if(addresshex.length()!=8) {
-                temp="";
-                for(int i=0; i<8-addresshex.length(); i++) {
+            if (addresshex.length() != 8) {
+                temp = "";
+                for (int i = 0; i < 8 - addresshex.length(); i++) {
                     temp = temp + "0";
                 }
                 addresshex = temp + addresshex;
@@ -761,154 +765,213 @@ public class NewJFrame extends javax.swing.JFrame {
             //addresshex = Integer.toHexString(Integer.parseInt(addressbin));
             //System.out.println(addresshex);
 /*
-            if (instruction.matches("DSUBU")) {
-                imm = 47;
-            } else if (instruction.matches("AND")) {
-                imm = 36;
-            } else if (instruction.matches("DSRLV")) {
-                imm = 22;
-            } else {
-                imm = 42;
-            }
+             if (instruction.matches("DSUBU")) {
+             imm = 47;
+             } else if (instruction.matches("AND")) {
+             imm = 36;
+             } else if (instruction.matches("DSRLV")) {
+             imm = 22;
+             } else {
+             imm = 42;
+             }
 
-            setByteAt(opcode, 0, 5);
-            rs = jComboBox2.getSelectedIndex();
-            setByteAt(rs, 6, 10);
-            rt = jComboBox3.getSelectedIndex();
-            setByteAt(rt, 11, 15);
-            rd = jComboBox4.getSelectedIndex();
-            setByteAt(rd, 16, 20);
-            setByteAt(0, 21, 25);
-            setByteAt(imm, 26, 31);
-*/
+             setByteAt(opcode, 0, 5);
+             rs = jComboBox2.getSelectedIndex();
+             setByteAt(rs, 6, 10);
+             rt = jComboBox3.getSelectedIndex();
+             setByteAt(rt, 11, 15);
+             rd = jComboBox4.getSelectedIndex();
+             setByteAt(rd, 16, 20);
+             setByteAt(0, 21, 25);
+             setByteAt(imm, 26, 31);
+             */
 
-        } 
-        else if(instruction.matches("BEQ")) {
-            if(label.matches("")) { //special characters
+        } else if (instruction.matches("BEQ")) {
+            if (label.matches("/^[A-z ]{2,20}$/")) { //special characters
                 //error message
+                jLabel18.setText("Invalid Label");
             } else {
                 opcodebin = "000100";
-                
+
                 //rs binary
                 rsbin = Integer.toBinaryString(rs);
-                if(rsbin.length()!=5) {
-                    for(int i=0; i<5-rsbin.length(); i++) {
+                if (rsbin.length() != 5) {
+                    for (int i = 0; i < 5 - rsbin.length(); i++) {
                         temp = temp + "0";
                     }
                 }
                 rsbin = temp + rsbin;
-                
+
                 //rt binary
-                temp="";
+                temp = "";
                 rtbin = Integer.toBinaryString(rt);
-                if(rtbin.length()!=5) {
-                    for(int i=0; i<5-rtbin.length(); i++) {
+                if (rtbin.length() != 5) {
+                    for (int i = 0; i < 5 - rtbin.length(); i++) {
                         temp = temp + "0";
                     }
                 }
                 rtbin = temp + rtbin;
+            }
+
+            //offset
+            //label
+        } else if (instruction.matches("LW") || instruction.matches("LWU") || instruction.matches("SW")) {
+            if (offset.matches("") && offset.length() != 4) { //special characters and letters g-z
+                jLabel18.setText("Invalid Offset");
+            } else {
+                //opcode binary
+                if (instruction.matches("LW")) {
+                    opcode = 35;
+                } else if (instruction.matches("LWU")) {
+                    opcode = 39;
+                } else if (instruction.matches("SW")) {
+                    opcode = 43;
                 }
-            
-                //di ko pa alam offset :(
+                opcodebin = Integer.toBinaryString(opcode);
+                if (opcodebin.length() != 6) {
+                    temp = "";
+                    for (int i = 0; i < 6 - opcodebin.length(); i++) {
+                        temp = temp + "0";
+                    }
+                    opcodebin = temp + opcodebin;
+                }
+
+                //rd binary
+                temp = "";
+                rdbin = Integer.toBinaryString(rd);
+                if (rdbin.length() != 5) {
+                    for (int i = 0; i < 5 - rdbin.length(); i++) {
+                        temp = temp + "0";
+                    }
+                }
+                rdbin = temp + rdbin;
+
+                //rs binary
+                rsbin = Integer.toBinaryString(rs);
+                if (rsbin.length() != 5) {
+                    for (int i = 0; i < 5 - rsbin.length(); i++) {
+                        temp = temp + "0";
+                    }
+                }
+                rsbin = temp + rsbin;
+
+                addressbin = opcodebin + rsbin + rdbin;
+                System.out.println(addressbin);
+
+                addresshex = new BigInteger(addressbin, 2).toString(16) + offset;
+                if (addresshex.length() != 8) {
+                    temp = "";
+                    for (int i = 0; i < 8 - addresshex.length(); i++) {
+                        temp = temp + "0";
+                    }
+                    addresshex = temp + addresshex;
+                }
+                jLabel18.setText(addresshex);
+            }
         }
         /*else if (instruction.matches("DDIV")) {
 
-            opcode = 0;
-            rs = jComboBox6.getSelectedIndex();
-            rt = jComboBox5.getSelectedIndex();
+         opcode = 0;
+         rs = jComboBox6.getSelectedIndex();
+         rt = jComboBox5.getSelectedIndex();
 
-            imm = 56;
+         imm = 56;
 
-            setByteAt(opcode, 0, 5);
-            setByteAt(rs, 6, 10);
-            setByteAt(rt, 11, 15);
-            setByteAt(0, 16, 25);
-            setByteAt(imm, 26, 31);
-        } else if (instruction.matches("BEQ")) {
+         setByteAt(opcode, 0, 5);
+         setByteAt(rs, 6, 10);
+         setByteAt(rt, 11, 15);
+         setByteAt(0, 16, 25);
+         setByteAt(imm, 26, 31);
+         } else if (instruction.matches("BEQ")) {
 
-            opcode = 4;
-            rs = jComboBox7.getSelectedIndex();
-            rt = jComboBox8.getSelectedIndex();
-            imm = Integer.valueOf(jTextField1.getText());
+         opcode = 4;
+         rs = jComboBox7.getSelectedIndex();
+         rt = jComboBox8.getSelectedIndex();
+         imm = Integer.valueOf(jTextField1.getText());
 
-            setByteAt(opcode, 0, 5);
-            setByteAt(rs, 6, 10);
-            setByteAt(rt, 11, 15);
+         setByteAt(opcode, 0, 5);
+         setByteAt(rs, 6, 10);
+         setByteAt(rt, 11, 15);
 
-            offset = jTextField1.getText();
+         offset = jTextField1.getText();
 
-            setByteAt(Integer.valueOf(offset.charAt(0)), 16, 19);
-            setByteAt(Integer.valueOf(offset.charAt(1)), 20, 23);
-            setByteAt(Integer.valueOf(offset.charAt(2)), 24, 27);
-            setByteAt(Integer.valueOf(offset.charAt(3)), 28, 31);
+         setByteAt(Integer.valueOf(offset.charAt(0)), 16, 19);
+         setByteAt(Integer.valueOf(offset.charAt(1)), 20, 23);
+         setByteAt(Integer.valueOf(offset.charAt(2)), 24, 27);
+         setByteAt(Integer.valueOf(offset.charAt(3)), 28, 31);
 
-            // 16...31
-        } else if (instruction.matches("LW") || instruction.matches("LWU") || instruction.matches("SW")) {
+         // 16...31
+         } else if (instruction.matches("LW") || instruction.matches("LWU") || instruction.matches("SW")) {
 
-            if (instruction.matches("LW")) {
-                opcode = 35;
-            } else if (instruction.matches("LWU")) {
-                opcode = 39;
-            } else if (instruction.matches("SW")) {
-                opcode = 43;
-            }
+         if (instruction.matches("LW")) {
+         opcode = 35;
+         } else if (instruction.matches("LWU")) {
+         opcode = 39;
+         } else if (instruction.matches("SW")) {
+         opcode = 43;
+         }
 
-            rd = jComboBox9.getSelectedIndex();
-            rt = jComboBox10.getSelectedIndex();
-            imm = Integer.valueOf(jTextField2.getText());
+         rd = jComboBox9.getSelectedIndex();
+         rt = jComboBox10.getSelectedIndex();
+         imm = Integer.valueOf(jTextField2.getText());
 
-            setByteAt(opcode, 0, 5);
-            setByteAt(rs, 6, 10);
-            setByteAt(rt, 11, 15);
+         setByteAt(opcode, 0, 5);
+         setByteAt(rs, 6, 10);
+         setByteAt(rt, 11, 15);
 
-            offset = jTextField2.getText();
-            setByteAt(Integer.valueOf(offset.charAt(0)), 16, 19);
-            setByteAt(Integer.valueOf(offset.charAt(1)), 20, 23);
-            setByteAt(Integer.valueOf(offset.charAt(2)), 24, 27);
-            setByteAt(Integer.valueOf(offset.charAt(3)), 28, 31);
+         offset = jTextField2.getText();
+         setByteAt(Integer.valueOf(offset.charAt(0)), 16, 19);
+         setByteAt(Integer.valueOf(offset.charAt(1)), 20, 23);
+         setByteAt(Integer.valueOf(offset.charAt(2)), 24, 27);
+         setByteAt(Integer.valueOf(offset.charAt(3)), 28, 31);
 
-            // 16...31
-        } else if (instruction.matches("DADDIU") || instruction.matches("ORI")) {
+         // 16...31
+         } else if (instruction.matches("DADDIU") || instruction.matches("ORI")) {
 
-            if (instruction.matches("DADDIU")) {
-                opcode = 25;
-            } else {
-                opcode = 13;
-            }
+         if (instruction.matches("DADDIU")) {
+         opcode = 25;
+         } else {
+         opcode = 13;
+         }
 
-            rd = jComboBox11.getSelectedIndex();
-            imm = Integer.valueOf(jTextField3.getText());
-            rt = jComboBox10.getSelectedIndex();
+         rd = jComboBox11.getSelectedIndex();
+         imm = Integer.valueOf(jTextField3.getText());
+         rt = jComboBox10.getSelectedIndex();
 
-            setByteAt(opcode, 0, 5);
-            setByteAt(rs, 6, 10);
-            setByteAt(rd, 11, 15);
+         setByteAt(opcode, 0, 5);
+         setByteAt(rs, 6, 10);
+         setByteAt(rd, 11, 15);
 
-            offset = jTextField3.getText();
-            setByteAt(Integer.valueOf(offset.charAt(0)), 16, 19);
-            setByteAt(Integer.valueOf(offset.charAt(1)), 20, 23);
-            setByteAt(Integer.valueOf(offset.charAt(2)), 24, 27);
-            setByteAt(Integer.valueOf(offset.charAt(3)), 28, 31);
+         offset = jTextField3.getText();
+         setByteAt(Integer.valueOf(offset.charAt(0)), 16, 19);
+         setByteAt(Integer.valueOf(offset.charAt(1)), 20, 23);
+         setByteAt(Integer.valueOf(offset.charAt(2)), 24, 27);
+         setByteAt(Integer.valueOf(offset.charAt(3)), 28, 31);
             
-            // 16...31
+         // 16...31
 
-        } else if (instruction.matches("J")) {
-            jPanel3.add(jPanel9);
-            jPanel3.repaint();
-            jPanel3.revalidate();
+         } else if (instruction.matches("J")) {
+         jPanel3.add(jPanel9);
+         jPanel3.repaint();
+         jPanel3.revalidate();
 
-            opcode = 2;
-            imm = Integer.valueOf(jTextField4.getText());
+         opcode = 2;
+         imm = Integer.valueOf(jTextField4.getText());
 
-            setByteAt(opcode, 0, 5);
-            // 6...31
-        }
+         setByteAt(opcode, 0, 5);
+         // 6...31
+         }
         
 
-        System.out.println(Arrays.toString(byteInstruction));
-        */
+         System.out.println(Arrays.toString(byteInstruction));
+         */
 
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+        // TODO add your handling code here:
+        offset = jTextField2.getText();
+    }//GEN-LAST:event_jTextField2ActionPerformed
 
     /**
      * @param args the command line arguments
