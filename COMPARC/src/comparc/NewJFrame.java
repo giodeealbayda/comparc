@@ -845,24 +845,6 @@ public class NewJFrame extends javax.swing.JFrame {
                 //offset
                 String jumpTo = jTextField1.getText();
 
-                //address in binary
-                addressbin = opcodebin + rsbin + rtbin;
-                System.out.println(addressbin);
-
-                //convert to hex
-                addresshex = new BigInteger(addressbin, 2).toString(16);
-                if (addresshex.length() != 8) {
-                    temp = "";
-                    for (int i = 0; i < 8 - addresshex.length(); i++) {
-                        temp = temp + "0";
-                    }
-                    addresshex = temp + addresshex;
-                }
-                jLabel18.setText(addresshex);
-
-                labellist.add(label + " " + instruction + " R" + jComboBox7.getSelectedItem() + ", R" + jComboBox8.getSelectedItem() + " ," + jTextField1.getText());
-                opcodelist.add(addresshex);
-
                 String pcBin;
 
                 jumpTo = jTextField4.getText();
@@ -870,7 +852,7 @@ public class NewJFrame extends javax.swing.JFrame {
                 System.out.println(jumpTo);
                 for (int i = 0; i < labellist.size(); i++) {
                     if (labellist.get(i).contains(jumpTo)) {
-                        pcTarget = (pclist.get(i) - pc)/4; // actual pc of label - current pc
+                        pcTarget = (pclist.get(i) - pc) / 4; // actual pc of label - current pc
                         System.out.println("HERE");
                         break;
                     } else {
