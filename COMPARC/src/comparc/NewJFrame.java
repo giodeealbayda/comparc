@@ -14,8 +14,8 @@ public class NewJFrame extends javax.swing.JFrame {
      * Creates new form NewJFrame
      */
     int rd, rs, rt;
-    int opcode, offset;
-    String label, imm;
+    int opcode;
+    String offset, label, imm;
     //private byte[] byteInstruction = new byte[32];
     String instruction;
 
@@ -246,6 +246,12 @@ public class NewJFrame extends javax.swing.JFrame {
         jComboBox9.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox9ActionPerformed(evt);
+            }
+        });
+
+        jTextField2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField2ActionPerformed(evt);
             }
         });
 
@@ -563,7 +569,17 @@ public class NewJFrame extends javax.swing.JFrame {
             jPanel3.add(jPanel5);
             jPanel3.repaint();
             jPanel3.revalidate();
+/*
+                     opcode = 0;
+                     rs = 0;
+                     rt = 0; // pero rs dapat
+                     rd = rd;
 
+                     int shf = 0;
+                     // shift
+
+                     imm = 56;
+                     */
         } else if (instruction.matches("BEQ")) {
             jPanel3.add(jPanel6);
             jPanel3.repaint();
@@ -629,12 +645,12 @@ public class NewJFrame extends javax.swing.JFrame {
 
     private void jComboBox9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox9ActionPerformed
         // TODO add your handling code here:
-        rs = Integer.parseInt(jComboBox9.getSelectedItem().toString());
+        rd = Integer.parseInt(jComboBox9.getSelectedItem().toString());
     }//GEN-LAST:event_jComboBox9ActionPerformed
 
     private void jComboBox10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox10ActionPerformed
         // TODO add your handling code here:
-        rt = Integer.parseInt(jComboBox10.getSelectedItem().toString());
+        rs = Integer.parseInt(jComboBox10.getSelectedItem().toString());
     }//GEN-LAST:event_jComboBox10ActionPerformed
 
     private void jComboBox11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox11ActionPerformed
@@ -663,6 +679,7 @@ public class NewJFrame extends javax.swing.JFrame {
         //System.out.println(rd + " " + rs + " " + rt);
         int func = 0;
         String rdbin, rsbin, rtbin, opcodebin, temp = "", offsetbin1, offsetbin2, offsetbin3, offsetbin4;
+
         String addbin = "", funcbin;
         String addressbin, addresshex;
 
@@ -735,6 +752,7 @@ public class NewJFrame extends javax.swing.JFrame {
             //address in binary
             addressbin = opcodebin + rsbin + rtbin + rdbin + addbin + funcbin;
             System.out.println(addressbin);
+            //System.out.println(addressbin);
 
             //convert to hex
             addresshex = new BigInteger(addressbin, 2).toString(16);
@@ -748,9 +766,11 @@ public class NewJFrame extends javax.swing.JFrame {
             jLabel18.setText(addresshex);
             //addresshex = Integer.toHexString(Integer.parseInt(addressbin));
             //System.out.println(addresshex);
+
         } else if (instruction.matches("BEQ")) {
-            if (jTextField1.getText().matches("")) { //special characters
+            if (jTextField1.getText().matches("/^[A-z ]{2,20}$/")) { //special characters
                 //error message
+                jLabel18.setText("Invalid Label");
             } else {
                 opcodebin = "000100";
 
@@ -776,16 +796,16 @@ public class NewJFrame extends javax.swing.JFrame {
                 offsetbin1 = Integer.toBinaryString(Integer.valueOf(jTextField1.getText().charAt(0)));
                 offsetbin1 = offsetbin1.substring(2, offsetbin1.length());
                 System.out.println(offsetbin1);
-                
+
                 offsetbin2 = Integer.toBinaryString(Integer.valueOf(jTextField1.getText().charAt(1)));
                 offsetbin2 = offsetbin2.substring(2, offsetbin2.length());
                 System.out.println(offsetbin2);
-                
+
                 offsetbin3 = Integer.toBinaryString(Integer.valueOf(jTextField1.getText().charAt(2)));
                 offsetbin3 = offsetbin3.substring(2, offsetbin3.length());
                 System.out.println(offsetbin3);
-                
-                offsetbin4 = Integer.toBinaryString(Integer.valueOf(jTextField1.getText().charAt(1)));
+
+                offsetbin4 = Integer.toBinaryString(Integer.valueOf(jTextField1.getText().charAt(3)));
                 offsetbin4 = offsetbin4.substring(2, offsetbin4.length());
                 System.out.println(offsetbin4);
 
@@ -806,10 +826,72 @@ public class NewJFrame extends javax.swing.JFrame {
 
             }
 
-            //di ko pa alam offset :(
+            //offset
+            //label
+        } else if (instruction.matches("LW") || instruction.matches("LWU") || instruction.matches("SW")) {
+            if (offset.matches("") && offset.length() != 4) { //special characters and letters g-z
+                jLabel18.setText("Invalid Offset");
+            } else {
+                //opcode binary
+                if (instruction.matches("LW")) {
+                    opcode = 35;
+                } else if (instruction.matches("LWU")) {
+                    opcode = 39;
+                } else if (instruction.matches("SW")) {
+                    opcode = 43;
+                }
+                opcodebin = Integer.toBinaryString(opcode);
+                if (opcodebin.length() != 6) {
+                    temp = "";
+                    for (int i = 0; i < 6 - opcodebin.length(); i++) {
+                        temp = temp + "0";
+                    }
+                    opcodebin = temp + opcodebin;
+                }
+
+                //rd binary
+                temp = "";
+                rdbin = Integer.toBinaryString(rd);
+                if (rdbin.length() != 5) {
+                    for (int i = 0; i < 5 - rdbin.length(); i++) {
+                        temp = temp + "0";
+                    }
+                }
+                rdbin = temp + rdbin;
+
+                //rs binary
+                rsbin = Integer.toBinaryString(rs);
+                if (rsbin.length() != 5) {
+                    for (int i = 0; i < 5 - rsbin.length(); i++) {
+                        temp = temp + "0";
+                    }
+                }
+                rsbin = temp + rsbin;
+
+                addressbin = opcodebin + rsbin + rdbin;
+                System.out.println(addressbin);
+
+                addresshex = new BigInteger(addressbin, 2).toString(16) + offset;
+                if (addresshex.length() != 8) {
+                    temp = "";
+                    for (int i = 0; i < 8 - addresshex.length(); i++) {
+                        temp = temp + "0";
+                    }
+                    addresshex = temp + addresshex;
+                }
+                jLabel18.setText(addresshex);
+
+            }
         }
         /*else if (instruction.matches("DDIV")) {
 
+         <<<<<<< HEAD
+         //di ko pa alam offset :(
+         }
+         /*else if (instruction.matches("DDIV")) {
+
+         =======
+         >>>>>>> 7b7456d059a934c8ab867c6e1148da8f444142a8
          opcode = 0;
          rs = jComboBox6.getSelectedIndex();
          rt = jComboBox5.getSelectedIndex();
@@ -906,6 +988,11 @@ public class NewJFrame extends javax.swing.JFrame {
          */
 
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+        // TODO add your handling code here:
+        offset = jTextField2.getText();
+    }//GEN-LAST:event_jTextField2ActionPerformed
 
     /**
      * @param args the command line arguments
