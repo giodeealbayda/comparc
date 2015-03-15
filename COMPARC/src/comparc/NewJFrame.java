@@ -604,38 +604,38 @@ public class NewJFrame extends javax.swing.JFrame {
 
     private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
         // TODO add your handling code here:
-        rs = Integer.parseInt(jComboBox2.getSelectedItem().toString());
+        rs = jComboBox2.getSelectedIndex();
     }//GEN-LAST:event_jComboBox2ActionPerformed
 
     private void jComboBox5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox5ActionPerformed
         // TODO add your handling code here:
-        rt = Integer.parseInt(jComboBox5.getSelectedItem().toString());
+        rt = jComboBox5.getSelectedIndex();
     }//GEN-LAST:event_jComboBox5ActionPerformed
 
     private void jComboBox4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox4ActionPerformed
         // TODO add your handling code here:
         //rd = jComboBox4.getSelectedIndex();
-        rd = Integer.parseInt(jComboBox4.getSelectedItem().toString());
+        rd = jComboBox4.getSelectedIndex();
     }//GEN-LAST:event_jComboBox4ActionPerformed
 
     private void jComboBox7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox7ActionPerformed
         // TODO add your handling code here:
-        rs = Integer.parseInt(jComboBox7.getSelectedItem().toString());
+        rs = jComboBox7.getSelectedIndex();
     }//GEN-LAST:event_jComboBox7ActionPerformed
 
     private void jComboBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox3ActionPerformed
         // TODO add your handling code here:
-        rt = Integer.parseInt(jComboBox3.getSelectedItem().toString());
+        rt = jComboBox3.getSelectedIndex();
     }//GEN-LAST:event_jComboBox3ActionPerformed
 
     private void jComboBox6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox6ActionPerformed
         // TODO add your handling code here:
-        rs = Integer.parseInt(jComboBox6.getSelectedItem().toString());
+        rs = jComboBox6.getSelectedIndex();
     }//GEN-LAST:event_jComboBox6ActionPerformed
 
     private void jComboBox8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox8ActionPerformed
         // TODO add your handling code here:
-        rt = Integer.parseInt(jComboBox8.getSelectedItem().toString());
+        rt = jComboBox8.getSelectedIndex();
     }//GEN-LAST:event_jComboBox8ActionPerformed
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
@@ -655,12 +655,12 @@ public class NewJFrame extends javax.swing.JFrame {
 
     private void jComboBox11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox11ActionPerformed
         // TODO add your handling code here:
-        rd = Integer.parseInt(jComboBox11.getSelectedItem().toString());
+        rd = jComboBox11.getSelectedIndex();
     }//GEN-LAST:event_jComboBox11ActionPerformed
 
     private void jComboBox12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox12ActionPerformed
         // TODO add your handling code here:
-        rs = Integer.parseInt(jComboBox12.getSelectedItem().toString());
+        rs = jComboBox12.getSelectedIndex();
     }//GEN-LAST:event_jComboBox12ActionPerformed
 
     private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
@@ -793,6 +793,8 @@ public class NewJFrame extends javax.swing.JFrame {
                 }
                 rtbin = temp + rtbin;
 
+                //offset
+                //label
                 offsetbin1 = Integer.toBinaryString(Integer.valueOf(jTextField1.getText().charAt(0)));
                 offsetbin1 = offsetbin1.substring(2, offsetbin1.length());
 
@@ -822,8 +824,6 @@ public class NewJFrame extends javax.swing.JFrame {
 
             }
 
-            //offset
-            //label
         } else if (instruction.matches("LW") || instruction.matches("LWU") || instruction.matches("SW")) {
             if (jTextField2.getText().matches("") && jTextField2.getText().length() != 4) { //special characters and letters g-z
                 jLabel18.setText("Invalid Offset");
@@ -1032,6 +1032,7 @@ public class NewJFrame extends javax.swing.JFrame {
                 addressbin = opcodebin + rsbin + rtbin + offsetbin1 + offsetbin2 + offsetbin3 + offsetbin4;
                 System.out.println(addressbin);
 
+                //address in hex
                 addresshex = new BigInteger(addressbin, 2).toString(16);
                 if (addresshex.length() != 8) {
                     temp = "";
