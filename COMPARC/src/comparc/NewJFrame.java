@@ -575,7 +575,7 @@ public class NewJFrame extends javax.swing.JFrame {
         instruction = jComboBox1.getSelectedItem().toString();
 
         int func = 0;
-        String rdbin, rsbin, rtbin, opcodebin, temp = "", offsetbin1, offsetbin2, offsetbin3, offsetbin4;
+        String rdbin, rsbin, rtbin, opcodebin, temp = "", offsetbin, offsetbin1, offsetbin2, offsetbin3, offsetbin4;
 
         String addbin = "", funcbin;
         String addressbin, addresshex = "";
@@ -797,6 +797,7 @@ public class NewJFrame extends javax.swing.JFrame {
                 } else { //insert error checking [special characters]
 
                 }
+                labellist.add(labeladdress);
 
                 opcodebin = Integer.toBinaryString(opcode);
                 if (opcodebin.length() != 6) {
@@ -825,8 +826,6 @@ public class NewJFrame extends javax.swing.JFrame {
                     }
                 }
                 rsbin = temp + rsbin;
-                
-                String offsetbin;
 
                 offsetbin = Integer.toBinaryString(Integer.parseInt(jTextField2.getText(), 16));
                 
@@ -842,7 +841,6 @@ public class NewJFrame extends javax.swing.JFrame {
                     }
                     addresshex = temp + addresshex;
                 }
-                jLabel18.setText(addresshex);
 
                 opcodelist.add(addresshex);
             }
@@ -855,6 +853,15 @@ public class NewJFrame extends javax.swing.JFrame {
                 //increment pc by 4
                 pc = pc + 4;
                 pclist.add(Integer.toHexString(pc));
+                
+                //add label instruction
+                labeladdress = jTextField5.getText();
+                if (labeladdress.matches("")) {
+                    labeladdress = "no label";
+                } else { //insert error checking [special characters]
+
+                }
+                labellist.add(labeladdress);
 
                 if (instruction.matches("DADDIU")) {
                     opcode = 25;
@@ -890,24 +897,10 @@ public class NewJFrame extends javax.swing.JFrame {
                 }
                 rtbin = temp + rtbin;
 
-                offsetbin1 = Integer.toBinaryString(Integer.valueOf(jTextField3.getText().charAt(0)));
-                offsetbin1 = offsetbin1.substring(2, offsetbin1.length());
-                System.out.println(offsetbin1);
-
-                offsetbin2 = Integer.toBinaryString(Integer.valueOf(jTextField3.getText().charAt(1)));
-                offsetbin2 = offsetbin2.substring(2, offsetbin2.length());
-                System.out.println(offsetbin2);
-
-                offsetbin3 = Integer.toBinaryString(Integer.valueOf(jTextField3.getText().charAt(2)));
-                offsetbin3 = offsetbin3.substring(2, offsetbin3.length());
-                System.out.println(offsetbin3);
-
-                offsetbin4 = Integer.toBinaryString(Integer.valueOf(jTextField3.getText().charAt(3)));
-                offsetbin4 = offsetbin4.substring(2, offsetbin4.length());
-                System.out.println(offsetbin4);
+                offsetbin = Integer.toBinaryString(Integer.parseInt(jTextField3.getText(), 16));
 
                 //address in binary
-                addressbin = opcodebin + rsbin + rtbin + offsetbin1 + offsetbin2 + offsetbin3 + offsetbin4;
+                addressbin = opcodebin + rsbin + rtbin + offsetbin;
                 System.out.println(addressbin);
 
                 //address in hex
@@ -919,7 +912,6 @@ public class NewJFrame extends javax.swing.JFrame {
                     }
                     addresshex = temp + addresshex;
                 }
-                jLabel18.setText(addresshex);
 
                 instructionlist.add(instruction + " R" + jComboBox11.getSelectedItem() + ", R" + jComboBox12.getSelectedItem() + ", #" + jTextField3.getText());
                 opcodelist.add(addresshex);
