@@ -487,26 +487,23 @@ public class NewJFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel21, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel20)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jLabel21, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(0, 161, Short.MAX_VALUE)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel20)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel21, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addComponent(jLabel20)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
+                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -828,21 +825,13 @@ public class NewJFrame extends javax.swing.JFrame {
                     }
                 }
                 rsbin = temp + rsbin;
-
-                offsetbin1 = Integer.toBinaryString(Integer.valueOf(jTextField2.getText().charAt(0)));
-                offsetbin1 = offsetbin1.substring(2, offsetbin1.length());
                 
-                offsetbin2 = Integer.toBinaryString(Integer.valueOf(jTextField2.getText().charAt(1)));
-                offsetbin2 = offsetbin2.substring(2, offsetbin2.length());
+                String offsetbin;
 
-                offsetbin3 = Integer.toBinaryString(Integer.valueOf(jTextField2.getText().charAt(2)));
-                offsetbin3 = offsetbin3.substring(2, offsetbin3.length());
-
-                offsetbin4 = Integer.toBinaryString(Integer.valueOf(jTextField2.getText().charAt(3)));
-                offsetbin4 = offsetbin4.substring(2, offsetbin4.length());
-
+                offsetbin = Integer.toBinaryString(Integer.parseInt(jTextField2.getText(), 16));
+                
                 //address in binary
-                addressbin = opcodebin + rsbin + rdbin + offsetbin1 + offsetbin2 + offsetbin3 + offsetbin4;
+                addressbin = opcodebin + rsbin + rdbin + offsetbin;
                 System.out.println(addressbin);
 
                 addresshex = new BigInteger(addressbin, 2).toString(16);
