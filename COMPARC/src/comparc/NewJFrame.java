@@ -7,7 +7,6 @@ package comparc;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class NewJFrame extends javax.swing.JFrame {
 
@@ -17,9 +16,10 @@ public class NewJFrame extends javax.swing.JFrame {
     int rd, rs, rt;
     int opcode;
     int pc = 0;
-    int targetpc = 0;
+    boolean check = false;
     String offset, label, imm;
     String instruction, labeladdress;
+    String rdbin, rsbin, rtbin, opcodebin, temp = "", offsetbin;
 
     ArrayList<String> labellist = new ArrayList<String>();
     ArrayList<String> opcodelist = new ArrayList<String>();
@@ -151,9 +151,9 @@ public class NewJFrame extends javax.swing.JFrame {
 
         jPanel3.add(jPanel4, "card2");
 
-        jComboBox5.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "0", "1", "2", "3", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" }));
+        jComboBox5.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" }));
 
-        jComboBox6.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "0", "1", "2", "3", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" }));
+        jComboBox6.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" }));
 
         jLabel9.setText("RS");
 
@@ -575,10 +575,15 @@ public class NewJFrame extends javax.swing.JFrame {
         instruction = jComboBox1.getSelectedItem().toString();
 
         int func = 0;
-        String rdbin, rsbin, rtbin, opcodebin, temp = "", offsetbin, offsetbin1, offsetbin2, offsetbin3, offsetbin4;
+       
 
         String addbin = "", funcbin;
         String addressbin, addresshex = "";
+
+        labeladdress = jTextField5.getText();
+        if (labeladdress.matches("")) {
+            labeladdress = "no label";
+        }
 
         if (instruction.matches("DSUBU") || instruction.matches("DDIV") || instruction.matches("AND")
                 || instruction.matches("DSRLV") || instruction.matches("SLT")) {
@@ -651,8 +656,8 @@ public class NewJFrame extends javax.swing.JFrame {
             funcbin = Integer.toBinaryString(func);
             if (funcbin.length() != 6) {
                 temp = "";
-                if (funcbin.length() != 5) {
-                    for (int i = 0; i < 5 - funcbin.length(); i++) {
+                if (funcbin.length() != 6) {
+                    for (int i = 0; i < 6 - funcbin.length(); i++) {
                         temp = temp + "0";
                     }
                 }
@@ -672,32 +677,165 @@ public class NewJFrame extends javax.swing.JFrame {
                 }
                 addresshex = temp + addresshex;
             }
-            //jLabel18.setText(addresshex);
+            //System.out.println(addresshex);
 
-            //add label instruction
-            labeladdress = jTextField5.getText();
-            if (labeladdress.matches("")) {
-                labeladdress = "no label";
-            } else { //insert error checking [special characters]
-
-            }
             labellist.add(labeladdress);
             opcodelist.add(addresshex);
-            instructionlist.add(instruction + " R" + jComboBox4.getSelectedItem() + ", R" + jComboBox2.getSelectedItem() + ", R" + jComboBox3.getSelectedItem());
+
+            if (instruction.matches("DDIV")) {
+                instructionlist.add(instruction + " R" + rs + ", R" + rt);
+                if (labeladdress.matches("no label")) {
+                    jLabel21.setText(jLabel21.getText() + '\n' + instruction + " R" + rs + ", R" + rt);
+                } else {
+                    jLabel21.setText(jLabel21.getText() + '\n' + labeladdress + ": " + instruction + " R" + rs + ", R" + rt);
+                }
+            } else {
+                instructionlist.add(instruction + " R" + rd + ", R" + rs + ", R" + rt);
+                if(labeladdress.matches("no label")) {
+                    jLabel21.setText(jLabel21.getText() + '\n' + instruction + " R" + rd + ", R" + rs + ", R" + rt);
+                } else {
+                    jLabel21.setText(jLabel21.getText() + '\n' + labeladdress + ": " + instruction + " R" + rd + ", R" + rs + ", R" + rt);
+                }
+            }
+
+            jLabel23.setText("Successfully added!");
         } else if (instruction.matches("BEQ")) {
             if (jTextField1.getText().matches("")) { //special characters or null
                 //error message
                 jLabel23.setText("Invalid Label");
             } else {
 
-                rs = jComboBox7.getSelectedIndex();
-                rt = jComboBox8.getSelectedIndex();
+                //check if label exists
+                check = false;
+                for (int i = 0; i < pclist.size(); i++) {
+                    if (labellist.get(i).matches(labeladdress)) {
+                        check = true;
+                    }
+                }
+
+                if (check) {
+                    rs = jComboBox7.getSelectedIndex();
+                    rt = jComboBox8.getSelectedIndex();
+
+                    //increment pc by 4
+                    pc = pc + 4;
+                    pclist.add(Integer.toHexString(pc));
+
+                    opcodebin = "000100";
+
+                    //rs binary
+                    rsbin = Integer.toBinaryString(rs);
+                    if (rsbin.length() != 5) {
+                        for (int i = 0; i < 5 - rsbin.length(); i++) {
+                            temp = temp + "0";
+                        }
+                    }
+                    rsbin = temp + rsbin;
+
+                    //rt binary
+                    temp = "";
+                    rtbin = Integer.toBinaryString(rt);
+                    if (rtbin.length() != 5) {
+                        for (int i = 0; i < 5 - rtbin.length(); i++) {
+                            temp = temp + "0";
+                        }
+                    }
+                    rtbin = temp + rtbin;
+
+                //offset
+                String jumpTo = jTextField1.getText();
+                    //address binary
+                    addressbin = opcodebin + rsbin + rtbin;
+
+                    labellist.add(labeladdress);
+                    instructionlist.add(instruction + " R" + jComboBox7.getSelectedItem() + ", R" + jComboBox8.getSelectedItem() + " ," + jTextField1.getText());
+                    opcodelist.add(addresshex);
+
+                    for (int i = 0; i < pclist.size(); i++) {
+                        if (labellist.get(i).matches(labeladdress)) {
+                            break;
+                        }
+                    }
+                    /*
+                     String pcBin;
+
+                     jumpTo = jTextField4.getText();
+                     int pcTarget = 0;
+                     System.out.println(jumpTo);
+                     for (int i = 0; i < labellist.size(); i++) {
+                     if (labellist.get(i).contains(jumpTo)) {
+                     pcTarget = (pclist.get(i) - pc) / 4; // actual pc of label - current pc
+                     System.out.println("HERE");
+                     break;
+                     } else {
+                     System.out.println(labellist.get(i));
+                     }
+                     }
+                     pcBin = Integer.toBinaryString(pcTarget);
+                     System.out.println("PCTarget: " + pcBin);
+
+                     addressbin = opcodebin + rsbin + rtbin + pcBin;
+
+                     //address in hex
+                     addresshex = new BigInteger(addressbin, 2).toString(16);
+                     if (addresshex.length() != 8) {
+                     temp = "";
+                     for (int i = 0; i < 8 - addresshex.length(); i++) {
+                     temp = temp + "0";
+                     }
+                     addresshex = temp + addresshex;
+                     }
+                     jLabel18.setText(addresshex);
+                     */
+                    opcodelist.add(addresshex);
+
+                    jLabel23.setText("Successfully added!");
+                } else { //label not found
+                    jLabel23.setText("label not found.");
+                }
+            }
+
+        } else if (instruction.matches("LW") || instruction.matches("LWU") || instruction.matches("SW")) {
+            if (jTextField2.getText().matches("") && jTextField2.getText().length() != 4) { //error message special characters and letters g-z
+                jLabel23.setText("Invalid Offset");
+            } else {
+                rd = jComboBox9.getSelectedIndex();
+                rs = jComboBox10.getSelectedIndex();
 
                 //increment pc by 4
                 pc = pc + 4;
                 pclist.add(Integer.toHexString(pc));
 
-                opcodebin = "000100";
+                //opcode binary
+                if (instruction.matches("LW")) {
+                    opcode = 35;
+                } else if (instruction.matches("LWU")) {
+                    opcode = 39;
+                } else if (instruction.matches("SW")) {
+                    opcode = 43;
+                }
+
+                opcodebin = Integer.toBinaryString(opcode);
+                if (opcodebin.length() != 6) {
+                    temp = "";
+                    for (int i = 0; i < 6 - opcodebin.length(); i++) {
+                        temp = temp + "0";
+                    }
+                    opcodebin = temp + opcodebin;
+                }
+
+                labellist.add(labeladdress);
+                instructionlist.add(instruction + " R" + jComboBox9.getSelectedItem() + ", " + jTextField2.getText() + "(R" + jComboBox10.getSelectedItem() + ")");
+
+                //rd binary
+                temp = "";
+                rdbin = Integer.toBinaryString(rd);
+                if (rdbin.length() != 5) {
+                    for (int i = 0; i < 5 - rdbin.length(); i++) {
+                        temp = temp + "0";
+                    }
+                }
+                rdbin = temp + rdbin;
 
                 //rs binary
                 rsbin = Integer.toBinaryString(rs);
@@ -708,28 +846,129 @@ public class NewJFrame extends javax.swing.JFrame {
                 }
                 rsbin = temp + rsbin;
 
-                //rt binary
+                offsetbin = Integer.toBinaryString(Integer.parseInt(jTextField2.getText(), 16));
+
                 temp = "";
-                rtbin = Integer.toBinaryString(rt);
-                if (rtbin.length() != 5) {
-                    for (int i = 0; i < 5 - rtbin.length(); i++) {
+                if (offsetbin.length() != 16) {
+                    for (int i = 0; i < 16 - offsetbin.length(); i++) {
                         temp = temp + "0";
                     }
                 }
-                rtbin = temp + rtbin;
+                offsetbin = temp + offsetbin;
 
-                //offset
-                String jumpTo = jTextField1.getText();
+                //address in binary
+                addressbin = opcodebin + rsbin + rdbin + offsetbin;
+                System.out.println(addressbin);
+
+                addresshex = new BigInteger(addressbin, 2).toString(16);
+                if (addresshex.length() != 8) {
+                    temp = "";
+                    for (int i = 0; i < 8 - addresshex.length(); i++) {
+                        temp = temp + "0";
+                    }
+                    addresshex = temp + addresshex;
+                }
+
+                opcodelist.add(addresshex);
+            }
+
+        } else if (instruction.matches("DADDIU") || instruction.matches("ORI")) {
+            if (jTextField3.getText().matches("") || jTextField3.getText().length() != 4) {
+                jLabel18.setText("Invalid Offset.");
+            } else {
+
+                rd = jComboBox11.getSelectedIndex();
+                rs = jComboBox12.getSelectedIndex();
+
+                //increment pc by 4
+                pc = pc + 4;
+                pclist.add(Integer.toHexString(pc));
+
+                labellist.add(labeladdress);
+
+                if (instruction.matches("DADDIU")) {
+                    opcode = 25;
+                } else if (instruction.matches("ORI")) {
+                    opcode = 13;
+                }
+
+                opcodebin = Integer.toBinaryString(opcode);
+                if (opcodebin.length() != 6) {
+                    temp = "";
+                    for (int i = 0; i < 6 - opcodebin.length(); i++) {
+                        temp = temp + "0";
+                    }
+                    opcodebin = temp + opcodebin;
+                }
+
+                //rs binary
+                temp = "";
+                rsbin = Integer.toBinaryString(rs);
+                if (rsbin.length() != 5) {
+                    for (int i = 0; i < 5 - rsbin.length(); i++) {
+                        temp = temp + "0";
+                    }
+                }
+                rsbin = temp + rsbin;
+
+                //rd binary
+                temp = "";
+                rdbin = Integer.toBinaryString(rd);
+                if (rdbin.length() != 5) {
+                    for (int i = 0; i < 5 - rdbin.length(); i++) {
+                        temp = temp + "0";
+                    }
+                }
+                rdbin = temp + rdbin;
+
+                offsetbin = Integer.toBinaryString(Integer.parseInt(jTextField3.getText(), 16));
+
+                temp = "";
+                if (offsetbin.length() != 16) {
+                    for (int i = 0; i < 16 - offsetbin.length(); i++) {
+                        temp = temp + "0";
+                    }
+                }
+                offsetbin = temp + offsetbin;
+
+                //address in binary
+                addressbin = opcodebin + rsbin + rdbin + offsetbin;
+                System.out.println(addressbin);
+
+                //address in hex
+                addresshex = new BigInteger(addressbin, 2).toString(16);
+                if (addresshex.length() != 8) {
+                    temp = "";
+                    for (int i = 0; i < 8 - addresshex.length(); i++) {
+                        temp = temp + "0";
+                    }
+                    addresshex = temp + addresshex;
+                }
+
+                instructionlist.add(instruction + " R" + jComboBox11.getSelectedItem() + ", R" + jComboBox12.getSelectedItem() + ", #" + jTextField3.getText());
+                opcodelist.add(addresshex);
+            }
+
+        } else if (instruction.matches("J")) {
+            if (jTextField4.getText().matches("")) { //special characters
+                jLabel18.setText("Invalid Offset");
+            } else {
+
+                //increment pc by 4
+                pc = pc + 4;
+                pclist.add(Integer.toHexString(pc));
 
                 String pcBin;
 
-                jumpTo = jTextField4.getText();
+                String jumpTo = jTextField4.getText();
                 int pcTarget = 0;
                 System.out.println(jumpTo);
                 for (int i = 0; i < labellist.size(); i++) {
                     if (labellist.get(i).contains(jumpTo)) {
                         pcTarget = (Integer.valueOf(pclist.get(i)) - pc) / 4; // actual pc of label - current pc
                         System.out.println("HERE");
+                        pcTarget = (Integer.parseInt(pclist.get(i)) - pc) / 4; // actual pc - current pc
+                        //    System.out.println("HERE");
                         break;
                     } else {
                         System.out.println(labellist.get(i));
