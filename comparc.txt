@@ -1,0 +1,5 @@
+label: bawal jump daddiu
+binary opcode hiwalay
+display
+
+j (dropdown list)
