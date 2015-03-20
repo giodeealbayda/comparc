@@ -19,11 +19,12 @@ public class NewJFrame extends javax.swing.JFrame {
     int pc = 0;
     int targetpc = 0;
     String offset, label, imm;
-    String instruction;
+    String instruction, labeladdress;
 
     ArrayList<String> labellist = new ArrayList<String>();
     ArrayList<String> opcodelist = new ArrayList<String>();
-    ArrayList<Integer> pclist = new ArrayList<Integer>();
+    ArrayList<String> pclist = new ArrayList<String>();
+    ArrayList<String> instructionlist = new ArrayList<String>();
 
     public NewJFrame() {
         initComponents();
@@ -41,6 +42,13 @@ public class NewJFrame extends javax.swing.JFrame {
         jLabel12 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
+        jPanel4 = new javax.swing.JPanel();
+        jComboBox2 = new javax.swing.JComboBox();
+        jComboBox3 = new javax.swing.JComboBox();
+        jComboBox4 = new javax.swing.JComboBox();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         jComboBox5 = new javax.swing.JComboBox();
         jComboBox6 = new javax.swing.JComboBox();
@@ -70,13 +78,6 @@ public class NewJFrame extends javax.swing.JFrame {
         jPanel9 = new javax.swing.JPanel();
         jTextField4 = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
-        jPanel4 = new javax.swing.JPanel();
-        jComboBox2 = new javax.swing.JComboBox();
-        jComboBox3 = new javax.swing.JComboBox();
-        jComboBox4 = new javax.swing.JComboBox();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jComboBox1 = new javax.swing.JComboBox();
         jLabel19 = new javax.swing.JLabel();
@@ -94,25 +95,65 @@ public class NewJFrame extends javax.swing.JFrame {
         jLabel12.setText("jLabel12");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(545, 665));
 
         jPanel1.setBackground(new java.awt.Color(153, 153, 153));
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setLayout(new java.awt.CardLayout());
 
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" }));
+
+        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" }));
+
+        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" }));
+
+        jLabel1.setText("RD");
+
+        jLabel2.setText("RS");
+
+        jLabel3.setText("RT");
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jComboBox4, 0, 50, Short.MAX_VALUE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jComboBox2, 0, 53, Short.MAX_VALUE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jComboBox3, 0, 51, Short.MAX_VALUE)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(34, 34, 34))
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(9, 9, 9)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(20, 20, 20))
+        );
+
+        jPanel3.add(jPanel4, "card2");
+
         jComboBox5.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "0", "1", "2", "3", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" }));
-        jComboBox5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox5ActionPerformed(evt);
-            }
-        });
 
         jComboBox6.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "0", "1", "2", "3", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" }));
-        jComboBox6.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox6ActionPerformed(evt);
-            }
-        });
 
         jLabel9.setText("RS");
 
@@ -150,24 +191,8 @@ public class NewJFrame extends javax.swing.JFrame {
         jPanel3.add(jPanel5, "card2");
 
         jComboBox7.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "0", "1", "2", "3", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" }));
-        jComboBox7.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox7ActionPerformed(evt);
-            }
-        });
 
         jComboBox8.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "0", "1", "2", "3", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" }));
-        jComboBox8.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox8ActionPerformed(evt);
-            }
-        });
-
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
-            }
-        });
 
         jLabel4.setText("Label");
 
@@ -216,24 +241,8 @@ public class NewJFrame extends javax.swing.JFrame {
         jPanel3.add(jPanel6, "card2");
 
         jComboBox9.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "0", "1", "2", "3", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" }));
-        jComboBox9.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox9ActionPerformed(evt);
-            }
-        });
-
-        jTextField2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField2ActionPerformed(evt);
-            }
-        });
 
         jComboBox10.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "0", "1", "2", "3", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" }));
-        jComboBox10.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox10ActionPerformed(evt);
-            }
-        });
 
         jLabel5.setText("Offset");
 
@@ -281,24 +290,8 @@ public class NewJFrame extends javax.swing.JFrame {
         jPanel3.add(jPanel7, "card2");
 
         jComboBox11.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "0", "1", "2", "3", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" }));
-        jComboBox11.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox11ActionPerformed(evt);
-            }
-        });
 
         jComboBox12.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "0", "1", "2", "3", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" }));
-        jComboBox12.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox12ActionPerformed(evt);
-            }
-        });
-
-        jTextField3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField3ActionPerformed(evt);
-            }
-        });
 
         jLabel6.setText("immediate");
 
@@ -344,12 +337,6 @@ public class NewJFrame extends javax.swing.JFrame {
 
         jPanel3.add(jPanel8, "card2");
 
-        jTextField4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField4ActionPerformed(evt);
-            }
-        });
-
         jLabel7.setText("Label");
 
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
@@ -375,70 +362,6 @@ public class NewJFrame extends javax.swing.JFrame {
 
         jPanel3.add(jPanel9, "card2");
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" }));
-        jComboBox2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox2ActionPerformed(evt);
-            }
-        });
-
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" }));
-        jComboBox3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox3ActionPerformed(evt);
-            }
-        });
-
-        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" }));
-        jComboBox4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox4ActionPerformed(evt);
-            }
-        });
-
-        jLabel1.setText("RD");
-
-        jLabel2.setText("RS");
-
-        jLabel3.setText("RT");
-
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jComboBox4, 0, 50, Short.MAX_VALUE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jComboBox2, 0, 53, Short.MAX_VALUE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jComboBox3, 0, 51, Short.MAX_VALUE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(34, 34, 34))
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 20, Short.MAX_VALUE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(9, 9, 9)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(20, 20, 20))
-        );
-
-        jPanel3.add(jPanel4, "card2");
-
         jButton1.setText("Add");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -457,6 +380,12 @@ public class NewJFrame extends javax.swing.JFrame {
 
         jLabel19.setText("Label (optional)");
 
+        jTextField5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField5ActionPerformed(evt);
+            }
+        });
+
         jLabel22.setText("Status");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -470,12 +399,14 @@ public class NewJFrame extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel19, javax.swing.GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE)
                             .addComponent(jTextField5))
-                        .addGap(31, 31, 31)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(31, 31, 31)
+                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
+                                .addGap(39, 39, 39)
                                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(24, 24, 24)
@@ -490,14 +421,15 @@ public class NewJFrame extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(38, 38, 38)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -555,26 +487,23 @@ public class NewJFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel21, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel20)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jLabel21, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(0, 161, Short.MAX_VALUE)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel20)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel21, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addComponent(jLabel20)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
+                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -641,97 +570,31 @@ public class NewJFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
-    private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
-        // TODO add your handling code here:
-        rs = jComboBox2.getSelectedIndex();
-    }//GEN-LAST:event_jComboBox2ActionPerformed
-
-    private void jComboBox5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox5ActionPerformed
-        // TODO add your handling code here:
-        rt = jComboBox5.getSelectedIndex();
-    }//GEN-LAST:event_jComboBox5ActionPerformed
-
-    private void jComboBox4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox4ActionPerformed
-        // TODO add your handling code here:
-        //rd = jComboBox4.getSelectedIndex();
-        rd = jComboBox4.getSelectedIndex();
-    }//GEN-LAST:event_jComboBox4ActionPerformed
-
-    private void jComboBox7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox7ActionPerformed
-        // TODO add your handling code here:
-        rs = jComboBox7.getSelectedIndex();
-    }//GEN-LAST:event_jComboBox7ActionPerformed
-
-    private void jComboBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox3ActionPerformed
-        // TODO add your handling code here:
-        rt = jComboBox3.getSelectedIndex();
-    }//GEN-LAST:event_jComboBox3ActionPerformed
-
-    private void jComboBox6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox6ActionPerformed
-        // TODO add your handling code here:
-        rs = jComboBox6.getSelectedIndex();
-    }//GEN-LAST:event_jComboBox6ActionPerformed
-
-    private void jComboBox8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox8ActionPerformed
-        // TODO add your handling code here:
-        rt = jComboBox8.getSelectedIndex();
-    }//GEN-LAST:event_jComboBox8ActionPerformed
-
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-        // TODO add your handling code here:
-        label = jTextField1.getText();
-    }//GEN-LAST:event_jTextField1ActionPerformed
-
-    private void jComboBox9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox9ActionPerformed
-        // TODO add your handling code here:
-        rd = jComboBox9.getSelectedIndex();
-    }//GEN-LAST:event_jComboBox9ActionPerformed
-
-    private void jComboBox10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox10ActionPerformed
-        // TODO add your handling code here:
-        rs = jComboBox10.getSelectedIndex();
-    }//GEN-LAST:event_jComboBox10ActionPerformed
-
-    private void jComboBox11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox11ActionPerformed
-        // TODO add your handling code here:
-        rd = jComboBox11.getSelectedIndex();
-    }//GEN-LAST:event_jComboBox11ActionPerformed
-
-    private void jComboBox12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox12ActionPerformed
-        // TODO add your handling code here:
-        rs = jComboBox12.getSelectedIndex();
-    }//GEN-LAST:event_jComboBox12ActionPerformed
-
-    private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
-        // TODO add your handling code here:
-        imm = jTextField3.getText();
-    }//GEN-LAST:event_jTextField3ActionPerformed
-
-    private void jTextField4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField4ActionPerformed
-        // TODO add your handling code here:
-        imm = jTextField4.getText();
-    }//GEN-LAST:event_jTextField4ActionPerformed
-
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         instruction = jComboBox1.getSelectedItem().toString();
 
         int func = 0;
-        String rdbin, rsbin, rtbin, opcodebin, temp = "", offsetbin1, offsetbin2, offsetbin3, offsetbin4;
+        String rdbin, rsbin, rtbin, opcodebin, temp = "", offsetbin, offsetbin1, offsetbin2, offsetbin3, offsetbin4;
 
         String addbin = "", funcbin;
-        String addressbin, addresshex;
-
-        //initialize label
-        String label;
-        if (jTextField5.getText().matches("")) {
-            label = "";
-        } else {
-            label = jTextField5.getText();
-        }
+        String addressbin, addresshex = "";
 
         if (instruction.matches("DSUBU") || instruction.matches("DDIV") || instruction.matches("AND")
                 || instruction.matches("DSRLV") || instruction.matches("SLT")) {
+
+            //increment pc by 4
+            pc = pc + 4;
+            pclist.add(Integer.toHexString(pc));
+
+            if (instruction.matches("DDIV")) {
+                rs = jComboBox5.getSelectedIndex();
+                rt = jComboBox6.getSelectedIndex();
+            } else {
+                rd = jComboBox4.getSelectedIndex();
+                rs = jComboBox2.getSelectedIndex();
+                rt = jComboBox3.getSelectedIndex();
+            }
 
             //opcode binary
             opcode = 0;
@@ -799,7 +662,6 @@ public class NewJFrame extends javax.swing.JFrame {
             //address in binary
             addressbin = opcodebin + rsbin + rtbin + rdbin + addbin + funcbin;
             System.out.println(addressbin);
-            //System.out.println(addressbin);
 
             //convert to hex
             addresshex = new BigInteger(addressbin, 2).toString(16);
@@ -810,17 +672,31 @@ public class NewJFrame extends javax.swing.JFrame {
                 }
                 addresshex = temp + addresshex;
             }
-            jLabel18.setText(addresshex);
-            //addresshex = Integer.toHexString(Integer.parseInt(addressbin));
-            //System.out.println(addresshex);
+            //jLabel18.setText(addresshex);
 
-            labellist.add(label + " " + instruction + " R" + jComboBox4.getSelectedItem() + ", R" + jComboBox2.getSelectedItem() + ", R" + jComboBox3.getSelectedItem());
+            //add label instruction
+            labeladdress = jTextField5.getText();
+            if (labeladdress.matches("")) {
+                labeladdress = "no label";
+            } else { //insert error checking [special characters]
+
+            }
+            labellist.add(labeladdress);
             opcodelist.add(addresshex);
+            instructionlist.add(instruction + " R" + jComboBox4.getSelectedItem() + ", R" + jComboBox2.getSelectedItem() + ", R" + jComboBox3.getSelectedItem());
         } else if (instruction.matches("BEQ")) {
-            if (jTextField1.getText().matches("/^[A-z ]{2,20}$/")) { //special characters
+            if (jTextField1.getText().matches("")) { //special characters or null
                 //error message
-                jLabel18.setText("Invalid Label");
+                jLabel23.setText("Invalid Label");
             } else {
+
+                rs = jComboBox7.getSelectedIndex();
+                rt = jComboBox8.getSelectedIndex();
+
+                //increment pc by 4
+                pc = pc + 4;
+                pclist.add(Integer.toHexString(pc));
+
                 opcodebin = "000100";
 
                 //rs binary
@@ -852,7 +728,7 @@ public class NewJFrame extends javax.swing.JFrame {
                 System.out.println(jumpTo);
                 for (int i = 0; i < labellist.size(); i++) {
                     if (labellist.get(i).contains(jumpTo)) {
-                        pcTarget = (pclist.get(i) - pc) / 4; // actual pc of label - current pc
+                        pcTarget = (Integer.valueOf(pclist.get(i)) - pc) / 4; // actual pc of label - current pc
                         System.out.println("HERE");
                         break;
                     } else {
@@ -872,243 +748,283 @@ public class NewJFrame extends javax.swing.JFrame {
                         temp = temp + "0";
                     }
                     addresshex = temp + addresshex;
-                }
-                jLabel18.setText(addresshex);
+                    //String jumpTo = jTextField1.getText();
+                    //address in binary
+                    addressbin = opcodebin + rsbin + rtbin;
 
-                labellist.add(instruction + " R" + jComboBox7.getSelectedItem() + ", R" + jComboBox8.getSelectedItem() + ", " + jTextField4.getText());
-                opcodelist.add(addresshex);
+                    //add label instruction
+                    labeladdress = jTextField5.getText();
+                    if (labeladdress.matches("")) {
+                        labeladdress = "no label";
+                    } else { //insert error checking [special characters]
 
-                System.out.println(addresshex);
-            }
-
-        } else if (instruction.matches("LW") || instruction.matches("LWU") || instruction.matches("SW")) {
-            if (jTextField2.getText().matches("") && jTextField2.getText().length() != 4) { //special characters and letters g-z
-                jLabel18.setText("Invalid Offset");
-            } else {
-                rd = jComboBox9.getSelectedIndex();
-                rt = jComboBox10.getSelectedIndex();
-
-                //opcode binary
-                if (instruction.matches("LW")) {
-                    opcode = 35;
-                    labellist.add(label + " " + instruction + " R" + jComboBox9.getSelectedItem() + " ," + jTextField1.getText() + "(" + jComboBox10.getSelectedItem() + ")");
-                } else if (instruction.matches("LWU")) {
-                    opcode = 39;
-                    labellist.add(label + " " + instruction + " R" + jComboBox9.getSelectedItem() + " ," + jTextField1.getText() + "(" + jComboBox10.getSelectedItem() + ")");
-                } else if (instruction.matches("SW")) {
-                    opcode = 43;
-                    labellist.add(label + " " + instruction + " R" + jComboBox10.getSelectedItem() + ", " + jTextField2.getText() + "(R" + jComboBox9.getSelectedItem() + ")");
-                }
-                opcodebin = Integer.toBinaryString(opcode);
-                if (opcodebin.length() != 6) {
-                    temp = "";
-                    for (int i = 0; i < 6 - opcodebin.length(); i++) {
-                        temp = temp + "0";
                     }
-                    opcodebin = temp + opcodebin;
-                }
+                    labellist.add(labeladdress);
+                    instructionlist.add(instruction + " R" + jComboBox7.getSelectedItem() + ", R" + jComboBox8.getSelectedItem() + " ," + jTextField1.getText());
+                    opcodelist.add(addresshex);
 
-                //rd binary
-                temp = "";
-                rdbin = Integer.toBinaryString(rd);
-                if (rdbin.length() != 5) {
-                    for (int i = 0; i < 5 - rdbin.length(); i++) {
-                        temp = temp + "0";
-                    }
-                }
-                rdbin = temp + rdbin;
+                    /*
+                     String pcBin;
 
-                //rs binary
-                rsbin = Integer.toBinaryString(rs);
-                if (rsbin.length() != 5) {
-                    for (int i = 0; i < 5 - rsbin.length(); i++) {
-                        temp = temp + "0";
-                    }
-                }
-                rsbin = temp + rsbin;
+                     jumpTo = jTextField4.getText();
+                     int pcTarget = 0;
+                     System.out.println(jumpTo);
+                     for (int i = 0; i < labellist.size(); i++) {
+                     if (labellist.get(i).contains(jumpTo)) {
+                     pcTarget = (pclist.get(i) - pc) / 4; // actual pc of label - current pc
+                     System.out.println("HERE");
+                     break;
+                     } else {
+                     System.out.println(labellist.get(i));
+                     }
+                     }
+                     pcBin = Integer.toBinaryString(pcTarget);
+                     System.out.println("PCTarget: " + pcBin);
 
-                offsetbin1 = Integer.toBinaryString(Integer.valueOf(jTextField2.getText().charAt(0)));
-                offsetbin1 = offsetbin1.substring(2, offsetbin1.length());
+                     addressbin = opcodebin + rsbin + rtbin + pcBin;
 
-                offsetbin2 = Integer.toBinaryString(Integer.valueOf(jTextField2.getText().charAt(1)));
-                offsetbin2 = offsetbin2.substring(2, offsetbin2.length());
-
-                offsetbin3 = Integer.toBinaryString(Integer.valueOf(jTextField2.getText().charAt(2)));
-                offsetbin3 = offsetbin3.substring(2, offsetbin3.length());
-
-                offsetbin4 = Integer.toBinaryString(Integer.valueOf(jTextField2.getText().charAt(3)));
-                offsetbin4 = offsetbin4.substring(2, offsetbin4.length());
-
-                //address in binary
-                addressbin = opcodebin + rsbin + rdbin + offsetbin1 + offsetbin2 + offsetbin3 + offsetbin4;
-                System.out.println(addressbin);
-
-                addresshex = new BigInteger(addressbin, 2).toString(16);
-                if (addresshex.length() != 8) {
-                    temp = "";
-                    for (int i = 0; i < 8 - addresshex.length(); i++) {
-                        temp = temp + "0";
-                    }
-                    addresshex = temp + addresshex;
-                }
-                jLabel18.setText(addresshex);
-
-                opcodelist.add(addresshex);
-            }
-
-        } else if (instruction.matches("DADDIU") || instruction.matches("ORI")) {
-            if (jTextField3.getText().matches("") || jTextField3.getText().length() != 4) {
-                jLabel18.setText("Invalid Offset.");
-            } else {
-                if (instruction.matches("DADDIU")) {
-                    opcode = 25;
-                } else if (instruction.matches("ORI")) {
-                    opcode = 13;
-                }
-
-                opcodebin = Integer.toBinaryString(opcode);
-                if (opcodebin.length() != 6) {
-                    temp = "";
-                    for (int i = 0; i < 6 - opcodebin.length(); i++) {
-                        temp = temp + "0";
-                    }
-                    opcodebin = temp + opcodebin;
-                }
-
-                //rs binary
-                temp = "";
-                rsbin = Integer.toBinaryString(rs);
-                if (rsbin.length() != 5) {
-                    for (int i = 0; i < 5 - rsbin.length(); i++) {
-                        temp = temp + "0";
-                    }
-                }
-                rsbin = temp + rsbin;
-
-                //rt binary
-                rtbin = Integer.toBinaryString(rt);
-                if (rtbin.length() != 5) {
-                    for (int i = 0; i < 5 - rtbin.length(); i++) {
-                        temp = temp + "0";
-                    }
-                }
-                rtbin = temp + rtbin;
-
-                offsetbin1 = Integer.toBinaryString(Integer.valueOf(jTextField3.getText().charAt(0)));
-                offsetbin1 = offsetbin1.substring(2, offsetbin1.length());
-                System.out.println(offsetbin1);
-
-                offsetbin2 = Integer.toBinaryString(Integer.valueOf(jTextField3.getText().charAt(1)));
-                offsetbin2 = offsetbin2.substring(2, offsetbin2.length());
-                System.out.println(offsetbin2);
-
-                offsetbin3 = Integer.toBinaryString(Integer.valueOf(jTextField3.getText().charAt(2)));
-                offsetbin3 = offsetbin3.substring(2, offsetbin3.length());
-                System.out.println(offsetbin3);
-
-                offsetbin4 = Integer.toBinaryString(Integer.valueOf(jTextField3.getText().charAt(3)));
-                offsetbin4 = offsetbin4.substring(2, offsetbin4.length());
-                System.out.println(offsetbin4);
-
-                //address in binary
-                addressbin = opcodebin + rsbin + rtbin + offsetbin1 + offsetbin2 + offsetbin3 + offsetbin4;
-                System.out.println(addressbin);
-
-                //address in hex
-                addresshex = new BigInteger(addressbin, 2).toString(16);
-                if (addresshex.length() != 8) {
-                    temp = "";
-                    for (int i = 0; i < 8 - addresshex.length(); i++) {
-                        temp = temp + "0";
-                    }
-                    addresshex = temp + addresshex;
-                }
-                jLabel18.setText(addresshex);
-
-                labellist.add(label + " " + instruction + " R" + jComboBox11.getSelectedItem() + ", R" + jComboBox12.getSelectedItem() + ", #" + jTextField3.getText());
-                opcodelist.add(addresshex);
-            }
-
-        } else if (instruction.matches("J")) {
-            if (jTextField4.getText().matches("")) {
-                jLabel18.setText("Invalid Offset");
-            } else {
-                String pcBin;
-
-                String jumpTo = jTextField4.getText();
-                int pcTarget = 0;
-                System.out.println(jumpTo);
-                for (int i = 0; i < labellist.size(); i++) {
-                    if (labellist.get(i).contains(jumpTo)) {
-                        pcTarget = (pclist.get(i) - pc) / 4; // actual pc - current pc
-                        //    System.out.println("HERE");
-                        break;
+                     //address in hex
+                     addresshex = new BigInteger(addressbin, 2).toString(16);
+                     if (addresshex.length() != 8) {
+                     temp = "";
+                     for (int i = 0; i < 8 - addresshex.length(); i++) {
+                     temp = temp + "0";
+                     }
+                     addresshex = temp + addresshex;
+                     }
+                     jLabel18.setText(addresshex);
+                     */
+                    opcodelist.add(addresshex);
+                } else if (instruction.matches("LW") || instruction.matches("LWU") || instruction.matches("SW")) {
+                    if (jTextField2.getText().matches("") && jTextField2.getText().length() != 4) { //error message special characters and letters g-z
+                        jLabel23.setText("Invalid Offset");
                     } else {
-                        System.out.println(labellist.get(i));
+                        rd = jComboBox9.getSelectedIndex();
+                        rs = jComboBox10.getSelectedIndex();
+
+                        //increment pc by 4
+                        pc = pc + 4;
+                        pclist.add(Integer.toHexString(pc));
+
+                        //opcode binary
+                        if (instruction.matches("LW")) {
+                            opcode = 35;
+                        } else if (instruction.matches("LWU")) {
+                            opcode = 39;
+                        } else if (instruction.matches("SW")) {
+                            opcode = 43;
+                        }
+
+                        instructionlist.add(instruction + " R" + jComboBox9.getSelectedItem() + ", " + jTextField2.getText() + "(R" + jComboBox10.getSelectedItem() + ")");
+
+                        //add label instruction
+                        labeladdress = jTextField5.getText();
+                        if (labeladdress.matches("")) {
+                            labeladdress = "no label";
+                        } else { //insert error checking [special characters]
+
+                        }
+                        labellist.add(labeladdress);
+
+                        opcodebin = Integer.toBinaryString(opcode);
+                        if (opcodebin.length() != 6) {
+                            temp = "";
+                            for (int i = 0; i < 6 - opcodebin.length(); i++) {
+                                temp = temp + "0";
+                            }
+                            opcodebin = temp + opcodebin;
+                        }
+
+                        //rd binary
+                        temp = "";
+                        rdbin = Integer.toBinaryString(rd);
+                        if (rdbin.length() != 5) {
+                            for (int i = 0; i < 5 - rdbin.length(); i++) {
+                                temp = temp + "0";
+                            }
+                        }
+                        rdbin = temp + rdbin;
+
+                        //rs binary
+                        rsbin = Integer.toBinaryString(rs);
+                        if (rsbin.length() != 5) {
+                            for (int i = 0; i < 5 - rsbin.length(); i++) {
+                                temp = temp + "0";
+                            }
+                        }
+                        rsbin = temp + rsbin;
+
+                        offsetbin = Integer.toBinaryString(Integer.parseInt(jTextField2.getText(), 16));
+
+                        //address in binary
+                        addressbin = opcodebin + rsbin + rdbin + offsetbin;
+                        System.out.println(addressbin);
+
+                        addresshex = new BigInteger(addressbin, 2).toString(16);
+                        if (addresshex.length() != 8) {
+                            temp = "";
+                            for (int i = 0; i < 8 - addresshex.length(); i++) {
+                                temp = temp + "0";
+                            }
+                            addresshex = temp + addresshex;
+                        }
+
+                        opcodelist.add(addresshex);
+                    }
+
+                } else if (instruction.matches("DADDIU") || instruction.matches("ORI")) {
+                    if (jTextField3.getText().matches("") || jTextField3.getText().length() != 4) {
+                        jLabel18.setText("Invalid Offset.");
+                    } else {
+
+                        //increment pc by 4
+                        pc = pc + 4;
+                        pclist.add(Integer.toHexString(pc));
+
+                        //add label instruction
+                        labeladdress = jTextField5.getText();
+                        if (labeladdress.matches("")) {
+                            labeladdress = "no label";
+                        } else { //insert error checking [special characters]
+
+                        }
+                        labellist.add(labeladdress);
+
+                        if (instruction.matches("DADDIU")) {
+                            opcode = 25;
+                        } else if (instruction.matches("ORI")) {
+                            opcode = 13;
+                        }
+
+                        opcodebin = Integer.toBinaryString(opcode);
+                        if (opcodebin.length() != 6) {
+                            temp = "";
+                            for (int i = 0; i < 6 - opcodebin.length(); i++) {
+                                temp = temp + "0";
+                            }
+                            opcodebin = temp + opcodebin;
+                        }
+
+                        //rs binary
+                        temp = "";
+                        rsbin = Integer.toBinaryString(rs);
+                        if (rsbin.length() != 5) {
+                            for (int i = 0; i < 5 - rsbin.length(); i++) {
+                                temp = temp + "0";
+                            }
+                        }
+                        rsbin = temp + rsbin;
+
+                        //rt binary
+                        rtbin = Integer.toBinaryString(rt);
+                        if (rtbin.length() != 5) {
+                            for (int i = 0; i < 5 - rtbin.length(); i++) {
+                                temp = temp + "0";
+                            }
+                        }
+                        rtbin = temp + rtbin;
+
+                        offsetbin = Integer.toBinaryString(Integer.parseInt(jTextField3.getText(), 16));
+
+                        //address in binary
+                        addressbin = opcodebin + rsbin + rtbin + offsetbin;
+                        System.out.println(addressbin);
+
+                        //address in hex
+                        addresshex = new BigInteger(addressbin, 2).toString(16);
+                        if (addresshex.length() != 8) {
+                            temp = "";
+                            for (int i = 0; i < 8 - addresshex.length(); i++) {
+                                temp = temp + "0";
+                            }
+                            addresshex = temp + addresshex;
+                        }
+
+                        instructionlist.add(instruction + " R" + jComboBox11.getSelectedItem() + ", R" + jComboBox12.getSelectedItem() + ", #" + jTextField3.getText());
+                        opcodelist.add(addresshex);
+                    }
+
+                } else if (instruction.matches("J")) {
+                    if (jTextField4.getText().matches("")) {
+                        jLabel18.setText("Invalid Offset");
+                    } else {
+
+                        //increment pc by 4
+                        pc = pc + 4;
+                        pclist.add(Integer.toHexString(pc));
+
+                        jumpTo = jTextField4.getText();
+                        System.out.println(jumpTo);
+                        for (int i = 0; i < labellist.size(); i++) {
+                            if (labellist.get(i).contains(jumpTo)) {
+                                pcTarget = (Integer.parseInt(pclist.get(i)) - pc) / 4; // actual pc - current pc
+                                //    System.out.println("HERE");
+                                break;
+                            } else {
+                                System.out.println(labellist.get(i));
+                            }
+                        }
+
+                        //   System.out.println("PCTarget: " + pcTarget);
+                        //opcode
+                        opcode = 2;
+                        opcodebin = Integer.toBinaryString(opcode);
+                        if (opcodebin.length() != 6) {
+                            temp = "";
+                            for (int i = 0; i < 6 - opcodebin.length(); i++) {
+                                temp = temp + "0";
+                            }
+                            opcodebin = temp + opcodebin;
+                        }
+
+                        //label
+                        pcBin = Integer.toBinaryString(pcTarget);
+                        if (pcBin.length() != 26) {
+                            temp = "";
+                            for (int i = 0; i < 26 - pcBin.length(); i++) {
+                                temp = temp + "0";
+                            }
+                            pcBin = temp + pcBin;
+                        }
+
+                        addressbin = opcodebin + pcBin;
+
+                        //address in hex
+                        addresshex = new BigInteger(addressbin, 2).toString(16);
+                        if (addresshex.length() != 8) {
+                            temp = "";
+                            for (int i = 0; i < 8 - addresshex.length(); i++) {
+                                temp = temp + "0";
+                            }
+                            addresshex = temp + addresshex;
+                        }
+                        jLabel18.setText(addresshex);
+
+                        labellist.add(instruction + " " + jTextField4.getText());
+                        opcodelist.add(addresshex);
+
+                        System.out.println(addresshex);
+
                     }
                 }
-
-                //   System.out.println("PCTarget: " + pcTarget);
-                //opcode
-                opcode = 2;
-                opcodebin = Integer.toBinaryString(opcode);
-                if (opcodebin.length() != 6) {
-                    temp = "";
-                    for (int i = 0; i < 6 - opcodebin.length(); i++) {
-                        temp = temp + "0";
-                    }
-                    opcodebin = temp + opcodebin;
-                }
-
-                //label
-                pcBin = Integer.toBinaryString(pcTarget);
-                if (pcBin.length() != 26) {
-                    temp = "";
-                    for (int i = 0; i < 26 - pcBin.length(); i++) {
-                        temp = temp + "0";
-                    }
-                    pcBin = temp + pcBin;
-                }
-
-                addressbin = opcodebin + pcBin;
-
-                //address in hex
-                addresshex = new BigInteger(addressbin, 2).toString(16);
-                if (addresshex.length() != 8) {
-                    temp = "";
-                    for (int i = 0; i < 8 - addresshex.length(); i++) {
-                        temp = temp + "0";
-                    }
-                    addresshex = temp + addresshex;
-                }
-                jLabel18.setText(addresshex);
-
-                labellist.add(instruction + " " + jTextField4.getText());
-                opcodelist.add(addresshex);
-
-                System.out.println(addresshex);
-
             }
         }
-        pclist.add(pc);
-        pc += 4;
-        // di ko sure yung pc dito kung +4 ba muna or 0 start hehe
-
-
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+    private void jTextField5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField5ActionPerformed
         // TODO add your handling code here:
-        offset = jTextField2.getText();
-    }//GEN-LAST:event_jTextField2ActionPerformed
+        labeladdress = jTextField5.getText();
+    }//GEN-LAST:event_jTextField5ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
 
-        System.out.println(pc);
-        System.out.println(pclist.size());
-        System.out.println(opcodelist.size());
-        System.out.println(labellist.size());
+        for (int i = 0; i < pclist.size(); i++) {
+            System.out.println(pclist.get(i));
+            System.out.println(labellist.get(i));
+            System.out.println(instructionlist.get(i));
+            System.out.println(opcodelist.get(i));
+        }
 
     }//GEN-LAST:event_jButton2ActionPerformed
 
