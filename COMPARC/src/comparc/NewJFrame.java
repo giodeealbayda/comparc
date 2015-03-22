@@ -20,13 +20,14 @@ public class NewJFrame extends javax.swing.JFrame {
     int opcode;
     int pc = 0;
     boolean check = false;
-    boolean proceed = false;
+    boolean proceed = true;
     String offset, label, imm;
     String instruction, labeladdress;
     String rdbin, rsbin, rtbin, opcodebin, temp = "", offsetbin;
 
     // regex
     Pattern p = Pattern.compile("[^a-z0-9 ]", Pattern.CASE_INSENSITIVE);
+    Pattern immediate = Pattern.compile("[^a-f0-9]", Pattern.CASE_INSENSITIVE);
     Matcher m;
 
     ArrayList<String> labellist = new ArrayList<String>();
@@ -863,76 +864,83 @@ public class NewJFrame extends javax.swing.JFrame {
                     jLabel18.setText("Invalid Offset.");
                 } else {
 
-                    rd = jComboBox11.getSelectedIndex();
-                    rs = jComboBox12.getSelectedIndex();
+                    String immediateTemp = jTextField3.getText();
+                    m = immediate.matcher(immediateTemp);
 
-                    //increment pc by 4
-                    pc = pc + 4;
-                    pclist.add(Integer.toHexString(pc));
+                    if (!m.find()) {
+                        rd = jComboBox11.getSelectedIndex();
+                        rs = jComboBox12.getSelectedIndex();
 
-                    labellist.add(labeladdress);
+                        //increment pc by 4
+                        pc = pc + 4;
+                        pclist.add(Integer.toHexString(pc));
 
-                    if (instruction.matches("DADDIU")) {
-                        opcode = 25;
-                    } else if (instruction.matches("ORI")) {
-                        opcode = 13;
-                    }
+                        labellist.add(labeladdress);
 
-                    opcodebin = Integer.toBinaryString(opcode);
-                    if (opcodebin.length() != 6) {
+                        if (instruction.matches("DADDIU")) {
+                            opcode = 25;
+                        } else if (instruction.matches("ORI")) {
+                            opcode = 13;
+                        }
+
+                        opcodebin = Integer.toBinaryString(opcode);
+                        if (opcodebin.length() != 6) {
+                            temp = "";
+                            for (int i = 0; i < 6 - opcodebin.length(); i++) {
+                                temp = temp + "0";
+                            }
+                            opcodebin = temp + opcodebin;
+                        }
+
+                        //rs binary
                         temp = "";
-                        for (int i = 0; i < 6 - opcodebin.length(); i++) {
-                            temp = temp + "0";
+                        rsbin = Integer.toBinaryString(rs);
+                        if (rsbin.length() != 5) {
+                            for (int i = 0; i < 5 - rsbin.length(); i++) {
+                                temp = temp + "0";
+                            }
                         }
-                        opcodebin = temp + opcodebin;
-                    }
+                        rsbin = temp + rsbin;
 
-                    //rs binary
-                    temp = "";
-                    rsbin = Integer.toBinaryString(rs);
-                    if (rsbin.length() != 5) {
-                        for (int i = 0; i < 5 - rsbin.length(); i++) {
-                            temp = temp + "0";
-                        }
-                    }
-                    rsbin = temp + rsbin;
-
-                    //rd binary
-                    temp = "";
-                    rdbin = Integer.toBinaryString(rd);
-                    if (rdbin.length() != 5) {
-                        for (int i = 0; i < 5 - rdbin.length(); i++) {
-                            temp = temp + "0";
-                        }
-                    }
-                    rdbin = temp + rdbin;
-
-                    offsetbin = Integer.toBinaryString(Integer.parseInt(jTextField3.getText(), 16));
-
-                    temp = "";
-                    if (offsetbin.length() != 16) {
-                        for (int i = 0; i < 16 - offsetbin.length(); i++) {
-                            temp = temp + "0";
-                        }
-                    }
-                    offsetbin = temp + offsetbin;
-
-                    //address in binary
-                    addressbin = opcodebin + rsbin + rdbin + offsetbin;
-                    System.out.println(addressbin);
-
-                    //address in hex
-                    addresshex = new BigInteger(addressbin, 2).toString(16);
-                    if (addresshex.length() != 8) {
+                        //rd binary
                         temp = "";
-                        for (int i = 0; i < 8 - addresshex.length(); i++) {
-                            temp = temp + "0";
+                        rdbin = Integer.toBinaryString(rd);
+                        if (rdbin.length() != 5) {
+                            for (int i = 0; i < 5 - rdbin.length(); i++) {
+                                temp = temp + "0";
+                            }
                         }
-                        addresshex = temp + addresshex;
-                    }
+                        rdbin = temp + rdbin;
 
-                    instructionlist.add(instruction + " R" + jComboBox11.getSelectedItem() + ", R" + jComboBox12.getSelectedItem() + ", #" + jTextField3.getText());
-                    opcodelist.add(addresshex);
+                        offsetbin = Integer.toBinaryString(Integer.parseInt(jTextField3.getText(), 16));
+
+                        temp = "";
+                        if (offsetbin.length() != 16) {
+                            for (int i = 0; i < 16 - offsetbin.length(); i++) {
+                                temp = temp + "0";
+                            }
+                        }
+                        offsetbin = temp + offsetbin;
+
+                        //address in binary
+                        addressbin = opcodebin + rsbin + rdbin + offsetbin;
+                        System.out.println(addressbin);
+
+                        //address in hex
+                        addresshex = new BigInteger(addressbin, 2).toString(16);
+                        if (addresshex.length() != 8) {
+                            temp = "";
+                            for (int i = 0; i < 8 - addresshex.length(); i++) {
+                                temp = temp + "0";
+                            }
+                            addresshex = temp + addresshex;
+                        }
+
+                        instructionlist.add(instruction + " R" + jComboBox11.getSelectedItem() + ", R" + jComboBox12.getSelectedItem() + ", #" + jTextField3.getText());
+                        opcodelist.add(addresshex);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "ERROR: Invalid immediate value.");
+                    }
                 }
 
             } else if (instruction.matches("J")) {
@@ -973,7 +981,7 @@ public class NewJFrame extends javax.swing.JFrame {
                             temp = temp + "0";
                         }
                         addresshex = temp + addresshex;
-                    //String jumpTo = jTextField1.getText();
+                        //String jumpTo = jTextField1.getText();
                         //address in binary
                         addressbin = opcodebin + rsbin + rtbin;
 
@@ -1196,7 +1204,7 @@ public class NewJFrame extends javax.swing.JFrame {
                                 }
                             }
 
-                        //   System.out.println("PCTarget: " + pcTarget);
+                            //   System.out.println("PCTarget: " + pcTarget);
                             //opcode
                             opcode = 2;
                             opcodebin = Integer.toBinaryString(opcode);
@@ -1242,7 +1250,7 @@ public class NewJFrame extends javax.swing.JFrame {
             }
         } else {
             System.out.println("HAHA BAWAL E");
-            JOptionPane.showMessageDialog(null,"ERROR: Unsuccessful in adding instruction.");
+            JOptionPane.showMessageDialog(null, "ERROR: Unsuccessful in adding instruction.");
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
