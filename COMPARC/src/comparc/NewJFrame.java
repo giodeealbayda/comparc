@@ -593,14 +593,19 @@ public class NewJFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         instruction = jComboBox1.getSelectedItem().toString();
 
-        // special character checking upon add
+        //special character checking upon add
         labeladdress = jTextField5.getText();
         if (labeladdress.matches("")) {
             labeladdress = "no label";
-        } else { //insert error checking [special characters]
+            proceed = true;
+        } else if (labeladdress.matches("DSUBU") || labeladdress.matches("AND") || labeladdress.matches("DSRLV")
+                || labeladdress.matches("SLT") || labeladdress.matches("DDIV") || labeladdress.matches("BEQ")
+                || labeladdress.matches("LW") || labeladdress.matches("LWU") || labeladdress.matches("SW")
+                || labeladdress.matches("DADDIU") || labeladdress.matches("ORI") || labeladdress.matches("J")) {
+            proceed = false;
+        } else {
             m = p.matcher(labeladdress);
             if (m.find()) { // check for special characters
-                jLabel23.setText("Label contains a special character.");
                 proceed = false;
             } else {
                 labellist.add(labeladdress.toUpperCase());
@@ -689,7 +694,6 @@ public class NewJFrame extends javax.swing.JFrame {
 
                 //address in binary
                 addressbin = opcodebin + rsbin + rtbin + rdbin + addbin + funcbin;
-                System.out.println(addressbin);
 
                 //convert to hex
                 addresshex = new BigInteger(addressbin, 2).toString(16);
@@ -700,9 +704,9 @@ public class NewJFrame extends javax.swing.JFrame {
                     }
                     addresshex = temp + addresshex;
                 }
-                //System.out.println(addresshex);
 
                 opcodelist.add(addresshex);
+                labellist.add(labeladdress);
 
                 if (instruction.matches("DDIV")) {
                     instructionlist.add(instruction + " R" + rs + ", R" + rt);
@@ -734,10 +738,11 @@ public class NewJFrame extends javax.swing.JFrame {
                             check = true;
                         }
                     }
-                    //increment pc by 4
-                    pc = pc + 4;
-                    pclist.add(Integer.toHexString(pc));
                     if (check) {
+                        //increment pc by 4
+                        pc = pc + 4;
+                        pclist.add(Integer.toHexString(pc));
+
                         rs = jComboBox7.getSelectedIndex();
                         rt = jComboBox8.getSelectedIndex();
 
@@ -991,148 +996,11 @@ public class NewJFrame extends javax.swing.JFrame {
                         opcodelist.add(addresshex);
                     }
                 }
-            } else if (instruction.matches("LW") || instruction.matches("LWU") || instruction.matches("SW")) {
-                if (jTextField2.getText().matches("") && jTextField2.getText().length() != 4) { //error message special characters and letters g-z
-                    jLabel23.setText("Invalid Offset");
-                } else {
-                    rd = jComboBox9.getSelectedIndex();
-                    rs = jComboBox10.getSelectedIndex();
-
-                    //increment pc by 4
-                    pc = pc + 4;
-                    pclist.add(Integer.toHexString(pc));
-
-                    //opcode binary
-                    if (instruction.matches("LW")) {
-                        opcode = 35;
-                    } else if (instruction.matches("LWU")) {
-                        opcode = 39;
-                    } else if (instruction.matches("SW")) {
-                        opcode = 43;
-                    }
-
-                    instructionlist.add(instruction + " R" + jComboBox9.getSelectedItem() + ", " + jTextField2.getText() + "(R" + jComboBox10.getSelectedItem() + ")");
-
-                    //add label instruction
-                    labeladdress = jTextField5.getText();
-                    if (labeladdress.matches("")) {
-                        labeladdress = "no label";
-                    } else { //insert error checking [special characters]
-
-                    }
-
-                    opcodebin = Integer.toBinaryString(opcode);
-                    if (opcodebin.length() != 6) {
-                        temp = "";
-                        for (int i = 0; i < 6 - opcodebin.length(); i++) {
-                            temp = temp + "0";
-                        }
-                        opcodebin = temp + opcodebin;
-                    }
-
-                    //rd binary
-                    temp = "";
-                    rdbin = Integer.toBinaryString(rd);
-                    if (rdbin.length() != 5) {
-                        for (int i = 0; i < 5 - rdbin.length(); i++) {
-                            temp = temp + "0";
-                        }
-                    }
-                    rdbin = temp + rdbin;
-
-                    //rs binary
-                    rsbin = Integer.toBinaryString(rs);
-                    if (rsbin.length() != 5) {
-                        for (int i = 0; i < 5 - rsbin.length(); i++) {
-                            temp = temp + "0";
-                        }
-                    }
-                    rsbin = temp + rsbin;
-
-                    offsetbin = Integer.toBinaryString(Integer.parseInt(jTextField2.getText(), 16));
-
-                    //address in binary
-                    addressbin = opcodebin + rsbin + rdbin + offsetbin;
-                    System.out.println(addressbin);
-
-                    addresshex = new BigInteger(addressbin, 2).toString(16);
-                    if (addresshex.length() != 8) {
-                        temp = "";
-                        for (int i = 0; i < 8 - addresshex.length(); i++) {
-                            temp = temp + "0";
-                        }
-                        addresshex = temp + addresshex;
-                    }
-
-                    opcodelist.add(addresshex);
-                }
-
-            } else if (instruction.matches("DADDIU") || instruction.matches("ORI")) {
-                if (jTextField3.getText().matches("") || jTextField3.getText().length() != 4) {
-                    jLabel18.setText("Invalid Offset.");
-                } else {
-
-                    //increment pc by 4
-                    pc = pc + 4;
-                    pclist.add(Integer.toHexString(pc));
-
-                    if (instruction.matches("DADDIU")) {
-                        opcode = 25;
-                    } else if (instruction.matches("ORI")) {
-                        opcode = 13;
-                    }
-
-                    opcodebin = Integer.toBinaryString(opcode);
-                    if (opcodebin.length() != 6) {
-                        temp = "";
-                        for (int i = 0; i < 6 - opcodebin.length(); i++) {
-                            temp = temp + "0";
-                        }
-                        opcodebin = temp + opcodebin;
-                    }
-
-                    //rs binary
-                    temp = "";
-                    rsbin = Integer.toBinaryString(rs);
-                    if (rsbin.length() != 5) {
-                        for (int i = 0; i < 5 - rsbin.length(); i++) {
-                            temp = temp + "0";
-                        }
-                    }
-                    rsbin = temp + rsbin;
-
-                    //rt binary
-                    rtbin = Integer.toBinaryString(rt);
-                    if (rtbin.length() != 5) {
-                        for (int i = 0; i < 5 - rtbin.length(); i++) {
-                            temp = temp + "0";
-                        }
-                    }
-                    rtbin = temp + rtbin;
-
-                    offsetbin = Integer.toBinaryString(Integer.parseInt(jTextField3.getText(), 16));
-
-                    //address in binary
-                    addressbin = opcodebin + rsbin + rtbin + offsetbin;
-                    System.out.println(addressbin);
-
-                    //address in hex
-                    addresshex = new BigInteger(addressbin, 2).toString(16);
-                    if (addresshex.length() != 8) {
-                        temp = "";
-                        for (int i = 0; i < 8 - addresshex.length(); i++) {
-                            temp = temp + "0";
-                        }
-                        addresshex = temp + addresshex;
-                    }
-
-                    instructionlist.add(instruction + " R" + jComboBox11.getSelectedItem() + ", R" + jComboBox12.getSelectedItem() + ", #" + jTextField3.getText());
-                    opcodelist.add(addresshex);
-                }
 
             }
         } else {
-            JOptionPane.showMessageDialog(null, "ERROR: Unsuccessful in adding instruction.");
+            //JOptionPane.showMessageDialog(null, "ERROR: Unsuccessful in adding instruction.");
+            jLabel23.setText("Label contains a special character.");
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
