@@ -109,6 +109,7 @@ public class NewJFrame extends javax.swing.JFrame {
         jLabel20 = new javax.swing.JLabel();
         jLabel21 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
 
         jLabel12.setText("jLabel12");
 
@@ -495,6 +496,13 @@ public class NewJFrame extends javax.swing.JFrame {
             }
         });
 
+        jButton3.setText("Reset");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -504,6 +512,8 @@ public class NewJFrame extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -520,7 +530,9 @@ public class NewJFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -1069,6 +1081,9 @@ public class NewJFrame extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        jButton1.setEnabled(false);
+        jButton2.setEnabled(false);
+        boolean proceed = true;
         int i, j, x, offset;
         String label;
         for (i = 0; i < pclist.size(); i++) {
@@ -1080,17 +1095,16 @@ public class NewJFrame extends javax.swing.JFrame {
                     }
                 }
                 if (j == labellist.size()) {
-                    //label not found
+                    proceed = false;
                 } else { //label above
                     offset = j - (i + 1);
-                    System.out.println(offset);
                     offsetbin = Integer.toBinaryString(offset);
-                    
+
                     if (offsetbin.length() > 16) {
                         offsetbin = offsetbin.substring(16);
                     } else {
                         temp = "";
-                        for(x=0; x<16-offsetbin.length(); x++) {
+                        for (x = 0; x < 16 - offsetbin.length(); x++) {
                             temp = temp + "0";
                         }
                         offsetbin = temp + offsetbin;
@@ -1104,99 +1118,151 @@ public class NewJFrame extends javax.swing.JFrame {
                         }
                         addresshex = temp + addresshex;
                     }
-                    System.out.println(addresshex);
+                    opcodelist.set(i, addresshex);
+                }
+            } else if (instructionlist.get(i).contains("J")) {
+                int ctr = 0;
+                label = instructionlist.get(i).substring(2);
+                for (j = 0; j < labellist.size(); j++) {
+                    if (labellist.get(j).matches(label)) {
+                        break;
+                    }
+                }
+                if (j == labellist.size()) {
+                    proceed = false;
+                } else {
+                    ctr = j;
+                    offsetbin = Integer.toBinaryString(ctr);
+                    if (offsetbin.length() != 26) {
+                        temp = "";
+                        for (x = 0; x < 26 - offsetbin.length(); x++) {
+                            temp = temp + "0";
+                        }
+                        offsetbin = temp + offsetbin;
+                    }
+                    offsetbin = opcodelist.get(i) + offsetbin;
+
+                    addresshex = new BigInteger(offsetbin, 2).toString(16);
+                    if (addresshex.length() != 8) {
+                        temp = "";
+                        for (int m = 0; m < 8 - addresshex.length(); m++) {
+                            temp = temp + "0";
+                        }
+                        addresshex = temp + addresshex;
+                    }
+                    opcodelist.set(i, addresshex);
                 }
             }
-            /*
-             int temppc;
-             boolean jump = false;
-             String rstemp, rttemp;
-             for (int i = 0; i < opcodelist.size(); i++) {
-             if (opcodelist.get(i).matches("0000")) {
-             System.out.println("NAKITA NA PO");
-             for (int j = 0; j < labellist.size(); j++) {
-             if (instructionlist.get(i).contains(labellist.get(j))) { // nakita na saan magjump
-             System.out.println(labellist.get(j));
-             temppc = Integer.valueOf(pclist.get(i));
-
-             if (instructionlist.get(i).startsWith("J")) {
-             opcode = 2;
-             rs = 0;
-             rt = 0;
-             jump = true;
-             } else { //beq
-             opcode = 4;
-             rstemp = instructionlist.get(i).substring(5, 7);
-             rttemp = instructionlist.get(i).substring(9, 11);
-
-             if (rstemp.contains(",")) {
-             rstemp = rstemp.substring(0, 1);
-             }
-             if (rttemp.contains(",")) {
-             rttemp = rttemp.substring(0, 1);
-             }
-             rs = Integer.valueOf(rstemp);
-             rt = Integer.valueOf(rttemp);
-             }
-
-             opcodebin = Integer.toBinaryString(opcode);
-             if (opcodebin.length() != 6) {
-             temp = "";
-             for (int k = 0; k < 6 - opcodebin.length(); k++) {
-             temp = temp + "0";
-             }
-             opcodebin = temp + opcodebin;
-             }
-
-             rsbin = Integer.toBinaryString(rs);
-             if (rsbin.length() != 5) {
-             temp = "";
-             for (int k = 0; k < 5 - rsbin.length(); k++) {
-             temp = temp + "0";
-             }
-             rsbin = temp + rsbin;
-             }
-             rtbin = Integer.toBinaryString(rt);
-             if (rtbin.length() != 5) {
-             temp = "";
-             for (int k = 0; k < 5 - rtbin.length(); k++) {
-             temp = temp + "0";
-             }
-             rtbin = temp + rtbin;
-             }
-
-             pcBin = Integer.toBinaryString(temppc);
-             if (pcBin.length() != 16) {
-             temp = "";
-             for (int k = 0; k < 16 - pcBin.length(); k++) {
-             temp = temp + "0";
-             }
-             pcBin = temp + pcBin;
-             }
-
-             //address in hex
-             addresshex = new BigInteger(addressbin, 2).toString(16);
-             if (addresshex.length() != 8) {
-             temp = "";
-             for (int m = 0; m < 8 - addresshex.length(); m++) {
-             temp = temp + "0";
-             }
-             addresshex = temp + addresshex;
-             //String jumpTo = jTextField1.getText();
-             //address in binary
-             addressbin = opcodebin + rsbin + rtbin + pcBin;
-             }
-             addressbin = opcodebin + rsbin + rtbin + pcBin;
-
-             System.out.println(addressbin);
-             opcodelist.set(i, addressbin);
-             }
-             }
-             }
-             }
-             */
         }
+        
+        if(proceed) {
+            for(i=0; i<pclist.size(); i++) {
+                jLabel18.setText(jLabel18.getText() + opcodelist.get(i));
+            }
+        } else {
+            System.out.println("ERROR");
+        }
+        /*
+         int temppc;
+         boolean jump = false;
+         String rstemp, rttemp;
+         for (int i = 0; i < opcodelist.size(); i++) {
+         if (opcodelist.get(i).matches("0000")) {
+         System.out.println("NAKITA NA PO");
+         for (int j = 0; j < labellist.size(); j++) {
+         if (instructionlist.get(i).contains(labellist.get(j))) { // nakita na saan magjump
+         System.out.println(labellist.get(j));
+         temppc = Integer.valueOf(pclist.get(i));
+
+         if (instructionlist.get(i).startsWith("J")) {
+         opcode = 2;
+         rs = 0;
+         rt = 0;
+         jump = true;
+         } else { //beq
+         opcode = 4;
+         rstemp = instructionlist.get(i).substring(5, 7);
+         rttemp = instructionlist.get(i).substring(9, 11);
+
+         if (rstemp.contains(",")) {
+         rstemp = rstemp.substring(0, 1);
+         }
+         if (rttemp.contains(",")) {
+         rttemp = rttemp.substring(0, 1);
+         }
+         rs = Integer.valueOf(rstemp);
+         rt = Integer.valueOf(rttemp);
+         }
+
+         opcodebin = Integer.toBinaryString(opcode);
+         if (opcodebin.length() != 6) {
+         temp = "";
+         for (int k = 0; k < 6 - opcodebin.length(); k++) {
+         temp = temp + "0";
+         }
+         opcodebin = temp + opcodebin;
+         }
+
+         rsbin = Integer.toBinaryString(rs);
+         if (rsbin.length() != 5) {
+         temp = "";
+         for (int k = 0; k < 5 - rsbin.length(); k++) {
+         temp = temp + "0";
+         }
+         rsbin = temp + rsbin;
+         }
+         rtbin = Integer.toBinaryString(rt);
+         if (rtbin.length() != 5) {
+         temp = "";
+         for (int k = 0; k < 5 - rtbin.length(); k++) {
+         temp = temp + "0";
+         }
+         rtbin = temp + rtbin;
+         }
+
+         pcBin = Integer.toBinaryString(temppc);
+         if (pcBin.length() != 16) {
+         temp = "";
+         for (int k = 0; k < 16 - pcBin.length(); k++) {
+         temp = temp + "0";
+         }
+         pcBin = temp + pcBin;
+         }
+
+         //address in hex
+         addresshex = new BigInteger(addressbin, 2).toString(16);
+         if (addresshex.length() != 8) {
+         temp = "";
+         for (int m = 0; m < 8 - addresshex.length(); m++) {
+         temp = temp + "0";
+         }
+         addresshex = temp + addresshex;
+         //String jumpTo = jTextField1.getText();
+         //address in binary
+         addressbin = opcodebin + rsbin + rtbin + pcBin;
+         }
+         addressbin = opcodebin + rsbin + rtbin + pcBin;
+
+         System.out.println(addressbin);
+         opcodelist.set(i, addressbin);
+         }
+         }
+         }
+         }
+         */
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        jButton1.setEnabled(true);
+        jButton2.setEnabled(true);
+        jLabel21.setText("");
+        jLabel18.setText("");
+        opcodelist.clear();
+        labellist.clear();
+        instructionlist.clear();
+        pclist.clear();
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1242,6 +1308,7 @@ public class NewJFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JComboBox jComboBox1;
     private javax.swing.JComboBox jComboBox10;
     private javax.swing.JComboBox jComboBox11;
