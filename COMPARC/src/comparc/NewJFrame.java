@@ -22,7 +22,6 @@ public class NewJFrame extends javax.swing.JFrame {
     int pcTarget = -1;
     boolean check = false;
     boolean proceed = true;
-    String offset, label, imm;
     String instruction, labeladdress;
     String rdbin, rsbin, rtbin, opcodebin, temp = "", offsetbin, addressbin;
     String jumpTo;
@@ -116,7 +115,7 @@ public class NewJFrame extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(545, 665));
 
-        jPanel1.setBackground(new java.awt.Color(153, 153, 153));
+        jPanel1.setBackground(new java.awt.Color(204, 204, 204));
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setLayout(new java.awt.CardLayout());
@@ -209,9 +208,9 @@ public class NewJFrame extends javax.swing.JFrame {
 
         jPanel3.add(jPanel5, "card2");
 
-        jComboBox7.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "0", "1", "2", "3", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" }));
+        jComboBox7.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" }));
 
-        jComboBox8.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "0", "1", "2", "3", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" }));
+        jComboBox8.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" }));
 
         jLabel4.setText("Label");
 
@@ -259,9 +258,9 @@ public class NewJFrame extends javax.swing.JFrame {
 
         jPanel3.add(jPanel6, "card2");
 
-        jComboBox9.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "0", "1", "2", "3", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" }));
+        jComboBox9.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" }));
 
-        jComboBox10.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "0", "1", "2", "3", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" }));
+        jComboBox10.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" }));
 
         jLabel5.setText("Offset");
 
@@ -308,9 +307,9 @@ public class NewJFrame extends javax.swing.JFrame {
 
         jPanel3.add(jPanel7, "card2");
 
-        jComboBox11.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "0", "1", "2", "3", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" }));
+        jComboBox11.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" }));
 
-        jComboBox12.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "0", "1", "2", "3", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" }));
+        jComboBox12.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" }));
 
         jLabel6.setText("immediate");
 
@@ -418,20 +417,18 @@ public class NewJFrame extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel19, javax.swing.GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE)
                             .addComponent(jTextField5))
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(31, 31, 31)
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(39, 39, 39)
-                                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(39, 39, 39)
+                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(24, 24, 24)
                         .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(159, 159, 159)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -449,9 +446,9 @@ public class NewJFrame extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
+                .addGap(23, 23, 23)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel22, javax.swing.GroupLayout.DEFAULT_SIZE, 27, Short.MAX_VALUE)
                     .addComponent(jLabel23, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -487,7 +484,7 @@ public class NewJFrame extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jPanel2.setBackground(new java.awt.Color(255, 204, 204));
+        jPanel2.setBackground(new java.awt.Color(204, 204, 204));
 
         jLabel20.setText("Instructions");
 
@@ -509,9 +506,10 @@ public class NewJFrame extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel20)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jLabel21, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel20)
+                            .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 514, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 11, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -530,9 +528,12 @@ public class NewJFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jPanel10, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 446, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -589,14 +590,36 @@ public class NewJFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
+    private void reset() {
+        jTextField1.setText("");
+        jTextField2.setText("");
+        jTextField3.setText("");
+        jTextField4.setText("");
+        jTextField5.setText("");
+        jComboBox1.setSelectedIndex(0);
+        jComboBox2.setSelectedIndex(0);
+        jComboBox3.setSelectedIndex(0);
+        jComboBox4.setSelectedIndex(0);
+        jComboBox5.setSelectedIndex(0);
+        jComboBox6.setSelectedIndex(0);
+        jComboBox7.setSelectedIndex(0);
+        jComboBox8.setSelectedIndex(0);
+        jComboBox9.setSelectedIndex(0);
+        jComboBox10.setSelectedIndex(0);
+        jComboBox11.setSelectedIndex(0);
+        jComboBox12.setSelectedIndex(0);
+    }
+
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         instruction = jComboBox1.getSelectedItem().toString();
 
         //special character checking upon add
         labeladdress = jTextField5.getText();
+        labeladdress.toUpperCase();
+        m = p.matcher(labeladdress);
         if (labeladdress.matches("")) {
-            labeladdress = "no label";
+            labeladdress = "NO LABEL";
             proceed = true;
         } else if (labeladdress.matches("DSUBU") || labeladdress.matches("AND") || labeladdress.matches("DSRLV")
                 || labeladdress.matches("SLT") || labeladdress.matches("DDIV") || labeladdress.matches("BEQ")
@@ -604,14 +627,20 @@ public class NewJFrame extends javax.swing.JFrame {
                 || labeladdress.matches("DADDIU") || labeladdress.matches("ORI") || labeladdress.matches("J")) {
             proceed = false;
         } else {
-            m = p.matcher(labeladdress);
-            if (m.find()) { // check for special characters
+
+            if (m.find()) { //check for special characters
                 proceed = false;
             } else {
-                labellist.add(labeladdress.toUpperCase());
                 proceed = true;
+
+                for (int i = 0; i < pclist.size(); i++) { //check if label exists
+                    if (labellist.get(i).matches(labeladdress)) {
+                        proceed = false;
+                    }
+                }
             }
         }
+
         if (proceed) {
             if (instruction.matches("DSUBU") || instruction.matches("DDIV") || instruction.matches("AND")
                     || instruction.matches("DSRLV") || instruction.matches("SLT")) {
@@ -630,8 +659,7 @@ public class NewJFrame extends javax.swing.JFrame {
                 }
 
                 //opcode binary
-                opcode = 0;
-                opcodebin = "00000" + Integer.toBinaryString(opcode);
+                opcodebin = "000000";
 
                 //rs binary
                 rsbin = Integer.toBinaryString(rs);
@@ -710,85 +738,85 @@ public class NewJFrame extends javax.swing.JFrame {
 
                 if (instruction.matches("DDIV")) {
                     instructionlist.add(instruction + " R" + rs + ", R" + rt);
-                    if (labeladdress.matches("no label")) {
+                    if (labeladdress.matches("NO LABEL")) {
                         jLabel21.setText(jLabel21.getText() + '\n' + instruction + " R" + rs + ", R" + rt);
                     } else {
                         jLabel21.setText(jLabel21.getText() + '\n' + labeladdress + ": " + instruction + " R" + rs + ", R" + rt);
                     }
                 } else {
                     instructionlist.add(instruction + " R" + rd + ", R" + rs + ", R" + rt);
-                    if (labeladdress.matches("no label")) {
+                    if (labeladdress.matches("NO LABEL")) {
                         jLabel21.setText(jLabel21.getText() + '\n' + instruction + " R" + rd + ", R" + rs + ", R" + rt);
                     } else {
                         jLabel21.setText(jLabel21.getText() + '\n' + labeladdress + ": " + instruction + " R" + rd + ", R" + rs + ", R" + rt);
                     }
                 }
-
                 jLabel23.setText("Successfully added!");
             } else if (instruction.matches("BEQ")) {
                 if (jTextField1.getText().matches("")) { //special characters or null
                     //error message
                     jLabel23.setText("Invalid Label");
+                } else if (jTextField1.getText().matches("DSUBU") || jTextField1.getText().matches("AND") || jTextField1.getText().matches("DSRLV")
+                        || jTextField1.getText().matches("SLT") || jTextField1.getText().matches("DDIV") || jTextField1.getText().matches("BEQ")
+                        || jTextField1.getText().matches("LW") || jTextField1.getText().matches("LWU") || jTextField1.getText().matches("SW")
+                        || jTextField1.getText().matches("DADDIU") || jTextField1.getText().matches("ORI") || jTextField1.getText().matches("J")) {
+                    jLabel23.setText("Invalid Label");
                 } else {
+                    //increment pc by 4
+                    pc = pc + 4;
+                    pclist.add(Integer.toHexString(pc));
 
-                    //check if label exists
-                    check = false;
-                    for (int i = 0; i < pclist.size(); i++) {
-                        if (labellist.get(i).matches(labeladdress)) {
-                            check = true;
+                    rs = jComboBox7.getSelectedIndex();
+                    rt = jComboBox8.getSelectedIndex();
+
+                    opcodebin = "000100";
+
+                    //rs binary
+                    rsbin = Integer.toBinaryString(rs);
+                    if (rsbin.length() != 5) {
+                        for (int i = 0; i < 5 - rsbin.length(); i++) {
+                            temp = temp + "0";
                         }
                     }
-                    if (check) {
-                        //increment pc by 4
-                        pc = pc + 4;
-                        pclist.add(Integer.toHexString(pc));
+                    rsbin = temp + rsbin;
 
-                        rs = jComboBox7.getSelectedIndex();
-                        rt = jComboBox8.getSelectedIndex();
-
-                        opcodebin = "000100";
-
-                        //rs binary
-                        rsbin = Integer.toBinaryString(rs);
-                        if (rsbin.length() != 5) {
-                            for (int i = 0; i < 5 - rsbin.length(); i++) {
-                                temp = temp + "0";
-                            }
+                    //rt binary
+                    temp = "";
+                    rtbin = Integer.toBinaryString(rt);
+                    if (rtbin.length() != 5) {
+                        for (int i = 0; i < 5 - rtbin.length(); i++) {
+                            temp = temp + "0";
                         }
-                        rsbin = temp + rsbin;
-
-                        //rt binary
-                        temp = "";
-                        rtbin = Integer.toBinaryString(rt);
-                        if (rtbin.length() != 5) {
-                            for (int i = 0; i < 5 - rtbin.length(); i++) {
-                                temp = temp + "0";
-                            }
-                        }
-                        rtbin = temp + rtbin;
-
-                        //offset
-                        jumpTo = jTextField1.getText();
-                        //address binary
-                        addressbin = opcodebin + rsbin + rtbin;
-
-                        instructionlist.add(instruction + " R" + jComboBox7.getSelectedItem() + ", R" + jComboBox8.getSelectedItem() + " ," + jTextField1.getText().toUpperCase());
-                        opcodelist.add(addresshex);
-
-                        for (int i = 0; i < pclist.size(); i++) {
-                            if (labellist.get(i).matches(labeladdress)) {
-                                break;
-                            }
-                        }
-
-                        opcodelist.add(addresshex);
-
-                        jLabel23.setText("Successfully added!");
-                    } else { //label not found
-                        opcodelist.add("0000");
-                        instructionlist.add(instruction + " R" + jComboBox7.getSelectedItem() + ", R" + jComboBox8.getSelectedItem() + ", " + jTextField1.getText().toUpperCase());
-                        jLabel23.setText("label not found.");
                     }
+                    rtbin = temp + rtbin;
+
+                    addressbin = opcodebin + rsbin + rtbin;
+                    //offset
+
+                    /*
+                     jumpTo = jTextField1.getText();
+                     //address binary
+
+                     instructionlist.add(instruction + " R" + jComboBox7.getSelectedItem() + ", R" + jComboBox8.getSelectedItem() + " ," + jTextField1.getText().toUpperCase());
+                     opcodelist.add(addresshex);
+
+                     for (int i = 0; i < pclist.size(); i++) {
+                     if (labellist.get(i).matches(labeladdress)) {
+                     break;
+                     }
+                     }
+
+                     opcodelist.add(addresshex);
+                     */
+                    instructionlist.add(instruction + " R" + jComboBox7.getSelectedItem() + ", R" + jComboBox8.getSelectedItem() + ", " + jTextField1.getText().toUpperCase());
+                    if (labeladdress.matches("NO LABEL")) {
+                        jLabel21.setText(jLabel21.getText() + instruction + " R" + jComboBox7.getSelectedItem() + ", R" + jComboBox8.getSelectedItem() + ", " + jTextField1.getText().toUpperCase());
+                    } else {
+                        jLabel21.setText(jLabel21.getText() + labeladdress + ": " + instruction + " R" + jComboBox7.getSelectedItem() + ", R" + jComboBox8.getSelectedItem() + ", " + jTextField1.getText().toUpperCase());
+                    }
+                    opcodelist.add(addressbin);
+                    labellist.add(labeladdress);
+                    jLabel23.setText("Successfully added!");
                 }
 
             } else if (instruction.matches("LW") || instruction.matches("LWU") || instruction.matches("SW")) {
@@ -819,8 +847,6 @@ public class NewJFrame extends javax.swing.JFrame {
                         }
                         opcodebin = temp + opcodebin;
                     }
-
-                    instructionlist.add(instruction + " R" + jComboBox9.getSelectedItem() + ", " + jTextField2.getText() + "(R" + jComboBox10.getSelectedItem() + ")");
 
                     //rd binary
                     temp = "";
@@ -853,7 +879,6 @@ public class NewJFrame extends javax.swing.JFrame {
 
                     //address in binary
                     addressbin = opcodebin + rsbin + rdbin + offsetbin;
-                    System.out.println(addressbin);
 
                     addresshex = new BigInteger(addressbin, 2).toString(16);
                     if (addresshex.length() != 8) {
@@ -865,6 +890,17 @@ public class NewJFrame extends javax.swing.JFrame {
                     }
 
                     opcodelist.add(addresshex);
+
+                    instructionlist.add(instruction + " R" + jComboBox9.getSelectedItem() + ", " + jTextField2.getText() + "(R" + jComboBox10.getSelectedItem() + ")");
+                    labellist.add(labeladdress);
+
+                    if (labeladdress.matches("NO LABEL")) {
+                        jLabel21.setText(jLabel21.getText() + instruction + " R" + jComboBox9.getSelectedItem() + ", " + jTextField2.getText() + "(R" + jComboBox10.getSelectedItem() + ")");
+                    } else {
+                        jLabel21.setText(jLabel21.getText() + labeladdress + ": " + instruction + " R" + jComboBox9.getSelectedItem() + ", " + jTextField2.getText() + "(R" + jComboBox10.getSelectedItem() + ")");
+                    }
+
+                    jLabel23.setText("Successfully added!");
                 }
 
             } else if (instruction.matches("DADDIU") || instruction.matches("ORI")) {
@@ -943,9 +979,17 @@ public class NewJFrame extends javax.swing.JFrame {
                         }
 
                         instructionlist.add(instruction + " R" + jComboBox11.getSelectedItem() + ", R" + jComboBox12.getSelectedItem() + ", #" + jTextField3.getText());
+
+                        if (labeladdress.matches("NO LABEL")) {
+                            jLabel21.setText(jLabel21.getText() + instruction + " R" + jComboBox11.getSelectedItem() + ", R" + jComboBox12.getSelectedItem() + ", #" + jTextField3.getText());
+                        } else {
+                            jLabel21.setText(jLabel21.getText() + labeladdress + ": " + instruction + " R" + jComboBox11.getSelectedItem() + ", R" + jComboBox12.getSelectedItem() + ", #" + jTextField3.getText());
+                        }
+
                         opcodelist.add(addresshex);
+                        labellist.add(labeladdress);
                     } else {
-                        JOptionPane.showMessageDialog(null, "ERROR: Invalid immediate value.");
+                        jLabel23.setText("Invalid immediate value");
                     }
                 }
 
@@ -958,50 +1002,64 @@ public class NewJFrame extends javax.swing.JFrame {
                     pc = pc + 4;
                     pclist.add(Integer.toHexString(pc));
 
-                    String jumpTo = jTextField4.getText().toUpperCase();
-                    System.out.println(jumpTo);
-                    for (int i = 0; i < labellist.size(); i++) {
-                        if (labellist.get(i).contains(jumpTo)) {
-                            pcTarget = Integer.valueOf(pclist.get(i)); // actual pc of label - current pc
-                            break;
-                        } else {
-                            pcTarget = -1;
-                            System.out.println(labellist.get(i));
-                        }
-                    }
-                    if (pcTarget != -1) {
-                        pcBin = Integer.toBinaryString(pcTarget);
-                        System.out.println("PCTarget: " + pcBin);
+                    opcodebin = "000010";
 
-                        addressbin = opcodebin + rsbin + rtbin + pcBin;
+                    /*
+                     String jumpTo = jTextField4.getText().toUpperCase();
+                     System.out.println(jumpTo);
+                     for (int i = 0; i < labellist.size(); i++) {
+                     if (labellist.get(i).contains(jumpTo)) {
+                     pcTarget = Integer.valueOf(pclist.get(i)); // actual pc of label - current pc
+                     break;
+                     } else {
+                     pcTarget = -1;
+                     System.out.println(labellist.get(i));
+                     }
+                     }
+                     if (pcTarget != -1) {
+                     pcBin = Integer.toBinaryString(pcTarget);
+                     System.out.println("PCTarget: " + pcBin);
 
-                        //address in hex
-                        addresshex = new BigInteger(addressbin, 2).toString(16);
-                        if (addresshex.length() != 8) {
-                            temp = "";
-                            for (int i = 0; i < 8 - addresshex.length(); i++) {
-                                temp = temp + "0";
-                            }
-                            addresshex = temp + addresshex;
-                            //String jumpTo = jTextField1.getText();
-                            //address in binary
-                            addressbin = opcodebin + rsbin + rtbin;
-                        }
+                     addressbin = opcodebin + rsbin + rtbin + pcBin;
 
-                        instructionlist.add(instruction + " " + jTextField4.getText().toUpperCase());
-                        opcodelist.add(addresshex);
+                     //address in hex
+                     addresshex = new BigInteger(addressbin, 2).toString(16);
+                     if (addresshex.length() != 8) {
+                     temp = "";
+                     for (int i = 0; i < 8 - addresshex.length(); i++) {
+                     temp = temp + "0";
+                     }
+                     addresshex = temp + addresshex;
+                     //String jumpTo = jTextField1.getText();
+                     //address in binary
+                     addressbin = opcodebin + rsbin + rtbin;
+                     }
+
+                     instructionlist.add(instruction + " " + jTextField4.getText().toUpperCase());
+                     opcodelist.add(addresshex);
+                     } else {
+                     instructionlist.add(instruction + " " + jTextField4.getText().toUpperCase());
+                     addresshex = "0000";
+                     opcodelist.add(addresshex);
+                     }
+                     */
+                    instructionlist.add(instruction + " " + jTextField4.getText().toUpperCase());
+
+                    if (labeladdress.matches("NO LABEL")) {
+                        jLabel21.setText(jLabel21.getText() + instruction + " " + jTextField4.getText().toUpperCase());
                     } else {
-                        instructionlist.add(instruction + " " + jTextField4.getText().toUpperCase());
-                        addresshex = "0000";
-                        opcodelist.add(addresshex);
+                        jLabel21.setText(jLabel21.getText() + labeladdress + ": " + instruction + " " + jTextField4.getText().toUpperCase());
                     }
+                    opcodelist.add(opcodebin);
+                    labellist.add(labeladdress);
                 }
 
             }
         } else {
-            //JOptionPane.showMessageDialog(null, "ERROR: Unsuccessful in adding instruction.");
-            jLabel23.setText("Label contains a special character.");
+            jLabel23.setText("Invalid label");
         }
+
+        reset();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTextField5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField5ActionPerformed
@@ -1011,74 +1069,30 @@ public class NewJFrame extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        int i, j, x, offset;
+        String label;
+        for (i = 0; i < pclist.size(); i++) {
+            if (instructionlist.get(i).contains("BEQ")) {
+                label = instructionlist.get(i).substring(instructionlist.get(i).lastIndexOf(", ") + 2);
+                for (j = 0; j < labellist.size(); j++) {
+                    if (labellist.get(j).matches(label)) {
+                        break;
+                    }
+                }
 
-        int temppc;
-        boolean jump = false;
-        String rstemp, rttemp;
-        for (int i = 0; i < opcodelist.size(); i++) {
-            if (opcodelist.get(i).matches("0000")) {
-                System.out.println("NAKITA NA PO");
-                for (int j = 0; j < labellist.size(); j++) {
-                    if (instructionlist.get(i).contains(labellist.get(j))) { // nakita na saan magjump
-                        System.out.println(labellist.get(j));
-                        temppc = Integer.valueOf(pclist.get(i));
+                if (j == labellist.size()) {
+                    if (i > j) { //label above
+                        offset = j - (i + 1);
+                        offsetbin = Integer.toBinaryString(offset);
 
-                        if (instructionlist.get(i).startsWith("J")) {
-                            opcode = 2;
-                            rs = 0;
-                            rt = 0;
-                            jump = true;
-                        } else { //beq
-                            opcode = 4;
-                            rstemp = instructionlist.get(i).substring(5, 7);
-                            rttemp = instructionlist.get(i).substring(9, 11);
-
-                            if (rstemp.contains(",")) {
-                                rstemp = rstemp.substring(0, 1);
+                        temp = "";
+                        if (offsetbin.length() != 26) {
+                            for (x = 0; x < 26 - offsetbin.length(); x++) {
+                                temp = temp + "1";
                             }
-                            if (rttemp.contains(",")) {
-                                rttemp = rttemp.substring(0, 1);
-                            }
-                            rs = Integer.valueOf(rstemp);
-                            rt = Integer.valueOf(rttemp);
                         }
+                        offsetbin = opcodelist.get(i) + temp + offsetbin;
 
-                        opcodebin = Integer.toBinaryString(opcode);
-                        if (opcodebin.length() != 6) {
-                            temp = "";
-                            for (int k = 0; k < 6 - opcodebin.length(); k++) {
-                                temp = temp + "0";
-                            }
-                            opcodebin = temp + opcodebin;
-                        }
-
-                        rsbin = Integer.toBinaryString(rs);
-                        if (rsbin.length() != 5) {
-                            temp = "";
-                            for (int k = 0; k < 5 - rsbin.length(); k++) {
-                                temp = temp + "0";
-                            }
-                            rsbin = temp + rsbin;
-                        }
-                        rtbin = Integer.toBinaryString(rt);
-                        if (rtbin.length() != 5) {
-                            temp = "";
-                            for (int k = 0; k < 5 - rtbin.length(); k++) {
-                                temp = temp + "0";
-                            }
-                            rtbin = temp + rtbin;
-                        }
-
-                        pcBin = Integer.toBinaryString(temppc);
-                        if (pcBin.length() != 16) {
-                            temp = "";
-                            for (int k = 0; k < 16 - pcBin.length(); k++) {
-                                temp = temp + "0";
-                            }
-                            pcBin = temp + pcBin;
-                        }
-
-                        //address in hex
                         addresshex = new BigInteger(addressbin, 2).toString(16);
                         if (addresshex.length() != 8) {
                             temp = "";
@@ -1086,19 +1100,101 @@ public class NewJFrame extends javax.swing.JFrame {
                                 temp = temp + "0";
                             }
                             addresshex = temp + addresshex;
-                            //String jumpTo = jTextField1.getText();
-                            //address in binary
-                            addressbin = opcodebin + rsbin + rtbin + pcBin;
                         }
-                        addressbin = opcodebin + rsbin + rtbin + pcBin;
-
-                        System.out.println(addressbin);
-                        opcodelist.set(i, addressbin);
                     }
+                } else {
+                    //label not found
                 }
             }
-        }
+            /*
+             int temppc;
+             boolean jump = false;
+             String rstemp, rttemp;
+             for (int i = 0; i < opcodelist.size(); i++) {
+             if (opcodelist.get(i).matches("0000")) {
+             System.out.println("NAKITA NA PO");
+             for (int j = 0; j < labellist.size(); j++) {
+             if (instructionlist.get(i).contains(labellist.get(j))) { // nakita na saan magjump
+             System.out.println(labellist.get(j));
+             temppc = Integer.valueOf(pclist.get(i));
 
+             if (instructionlist.get(i).startsWith("J")) {
+             opcode = 2;
+             rs = 0;
+             rt = 0;
+             jump = true;
+             } else { //beq
+             opcode = 4;
+             rstemp = instructionlist.get(i).substring(5, 7);
+             rttemp = instructionlist.get(i).substring(9, 11);
+
+             if (rstemp.contains(",")) {
+             rstemp = rstemp.substring(0, 1);
+             }
+             if (rttemp.contains(",")) {
+             rttemp = rttemp.substring(0, 1);
+             }
+             rs = Integer.valueOf(rstemp);
+             rt = Integer.valueOf(rttemp);
+             }
+
+             opcodebin = Integer.toBinaryString(opcode);
+             if (opcodebin.length() != 6) {
+             temp = "";
+             for (int k = 0; k < 6 - opcodebin.length(); k++) {
+             temp = temp + "0";
+             }
+             opcodebin = temp + opcodebin;
+             }
+
+             rsbin = Integer.toBinaryString(rs);
+             if (rsbin.length() != 5) {
+             temp = "";
+             for (int k = 0; k < 5 - rsbin.length(); k++) {
+             temp = temp + "0";
+             }
+             rsbin = temp + rsbin;
+             }
+             rtbin = Integer.toBinaryString(rt);
+             if (rtbin.length() != 5) {
+             temp = "";
+             for (int k = 0; k < 5 - rtbin.length(); k++) {
+             temp = temp + "0";
+             }
+             rtbin = temp + rtbin;
+             }
+
+             pcBin = Integer.toBinaryString(temppc);
+             if (pcBin.length() != 16) {
+             temp = "";
+             for (int k = 0; k < 16 - pcBin.length(); k++) {
+             temp = temp + "0";
+             }
+             pcBin = temp + pcBin;
+             }
+
+             //address in hex
+             addresshex = new BigInteger(addressbin, 2).toString(16);
+             if (addresshex.length() != 8) {
+             temp = "";
+             for (int m = 0; m < 8 - addresshex.length(); m++) {
+             temp = temp + "0";
+             }
+             addresshex = temp + addresshex;
+             //String jumpTo = jTextField1.getText();
+             //address in binary
+             addressbin = opcodebin + rsbin + rtbin + pcBin;
+             }
+             addressbin = opcodebin + rsbin + rtbin + pcBin;
+
+             System.out.println(addressbin);
+             opcodelist.set(i, addressbin);
+             }
+             }
+             }
+             }
+             */
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
