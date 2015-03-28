@@ -772,6 +772,7 @@ public class NewJFrame extends javax.swing.JFrame {
                     opcodebin = "000100";
 
                     //rs binary
+                    temp = "";
                     rsbin = Integer.toBinaryString(rs);
                     if (rsbin.length() != 5) {
                         for (int i = 0; i < 5 - rsbin.length(); i++) {
@@ -1080,21 +1081,22 @@ public class NewJFrame extends javax.swing.JFrame {
                 }
                 if (j == labellist.size()) {
                     //label not found
-                } else if (i > j) { //label above
+                } else { //label above
                     offset = j - (i + 1);
+                    System.out.println(offset);
                     offsetbin = Integer.toBinaryString(offset);
-
-                    temp = "";
-                    if (offsetbin.length() != 26) {
-                        for (x = 0; x < 26 - offsetbin.length(); x++) {
-                            temp = temp + "1";
-                        }
-                    }
-                    offsetbin = opcodelist.get(i) + temp + offsetbin;
                     
-                    System.out.println(offsetbin);
-
-                    addresshex = new BigInteger(addressbin, 2).toString(16);
+                    if (offsetbin.length() > 16) {
+                        offsetbin = offsetbin.substring(16);
+                    } else {
+                        temp = "";
+                        for(x=0; x<16-offsetbin.length(); x++) {
+                            temp = temp + "0";
+                        }
+                        offsetbin = temp + offsetbin;
+                    }
+                    offsetbin = opcodelist.get(i) + offsetbin;
+                    addresshex = new BigInteger(offsetbin, 2).toString(16);
                     if (addresshex.length() != 8) {
                         temp = "";
                         for (int m = 0; m < 8 - addresshex.length(); m++) {
