@@ -966,7 +966,6 @@ public class NewJFrame extends javax.swing.JFrame {
 
                         //address in binary
                         addressbin = opcodebin + rsbin + rdbin + offsetbin;
-                        System.out.println(addressbin);
 
                         //address in hex
                         addresshex = new BigInteger(addressbin, 2).toString(16);
@@ -1079,31 +1078,31 @@ public class NewJFrame extends javax.swing.JFrame {
                         break;
                     }
                 }
-
                 if (j == labellist.size()) {
-                    if (i > j) { //label above
-                        offset = j - (i + 1);
-                        offsetbin = Integer.toBinaryString(offset);
+                    //label not found
+                } else if (i > j) { //label above
+                    offset = j - (i + 1);
+                    offsetbin = Integer.toBinaryString(offset);
 
-                        temp = "";
-                        if (offsetbin.length() != 26) {
-                            for (x = 0; x < 26 - offsetbin.length(); x++) {
-                                temp = temp + "1";
-                            }
-                        }
-                        offsetbin = opcodelist.get(i) + temp + offsetbin;
-
-                        addresshex = new BigInteger(addressbin, 2).toString(16);
-                        if (addresshex.length() != 8) {
-                            temp = "";
-                            for (int m = 0; m < 8 - addresshex.length(); m++) {
-                                temp = temp + "0";
-                            }
-                            addresshex = temp + addresshex;
+                    temp = "";
+                    if (offsetbin.length() != 26) {
+                        for (x = 0; x < 26 - offsetbin.length(); x++) {
+                            temp = temp + "1";
                         }
                     }
-                } else {
-                    //label not found
+                    offsetbin = opcodelist.get(i) + temp + offsetbin;
+                    
+                    System.out.println(offsetbin);
+
+                    addresshex = new BigInteger(addressbin, 2).toString(16);
+                    if (addresshex.length() != 8) {
+                        temp = "";
+                        for (int m = 0; m < 8 - addresshex.length(); m++) {
+                            temp = temp + "0";
+                        }
+                        addresshex = temp + addresshex;
+                    }
+                    System.out.println(addresshex);
                 }
             }
             /*
