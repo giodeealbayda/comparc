@@ -30,6 +30,10 @@ public class NewJFrame extends javax.swing.JFrame {
     int func = 0;
     String addbin = "", funcbin;
     String addresshex = "";
+    int r1 = 0, r2 = 0, r3 = 0, r4 = 0, r5 = 0, r6 = 0, r7 = 0, r8 = 0, r9 = 0, r10 = 0,
+            r11 = 0, r12 = 0, r13 = 0, r14 = 0, r15 = 0, r16 = 0, r17 = 0, r18 = 0, r19 = 0, r20 = 0,
+            r21 = 0, r22 = 0, r23 = 0, r24 = 0, r25 = 0, r26 = 0, r27 = 0, r28 = 0, r29 = 0, r30 = 0,
+            r31 = 0;
 
     // regex
     Pattern p = Pattern.compile("[^a-z0-9 ]", Pattern.CASE_INSENSITIVE);
@@ -46,6 +50,7 @@ public class NewJFrame extends javax.swing.JFrame {
         initComponents();
         jTextArea1.setEditable(false);
         jTextArea2.setEditable(false);
+        jTextArea3.setEditable(false);
     }
 
     public void generateOpcode(ArrayList<String> pclist, ArrayList<String> instructionlist) {
@@ -111,6 +116,8 @@ public class NewJFrame extends javax.swing.JFrame {
         jScrollPane4 = new javax.swing.JScrollPane();
         jTextArea2 = new javax.swing.JTextArea();
         jButton4 = new javax.swing.JButton();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        jTextArea3 = new javax.swing.JTextArea();
         jPanel2 = new javax.swing.JPanel();
         jLabel20 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
@@ -199,8 +206,7 @@ public class NewJFrame extends javax.swing.JFrame {
         jLabel12.setText("jLabel12");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(1500, 500));
-        setResizable(false);
+        setPreferredSize(new java.awt.Dimension(1500, 600));
 
         jPanel1.setBackground(new java.awt.Color(204, 204, 204));
 
@@ -271,7 +277,7 @@ public class NewJFrame extends javax.swing.JFrame {
                     .addComponent(jComboBox8, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 70, Short.MAX_VALUE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 66, Short.MAX_VALUE)
                     .addComponent(jTextField1))
                 .addContainerGap())
         );
@@ -321,7 +327,7 @@ public class NewJFrame extends javax.swing.JFrame {
                     .addComponent(jTextField2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jComboBox10, 0, 47, Short.MAX_VALUE)
+                    .addComponent(jComboBox10, 0, 43, Short.MAX_VALUE)
                     .addGroup(jPanel7Layout.createSequentialGroup()
                         .addComponent(jLabel15)
                         .addGap(0, 0, Short.MAX_VALUE)))
@@ -402,9 +408,9 @@ public class NewJFrame extends javax.swing.JFrame {
             .addGroup(jPanel9Layout.createSequentialGroup()
                 .addGap(71, 71, 71)
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 111, Short.MAX_VALUE)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jTextField4))
-                .addContainerGap(60, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -512,10 +518,10 @@ public class NewJFrame extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 70, Short.MAX_VALUE)))
                 .addContainerGap())
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(188, 188, 188)
@@ -563,6 +569,10 @@ public class NewJFrame extends javax.swing.JFrame {
             }
         });
 
+        jTextArea3.setColumns(20);
+        jTextArea3.setRows(5);
+        jScrollPane6.setViewportView(jTextArea3);
+
         javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
         jPanel10.setLayout(jPanel10Layout);
         jPanel10Layout.setHorizontalGroup(
@@ -570,13 +580,14 @@ public class NewJFrame extends javax.swing.JFrame {
             .addGroup(jPanel10Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane6)
                     .addComponent(jScrollPane4)
-                    .addGroup(jPanel10Layout.createSequentialGroup()
-                        .addComponent(jLabel8)
-                        .addGap(0, 414, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel10Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel10Layout.createSequentialGroup()
+                        .addComponent(jLabel8)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel10Layout.setVerticalGroup(
@@ -586,9 +597,11 @@ public class NewJFrame extends javax.swing.JFrame {
                 .addComponent(jLabel8)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton4)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane6)
+                .addContainerGap())
         );
 
         jPanel2.setBackground(new java.awt.Color(204, 204, 204));
@@ -1365,19 +1378,22 @@ public class NewJFrame extends javax.swing.JFrame {
                 .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(1163, 1163, 1163))
+                .addGap(1167, 1167, 1167))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jPanel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jPanel14, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel13, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel11, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(260, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addComponent(jPanel14, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -1838,46 +1854,6 @@ public class NewJFrame extends javax.swing.JFrame {
                     pclist.add(Integer.toHexString(pc));
 
                     opcodebin = "000010";
-
-                    /*
-                     String jumpTo = jTextField4.getText().toUpperCase();
-                     System.out.println(jumpTo);
-                     for (int i = 0; i < labellist.size(); i++) {
-                     if (labellist.get(i).contains(jumpTo)) {
-                     pcTarget = Integer.valueOf(pclist.get(i)); // actual pc of label - current pc
-                     break;
-                     } else {
-                     pcTarget = -1;
-                     System.out.println(labellist.get(i));
-                     }
-                     }
-                     if (pcTarget != -1) {
-                     pcBin = Integer.toBinaryString(pcTarget);
-                     System.out.println("PCTarget: " + pcBin);
-
-                     addressbin = opcodebin + rsbin + rtbin + pcBin;
-
-                     //address in hex
-                     addresshex = new BigInteger(addressbin, 2).toString(16);
-                     if (addresshex.length() != 8) {
-                     temp = "";
-                     for (int i = 0; i < 8 - addresshex.length(); i++) {
-                     temp = temp + "0";
-                     }
-                     addresshex = temp + addresshex;
-                     //String jumpTo = jTextField1.getText();
-                     //address in binary
-                     addressbin = opcodebin + rsbin + rtbin;
-                     }
-
-                     instructionlist.add(instruction + " " + jTextField4.getText().toUpperCase());
-                     opcodelist.add(addresshex);
-                     } else {
-                     instructionlist.add(instruction + " " + jTextField4.getText().toUpperCase());
-                     addresshex = "0000";
-                     opcodelist.add(addresshex);
-                     }
-                     */
                     instructionlist.add(instruction + " " + jTextField4.getText().toUpperCase());
 
                     if (labeladdress.matches("NO LABEL")) {
@@ -1977,102 +1953,14 @@ public class NewJFrame extends javax.swing.JFrame {
                 }
             }
         }
-        
-        if(proceed) {
-            for(i=0; i<pclist.size(); i++) {
+
+        if (proceed) {
+            for (i = 0; i < pclist.size(); i++) {
                 jTextArea2.setText(jTextArea2.getText() + '\n' + opcodelist.get(i));
             }
         } else {
             System.out.println("ERROR");
         }
-        /*
-         int temppc;
-         boolean jump = false;
-         String rstemp, rttemp;
-         for (int i = 0; i < opcodelist.size(); i++) {
-         if (opcodelist.get(i).matches("0000")) {
-         System.out.println("NAKITA NA PO");
-         for (int j = 0; j < labellist.size(); j++) {
-         if (instructionlist.get(i).contains(labellist.get(j))) { // nakita na saan magjump
-         System.out.println(labellist.get(j));
-         temppc = Integer.valueOf(pclist.get(i));
-
-         if (instructionlist.get(i).startsWith("J")) {
-         opcode = 2;
-         rs = 0;
-         rt = 0;
-         jump = true;
-         } else { //beq
-         opcode = 4;
-         rstemp = instructionlist.get(i).substring(5, 7);
-         rttemp = instructionlist.get(i).substring(9, 11);
-
-         if (rstemp.contains(",")) {
-         rstemp = rstemp.substring(0, 1);
-         }
-         if (rttemp.contains(",")) {
-         rttemp = rttemp.substring(0, 1);
-         }
-         rs = Integer.valueOf(rstemp);
-         rt = Integer.valueOf(rttemp);
-         }
-
-         opcodebin = Integer.toBinaryString(opcode);
-         if (opcodebin.length() != 6) {
-         temp = "";
-         for (int k = 0; k < 6 - opcodebin.length(); k++) {
-         temp = temp + "0";
-         }
-         opcodebin = temp + opcodebin;
-         }
-
-         rsbin = Integer.toBinaryString(rs);
-         if (rsbin.length() != 5) {
-         temp = "";
-         for (int k = 0; k < 5 - rsbin.length(); k++) {
-         temp = temp + "0";
-         }
-         rsbin = temp + rsbin;
-         }
-         rtbin = Integer.toBinaryString(rt);
-         if (rtbin.length() != 5) {
-         temp = "";
-         for (int k = 0; k < 5 - rtbin.length(); k++) {
-         temp = temp + "0";
-         }
-         rtbin = temp + rtbin;
-         }
-
-         pcBin = Integer.toBinaryString(temppc);
-         if (pcBin.length() != 16) {
-         temp = "";
-         for (int k = 0; k < 16 - pcBin.length(); k++) {
-         temp = temp + "0";
-         }
-         pcBin = temp + pcBin;
-         }
-
-         //address in hex
-         addresshex = new BigInteger(addressbin, 2).toString(16);
-         if (addresshex.length() != 8) {
-         temp = "";
-         for (int m = 0; m < 8 - addresshex.length(); m++) {
-         temp = temp + "0";
-         }
-         addresshex = temp + addresshex;
-         //String jumpTo = jTextField1.getText();
-         //address in binary
-         addressbin = opcodebin + rsbin + rtbin + pcBin;
-         }
-         addressbin = opcodebin + rsbin + rtbin + pcBin;
-
-         System.out.println(addressbin);
-         opcodelist.set(i, addressbin);
-         }
-         }
-         }
-         }
-         */
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -2087,9 +1975,152 @@ public class NewJFrame extends javax.swing.JFrame {
         pclist.clear();
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    private void addCycle(String instruction) {
+        cyclelist.add(instruction + " IF");
+        cyclelist.add(instruction + " ID");
+        cyclelist.add(instruction + " EX");
+        cyclelist.add(instruction + " MEM");
+        cyclelist.add(instruction + " WB");
+    }
+
+    private int checkRegister(int reg) {
+        switch (reg) {
+            case 0:
+                return 0;
+            case 1:
+                return r1;
+            case 2:
+                return r2;
+            case 3:
+                return r3;
+            case 4:
+                return r4;
+            case 5:
+                return r5;
+            case 6:
+                return r6;
+            case 7:
+                return r7;
+            case 8:
+                return r8;
+            case 9:
+                return r9;
+            case 10:
+                return r10;
+            case 11:
+                return r11;
+            case 12:
+                return r12;
+            case 13:
+                return r13;
+            case 14:
+                return r14;
+            case 15:
+                return r15;
+            case 16:
+                return r16;
+            case 17:
+                return r17;
+            case 18:
+                return r18;
+            case 19:
+                return r19;
+            case 20:
+                return r20;
+            case 21:
+                return r21;
+            case 22:
+                return r22;
+            case 23:
+                return r23;
+            case 24:
+                return r24;
+            case 25:
+                return r25;
+            case 26:
+                return r26;
+            case 27:
+                return r27;
+            case 28:
+                return r28;
+            case 29:
+                return r29;
+            case 30:
+                return r30;
+            case 31:
+                return r31;
+        }
+        return 0;
+    }
+
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
-        
+        String inst = "", label;
+        int cmpR1, cmpR2;
+        for (int i = 0; i < pclist.size(); i++) {
+            if (instructionlist.get(i).contains("DSUBU")) {
+                inst = "DSUBU";
+                addCycle(inst);
+            } else if (instructionlist.get(i).contains("DDIV")) {
+                inst = "DDIV";
+                addCycle(inst);
+            } else if (instructionlist.get(i).contains("AND")) {
+                inst = "AND";
+                addCycle(inst);
+            } else if (instructionlist.get(i).contains("DSRLV")) {
+                inst = "DSRLV";
+                addCycle(inst);
+            } else if (instructionlist.get(i).contains("SLT")) {
+                inst = "SLT";
+                addCycle(inst);
+            } else if (instructionlist.get(i).contains("LW")) {
+                inst = "LW";
+                addCycle(inst);
+            } else if (instructionlist.get(i).contains("LWU")) {
+                inst = "LWU";
+                addCycle(inst);
+            } else if (instructionlist.get(i).contains("SW")) {
+                inst = "SW";
+                addCycle(inst);
+            } else if (instructionlist.get(i).contains("DADDIU")) {
+                inst = "DADDIU";
+                addCycle(inst);
+            } else if (instructionlist.get(i).contains("ORI")) {
+                inst = "ORI";
+                addCycle(inst);
+            } else if (instructionlist.get(i).contains("BEQ")) {
+                inst = "BEQ";
+                addCycle(inst);
+                cmpR1 = Integer.parseInt(instructionlist.get(i).substring(5, instructionlist.get(i).indexOf(",")));
+                cmpR2 = Integer.parseInt(instructionlist.get(i).substring(instructionlist.get(i).lastIndexOf(", R") + 3, instructionlist.get(i).lastIndexOf(", ")));
+                cmpR1 = checkRegister(cmpR1);
+                cmpR2 = checkRegister(cmpR2);
+                if (cmpR1 == cmpR2) {
+                    cyclelist.add("IF");
+                    //skip
+                    label = instructionlist.get(i).substring(instructionlist.get(i).lastIndexOf(", ") + 2);
+                    for (int j = i; j < pclist.size(); j++) {
+                        if (label.matches(labellist.get(j))) {
+                            i = j - 1;
+                        }
+                    }
+                }
+            } else if (instructionlist.get(i).contains("J")) {
+                inst = "J";
+                addCycle(inst);
+                cyclelist.add("IF");
+                //skip
+                label = instructionlist.get(i).substring(2);
+                for (int j = i; j < pclist.size(); j++) {
+                    if (label.matches(labellist.get(j))) {
+                        i = j - 1;
+                    }
+                }
+            }
+        }
+        for (int i = 0; i < cyclelist.size(); i++) {
+            jTextArea3.setText(jTextArea3.getText() + '\n' + "Cycle " + (i+1) + ": " + cyclelist.get(i));
+        }
     }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
@@ -2226,10 +2257,12 @@ public class NewJFrame extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextArea jTextArea2;
+    private javax.swing.JTextArea jTextArea3;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField10;
     private javax.swing.JTextField jTextField11;
