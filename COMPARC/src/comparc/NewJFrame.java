@@ -46,11 +46,12 @@ public class NewJFrame extends javax.swing.JFrame {
     ArrayList<String> pclist = new ArrayList<String>();
     ArrayList<String> instructionlist = new ArrayList<String>();
     ArrayList<String> cyclelist = new ArrayList<String>();
+    
+    
+    DefaultTableModel opcodemodel;
 
     public NewJFrame() {
         initComponents();
-        jTextArea1.setEditable(false);
-        jTextArea2.setEditable(false);
         jTextArea3.setEditable(false);
         jTextField6.setEditable(false);
         jTextField7.setEditable(false);
@@ -72,6 +73,8 @@ public class NewJFrame extends javax.swing.JFrame {
         jTextField23.setEditable(false);
         jTextField24.setEditable(false);
         jTextField39.setEditable(false);
+        
+        opcodemodel = (DefaultTableModel) jTable3.getModel();
     }
 
     public void generateOpcode(ArrayList<String> pclist, ArrayList<String> instructionlist) {
@@ -133,18 +136,15 @@ public class NewJFrame extends javax.swing.JFrame {
         jLabel22 = new javax.swing.JLabel();
         jLabel23 = new javax.swing.JLabel();
         jPanel10 = new javax.swing.JPanel();
-        jLabel8 = new javax.swing.JLabel();
-        jScrollPane4 = new javax.swing.JScrollPane();
-        jTextArea2 = new javax.swing.JTextArea();
-        jButton4 = new javax.swing.JButton();
         jScrollPane6 = new javax.swing.JScrollPane();
         jTextArea3 = new javax.swing.JTextArea();
+        jButton4 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel20 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        jScrollPane7 = new javax.swing.JScrollPane();
+        jTable3 = new javax.swing.JTable();
         jPanel11 = new javax.swing.JPanel();
         jLabel24 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -229,7 +229,8 @@ public class NewJFrame extends javax.swing.JFrame {
         jLabel12.setText("jLabel12");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(1500, 600));
+        setMinimumSize(new java.awt.Dimension(1284, 719));
+        setPreferredSize(new java.awt.Dimension(1284, 719));
 
         jPanel1.setBackground(new java.awt.Color(204, 204, 204));
         jPanel1.setPreferredSize(new java.awt.Dimension(500, 175));
@@ -618,11 +619,9 @@ public class NewJFrame extends javax.swing.JFrame {
 
         jPanel10.setBackground(new java.awt.Color(204, 204, 204));
 
-        jLabel8.setText("Opcode");
-
-        jTextArea2.setColumns(20);
-        jTextArea2.setRows(5);
-        jScrollPane4.setViewportView(jTextArea2);
+        jTextArea3.setColumns(20);
+        jTextArea3.setRows(5);
+        jScrollPane6.setViewportView(jTextArea3);
 
         jButton4.setText("Show Pipeline Map");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
@@ -631,44 +630,32 @@ public class NewJFrame extends javax.swing.JFrame {
             }
         });
 
-        jTextArea3.setColumns(20);
-        jTextArea3.setRows(5);
-        jScrollPane6.setViewportView(jTextArea3);
-
         javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
         jPanel10.setLayout(jPanel10Layout);
         jPanel10Layout.setHorizontalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel10Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel10Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane6)
-                    .addComponent(jScrollPane4)
+                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel10Layout.createSequentialGroup()
-                        .addComponent(jLabel8)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel10Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane6))
                 .addContainerGap())
         );
         jPanel10Layout.setVerticalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel10Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel10Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel8)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(9, 9, 9)
                 .addComponent(jButton4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane6)
-                .addContainerGap())
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel2.setBackground(new java.awt.Color(204, 204, 204));
 
-        jLabel20.setText("Instructions");
+        jLabel20.setText("Opcode");
 
         jButton2.setText("Submit");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -684,9 +671,27 @@ public class NewJFrame extends javax.swing.JFrame {
             }
         });
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane3.setViewportView(jTextArea1);
+        jTable3.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Instruction", "Opcode"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane7.setViewportView(jTable3);
+        if (jTable3.getColumnModel().getColumnCount() > 0) {
+            jTable3.getColumnModel().getColumn(0).setResizable(false);
+            jTable3.getColumnModel().getColumn(1).setResizable(false);
+        }
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -698,8 +703,8 @@ public class NewJFrame extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel20)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane3))
-                .addGap(18, 18, 18)
+                    .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE))
@@ -711,13 +716,15 @@ public class NewJFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel20)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton3)))
-                .addContainerGap(14, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton3)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
         jPanel11.setBackground(new java.awt.Color(204, 204, 204));
@@ -1626,7 +1633,7 @@ public class NewJFrame extends javax.swing.JFrame {
                 .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(1167, 1167, 1167))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1635,13 +1642,14 @@ public class NewJFrame extends javax.swing.JFrame {
                     .addComponent(jPanel14, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel13, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel11, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(120, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
@@ -1838,16 +1846,24 @@ public class NewJFrame extends javax.swing.JFrame {
                 if (instruction.matches("DDIV")) {
                     instructionlist.add(instruction + " R" + rs + ", R" + rt);
                     if (labeladdress.matches("NO LABEL")) {
-                        jTextArea1.setText(jTextArea1.getText() + '\n' + instruction + " R" + rs + ", R" + rt);
+                        Object[] obj = {instruction + " R" + rs + ", R" + rt, ' '};
+                        opcodemodel.addRow(obj);
+                        //jTextArea1.setText(jTextArea1.getText() + '\n' + instruction + " R" + rs + ", R" + rt);
                     } else {
-                        jTextArea1.setText(jTextArea1.getText() + '\n' + labeladdress + ": " + instruction + " R" + rs + ", R" + rt);
+                        Object[] obj = {labeladdress + ": " + instruction + " R" + rs + ", R" + rt, ' '};
+                        opcodemodel.addRow(obj);
+                        //jTextArea1.setText(jTextArea1.getText() + '\n' + labeladdress + ": " + instruction + " R" + rs + ", R" + rt);
                     }
                 } else {
                     instructionlist.add(instruction + " R" + rd + ", R" + rs + ", R" + rt);
                     if (labeladdress.matches("NO LABEL")) {
-                        jTextArea1.setText(jTextArea1.getText() + '\n' + instruction + " R" + rd + ", R" + rs + ", R" + rt);
+                        Object[] obj = {instruction + " R" + rd + ", R" + rs + ", R" + rt, ' '};
+                        opcodemodel.addRow(obj);
+                        //jTextArea1.setText(jTextArea1.getText() + '\n' + instruction + " R" + rd + ", R" + rs + ", R" + rt);
                     } else {
-                        jTextArea1.setText(jTextArea1.getText() + '\n' + labeladdress + ": " + instruction + " R" + rd + ", R" + rs + ", R" + rt);
+                        Object[] obj = {labeladdress + ": " + instruction + " R" + rd + ", R" + rs + ", R" + rt, ' '};
+                        opcodemodel.addRow(obj);
+                        //jTextArea1.setText(jTextArea1.getText() + '\n' + labeladdress + ": " + instruction + " R" + rd + ", R" + rs + ", R" + rt);
                     }
                 }
                 jLabel23.setText("Successfully added!");
@@ -1910,9 +1926,13 @@ public class NewJFrame extends javax.swing.JFrame {
                      */
                     instructionlist.add(instruction + " R" + jComboBox7.getSelectedItem() + ", R" + jComboBox8.getSelectedItem() + ", " + jTextField1.getText().toUpperCase());
                     if (labeladdress.matches("NO LABEL")) {
-                        jTextArea1.setText(jTextArea1.getText() + '\n' + instruction + " R" + jComboBox7.getSelectedItem() + ", R" + jComboBox8.getSelectedItem() + ", " + jTextField1.getText().toUpperCase());
+                        Object[] obj = {instruction + " R" + jComboBox7.getSelectedItem() + ", R" + jComboBox8.getSelectedItem() + ", " + jTextField1.getText().toUpperCase(), ' '};
+                        opcodemodel.addRow(obj);
+                        //jTextArea1.setText(jTextArea1.getText() + '\n' + instruction + " R" + jComboBox7.getSelectedItem() + ", R" + jComboBox8.getSelectedItem() + ", " + jTextField1.getText().toUpperCase());
                     } else {
-                        jTextArea1.setText(jTextArea1.getText() + '\n' + labeladdress + ": " + instruction + " R" + jComboBox7.getSelectedItem() + ", R" + jComboBox8.getSelectedItem() + ", " + jTextField1.getText().toUpperCase());
+                        Object[] obj = {labeladdress + ": " + instruction + " R" + jComboBox7.getSelectedItem() + ", R" + jComboBox8.getSelectedItem() + ", " + jTextField1.getText().toUpperCase(), ' '};
+                        opcodemodel.addRow(obj);
+                        //jTextArea1.setText(jTextArea1.getText() + '\n' + labeladdress + ": " + instruction + " R" + jComboBox7.getSelectedItem() + ", R" + jComboBox8.getSelectedItem() + ", " + jTextField1.getText().toUpperCase());
                     }
                     opcodelist.add(addressbin);
                     labellist.add(labeladdress);
@@ -1995,9 +2015,13 @@ public class NewJFrame extends javax.swing.JFrame {
                     labellist.add(labeladdress);
 
                     if (labeladdress.matches("NO LABEL")) {
-                        jTextArea1.setText(jTextArea1.getText() + '\n' + instruction + " R" + jComboBox9.getSelectedItem() + ", " + jTextField2.getText() + "(R" + jComboBox10.getSelectedItem() + ")");
+                        Object[] obj = {instruction + " R" + jComboBox9.getSelectedItem() + ", " + jTextField2.getText() + "(R" + jComboBox10.getSelectedItem() + ")", ' '};
+                        opcodemodel.addRow(obj);
+                        //jTextArea1.setText(jTextArea1.getText() + '\n' + instruction + " R" + jComboBox9.getSelectedItem() + ", " + jTextField2.getText() + "(R" + jComboBox10.getSelectedItem() + ")");
                     } else {
-                        jTextArea1.setText(jTextArea1.getText() + '\n' + labeladdress + ": " + instruction + " R" + jComboBox9.getSelectedItem() + ", " + jTextField2.getText() + "(R" + jComboBox10.getSelectedItem() + ")");
+                        Object[] obj = {labeladdress + ": " + instruction + " R" + jComboBox9.getSelectedItem() + ", " + jTextField2.getText() + "(R" + jComboBox10.getSelectedItem() + ")", ' '};
+                        opcodemodel.addRow(obj);
+                        //jTextArea1.setText(jTextArea1.getText() + '\n' + labeladdress + ": " + instruction + " R" + jComboBox9.getSelectedItem() + ", " + jTextField2.getText() + "(R" + jComboBox10.getSelectedItem() + ")");
                     }
 
                     jLabel23.setText("Successfully added!");
@@ -2005,7 +2029,7 @@ public class NewJFrame extends javax.swing.JFrame {
 
             } else if (instruction.matches("DADDIU") || instruction.matches("ORI")) {
                 if (jTextField3.getText().matches("") || jTextField3.getText().length() != 4) {
-                    jTextArea2.setText("Invalid Offset.");
+                    jLabel23.setText("Invalid Offset.");
                 } else {
 
                     String immediateTemp = jTextField3.getText();
@@ -2080,9 +2104,13 @@ public class NewJFrame extends javax.swing.JFrame {
                         instructionlist.add(instruction + " R" + jComboBox11.getSelectedItem() + ", R" + jComboBox12.getSelectedItem() + ", #" + jTextField3.getText());
 
                         if (labeladdress.matches("NO LABEL")) {
-                            jTextArea1.setText(jTextArea1.getText() + '\n' + instruction + " R" + jComboBox11.getSelectedItem() + ", R" + jComboBox12.getSelectedItem() + ", #" + jTextField3.getText());
+                            Object[] obj = {instruction + " R" + jComboBox11.getSelectedItem() + ", R" + jComboBox12.getSelectedItem() + ", #" + jTextField3.getText(), ' '};
+                            opcodemodel.addRow(obj);
+                            //jTextArea1.setText(jTextArea1.getText() + '\n' + instruction + " R" + jComboBox11.getSelectedItem() + ", R" + jComboBox12.getSelectedItem() + ", #" + jTextField3.getText());
                         } else {
-                            jTextArea1.setText(jTextArea1.getText() + '\n' + labeladdress + ": " + instruction + " R" + jComboBox11.getSelectedItem() + ", R" + jComboBox12.getSelectedItem() + ", #" + jTextField3.getText());
+                            Object[] obj = {labeladdress + ": " +instruction + " R" + jComboBox11.getSelectedItem() + ", R" + jComboBox12.getSelectedItem() + ", #" + jTextField3.getText(), ' '};
+                            opcodemodel.addRow(obj);
+                            //jTextArea1.setText(jTextArea1.getText() + '\n' + labeladdress + ": " + instruction + " R" + jComboBox11.getSelectedItem() + ", R" + jComboBox12.getSelectedItem() + ", #" + jTextField3.getText());
                         }
 
                         opcodelist.add(addresshex);
@@ -2094,7 +2122,7 @@ public class NewJFrame extends javax.swing.JFrame {
 
             } else if (instruction.matches("J")) {
                 if (jTextField4.getText().matches("")) { //special characters
-                    jTextArea2.setText("Invalid Offset");
+                    jLabel23.setText("Invalid Offset");
                 } else {
 
                     //increment pc by 4
@@ -2105,9 +2133,13 @@ public class NewJFrame extends javax.swing.JFrame {
                     instructionlist.add(instruction + " " + jTextField4.getText().toUpperCase());
 
                     if (labeladdress.matches("NO LABEL")) {
-                        jTextArea1.setText(jTextArea1.getText() + '\n' + instruction + " " + jTextField4.getText().toUpperCase());
+                        Object[] obj = {instruction + " " + jTextField4.getText().toUpperCase(), ' '};
+                        opcodemodel.addRow(obj);
+                        //jTextArea1.setText(jTextArea1.getText() + '\n' + instruction + " " + jTextField4.getText().toUpperCase());
                     } else {
-                        jTextArea1.setText(jTextArea1.getText() + '\n' + labeladdress + ": " + instruction + " " + jTextField4.getText().toUpperCase());
+                        Object[] obj = {labeladdress + ": " + instruction + " " + jTextField4.getText().toUpperCase(), ' '};
+                        opcodemodel.addRow(obj);
+                        //jTextArea1.setText(jTextArea1.getText() + '\n' + labeladdress + ": " + instruction + " " + jTextField4.getText().toUpperCase());
                     }
                     opcodelist.add(opcodebin);
                     labellist.add(labeladdress);
@@ -2128,6 +2160,8 @@ public class NewJFrame extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        opcodemodel.getDataVector().removeAllElements();
+        opcodemodel.fireTableDataChanged();
         jButton1.setEnabled(false);
         jButton2.setEnabled(false);
         boolean proceed = true;
@@ -2204,7 +2238,8 @@ public class NewJFrame extends javax.swing.JFrame {
 
         if (proceed) {
             for (i = 0; i < pclist.size(); i++) {
-                jTextArea2.setText(jTextArea2.getText() + '\n' + opcodelist.get(i));
+                Object[] obj = {instructionlist.get(i), opcodelist.get(i)};
+                opcodemodel.addRow(obj);
             }
         } else {
             System.out.println("ERROR");
@@ -2215,12 +2250,12 @@ public class NewJFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         jButton1.setEnabled(true);
         jButton2.setEnabled(true);
-        jTextArea1.setText("");
-        jTextArea2.setText("");
         opcodelist.clear();
         labellist.clear();
         instructionlist.clear();
         pclist.clear();
+        opcodemodel.getDataVector().removeAllElements();
+        opcodemodel.fireTableDataChanged();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void addCycle(String instruction) {
@@ -2926,7 +2961,6 @@ public class NewJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel58;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
@@ -2944,14 +2978,12 @@ public class NewJFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
+    private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextArea jTextArea2;
+    private javax.swing.JTable jTable3;
     private javax.swing.JTextArea jTextArea3;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField10;
