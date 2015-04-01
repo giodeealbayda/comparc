@@ -34,11 +34,12 @@ public class NewJFrame extends javax.swing.JFrame {
             r11 = 0, r12 = 0, r13 = 0, r14 = 0, r15 = 0, r16 = 0, r17 = 0, r18 = 0, r19 = 0, r20 = 0,
             r21 = 0, r22 = 0, r23 = 0, r24 = 0, r25 = 0, r26 = 0, r27 = 0, r28 = 0, r29 = 0, r30 = 0,
             r31 = 0;
-    int hi=0, lo=0;
+    int hi = 0, lo = 0;
 
     // regex
     Pattern p = Pattern.compile("[^a-z0-9 ]", Pattern.CASE_INSENSITIVE);
     Pattern immediate = Pattern.compile("[^a-f0-9]", Pattern.CASE_INSENSITIVE);
+    Pattern labelcheck = Pattern.compile("^[0-9][a-z0-9]", Pattern.CASE_INSENSITIVE);
     Matcher m;
 
     ArrayList<String> labellist = new ArrayList<String>();
@@ -46,13 +47,19 @@ public class NewJFrame extends javax.swing.JFrame {
     ArrayList<String> pclist = new ArrayList<String>();
     ArrayList<String> instructionlist = new ArrayList<String>();
     ArrayList<String> cyclelist = new ArrayList<String>();
-    
-    
+
     DefaultTableModel opcodemodel;
+    DefaultTableModel datasegmentmodel;
+    DefaultTableModel codesegmentmodel;
+    DefaultTableModel pipelinemodel;
+    ArrayList<String> datasegment = new ArrayList<String>();
+
+    ArrayList<String> dependencylist = new ArrayList<String>();
+    ArrayList<String> answerlist = new ArrayList<String>();
+    ArrayList<String> pipeline = new ArrayList<String>();
 
     public NewJFrame() {
         initComponents();
-        jTextArea3.setEditable(false);
         jTextField6.setEditable(false);
         jTextField7.setEditable(false);
         jTextField8.setEditable(false);
@@ -73,8 +80,19 @@ public class NewJFrame extends javax.swing.JFrame {
         jTextField23.setEditable(false);
         jTextField24.setEditable(false);
         jTextField39.setEditable(false);
-        
+        jButton4.setEnabled(false);
+
         opcodemodel = (DefaultTableModel) jTable3.getModel();
+        datasegmentmodel = (DefaultTableModel) jTable1.getModel();
+        codesegmentmodel = (DefaultTableModel) jTable2.getModel();
+        pipelinemodel = (DefaultTableModel) jTable4.getModel();
+        InitializeCS();
+        InitializeDS();
+        pipeline.add("IF");
+        pipeline.add("ID");
+        pipeline.add("EX");
+        pipeline.add("MEM");
+        pipeline.add("WB");
     }
 
     public void generateOpcode(ArrayList<String> pclist, ArrayList<String> instructionlist) {
@@ -136,9 +154,10 @@ public class NewJFrame extends javax.swing.JFrame {
         jLabel22 = new javax.swing.JLabel();
         jLabel23 = new javax.swing.JLabel();
         jPanel10 = new javax.swing.JPanel();
-        jScrollPane6 = new javax.swing.JScrollPane();
-        jTextArea3 = new javax.swing.JTextArea();
         jButton4 = new javax.swing.JButton();
+        jScrollPane8 = new javax.swing.JScrollPane();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        jTable4 = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
         jLabel20 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
@@ -225,6 +244,10 @@ public class NewJFrame extends javax.swing.JFrame {
         jScrollPane5 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
         jLabel18 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jPanel15 = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
 
         jLabel12.setText("jLabel12");
 
@@ -234,6 +257,7 @@ public class NewJFrame extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(204, 204, 204));
         jPanel1.setPreferredSize(new java.awt.Dimension(500, 175));
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setMinimumSize(new java.awt.Dimension(270, 70));
@@ -265,24 +289,23 @@ public class NewJFrame extends javax.swing.JFrame {
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(9, 9, 9)
-                        .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jComboBox2, 0, 64, Short.MAX_VALUE)
-                        .addGap(12, 12, 12))
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGap(8, 8, 8)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 70, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 74, Short.MAX_VALUE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 43, Short.MAX_VALUE))))
+                        .addContainerGap()
+                        .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jComboBox3, 0, 59, Short.MAX_VALUE)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(28, 28, 28))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -292,10 +315,10 @@ public class NewJFrame extends javax.swing.JFrame {
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jComboBox2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jComboBox3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jComboBox4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(16, 16, 16))
         );
 
@@ -329,7 +352,7 @@ public class NewJFrame extends javax.swing.JFrame {
                     .addComponent(jComboBox5, 0, 57, Short.MAX_VALUE))
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
                         .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(53, 53, 53))
                     .addGroup(jPanel5Layout.createSequentialGroup()
@@ -384,7 +407,7 @@ public class NewJFrame extends javax.swing.JFrame {
                     .addComponent(jComboBox8, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 69, Short.MAX_VALUE)
                     .addComponent(jTextField1))
                 .addContainerGap())
         );
@@ -438,7 +461,7 @@ public class NewJFrame extends javax.swing.JFrame {
                         .addGap(2, 2, 2)
                         .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboBox10, 0, 80, Short.MAX_VALUE)))
+                        .addComponent(jComboBox10, 0, 39, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel7Layout.setVerticalGroup(
@@ -489,7 +512,7 @@ public class NewJFrame extends javax.swing.JFrame {
                     .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(10, 10, 10)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, 99, Short.MAX_VALUE)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, 59, Short.MAX_VALUE)
                     .addComponent(jTextField3))
                 .addContainerGap())
         );
@@ -540,12 +563,15 @@ public class NewJFrame extends javax.swing.JFrame {
 
         jPanel3.add(jPanel9, "card2");
 
+        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(219, 11, 230, -1));
+
         jButton1.setText("Add");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, 180, 34));
 
         jComboBox1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "DSUBU", "DDIV", "AND", "DSRLV", "SLT", "BEQ", "LW", "LWU", "SW", "DADDIU", "ORI", "J" }));
@@ -555,73 +581,27 @@ public class NewJFrame extends javax.swing.JFrame {
                 jComboBox1ActionPerformed(evt);
             }
         });
+        jPanel1.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 40, 100, -1));
+        jComboBox1.getAccessibleContext().setAccessibleName("");
 
         jLabel19.setText("Label (optional)");
+        jPanel1.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 11, 105, 26));
 
         jTextField5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField5ActionPerformed(evt);
             }
         });
+        jPanel1.add(jTextField5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 41, 90, 30));
 
         jLabel22.setText("Status");
+        jPanel1.add(jLabel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 90, 64, 27));
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jLabel19, javax.swing.GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE)
-                                .addComponent(jTextField5))
-                            .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(188, 188, 188)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(41, 41, 41)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 16, Short.MAX_VALUE))
-        );
-
-        jComboBox1.getAccessibleContext().setAccessibleName("");
+        jLabel23.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel23.setForeground(new java.awt.Color(255, 0, 0));
+        jPanel1.add(jLabel23, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 90, 230, 27));
 
         jPanel10.setBackground(new java.awt.Color(204, 204, 204));
-
-        jTextArea3.setColumns(20);
-        jTextArea3.setRows(5);
-        jScrollPane6.setViewportView(jTextArea3);
 
         jButton4.setText("Show Pipeline Map");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
@@ -630,26 +610,55 @@ public class NewJFrame extends javax.swing.JFrame {
             }
         });
 
+        jTable4.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Instruction"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jTable4.getTableHeader().setReorderingAllowed(false);
+        jScrollPane4.setViewportView(jTable4);
+        if (jTable4.getColumnModel().getColumnCount() > 0) {
+            jTable4.getColumnModel().getColumn(0).setResizable(false);
+        }
+
+        jScrollPane8.setViewportView(jScrollPane4);
+
         javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
         jPanel10.setLayout(jPanel10Layout);
         jPanel10Layout.setHorizontalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel10Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel10Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane6))
+                .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 551, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel10Layout.setVerticalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel10Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButton4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton4)
+                    .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -676,22 +685,26 @@ public class NewJFrame extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Instruction", "Opcode"
+                "Instruction", "Opcode", "IR0..5", "IR6..10", "IR11..15", "IR16..31"
             }
         ) {
-            boolean[] canEdit = new boolean [] {
-                false, false
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
+        jTable3.getTableHeader().setReorderingAllowed(false);
         jScrollPane7.setViewportView(jTable3);
-        if (jTable3.getColumnModel().getColumnCount() > 0) {
-            jTable3.getColumnModel().getColumn(0).setResizable(false);
-            jTable3.getColumnModel().getColumn(1).setResizable(false);
-        }
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -700,15 +713,14 @@ public class NewJFrame extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel20)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel20)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE))
-                .addContainerGap())
+                        .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 666, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -718,13 +730,11 @@ public class NewJFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton3)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addComponent(jButton3))
+                    .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel11.setBackground(new java.awt.Color(204, 204, 204));
@@ -1038,122 +1048,126 @@ public class NewJFrame extends javax.swing.JFrame {
             jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel12Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel12Layout.createSequentialGroup()
-                        .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField39))
-                    .addGroup(jPanel12Layout.createSequentialGroup()
-                        .addComponent(jLabel54, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField35))
-                    .addGroup(jPanel12Layout.createSequentialGroup()
-                        .addComponent(jLabel53, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField34))
-                    .addGroup(jPanel12Layout.createSequentialGroup()
-                        .addComponent(jLabel52, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField33))
-                    .addGroup(jPanel12Layout.createSequentialGroup()
-                        .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jLabel42, javax.swing.GroupLayout.DEFAULT_SIZE, 60, Short.MAX_VALUE)
-                            .addComponent(jLabel41, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel40, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel38, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel37, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel36, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel35, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel34, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel33, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel32, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel31, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel30, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel29, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel28, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel27, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel26, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel25, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel39, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextField23, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
-                            .addComponent(jTextField22)
-                            .addComponent(jTextField21)
-                            .addComponent(jTextField20)
-                            .addComponent(jTextField19)
-                            .addComponent(jTextField18)
-                            .addComponent(jTextField17)
-                            .addComponent(jTextField16)
-                            .addComponent(jTextField15)
-                            .addComponent(jTextField14)
-                            .addComponent(jTextField13)
-                            .addComponent(jTextField12)
-                            .addComponent(jTextField11)
-                            .addComponent(jTextField10)
-                            .addComponent(jTextField9)
-                            .addComponent(jTextField8)
-                            .addComponent(jTextField7)
-                            .addComponent(jTextField6)))
-                    .addGroup(jPanel12Layout.createSequentialGroup()
-                        .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel56, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel57, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField38, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jTextField37)))
-                    .addGroup(jPanel12Layout.createSequentialGroup()
-                        .addComponent(jLabel55, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField36, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel12Layout.createSequentialGroup()
-                        .addComponent(jLabel51, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField32))
-                    .addGroup(jPanel12Layout.createSequentialGroup()
-                        .addComponent(jLabel50, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField31))
-                    .addGroup(jPanel12Layout.createSequentialGroup()
-                        .addComponent(jLabel49, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField30))
-                    .addGroup(jPanel12Layout.createSequentialGroup()
-                        .addComponent(jLabel48, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField29))
-                    .addGroup(jPanel12Layout.createSequentialGroup()
-                        .addComponent(jLabel47, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField28))
-                    .addGroup(jPanel12Layout.createSequentialGroup()
-                        .addComponent(jLabel46, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField27))
-                    .addGroup(jPanel12Layout.createSequentialGroup()
-                        .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jLabel45, javax.swing.GroupLayout.DEFAULT_SIZE, 60, Short.MAX_VALUE)
-                            .addComponent(jLabel44, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel43, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextField25, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
-                            .addComponent(jTextField24)
-                            .addComponent(jTextField26))))
+                .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(jPanel12Layout.createSequentialGroup()
+                            .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jTextField39, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE))
+                        .addGroup(jPanel12Layout.createSequentialGroup()
+                            .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(jLabel38, javax.swing.GroupLayout.DEFAULT_SIZE, 60, Short.MAX_VALUE)
+                                .addComponent(jLabel37, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel36, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel35, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel34, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel33, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel32, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel31, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel30, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel29, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel28, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel27, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel26, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel25, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel39, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jTextField20, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
+                                .addComponent(jTextField19)
+                                .addComponent(jTextField18)
+                                .addComponent(jTextField17)
+                                .addComponent(jTextField16)
+                                .addComponent(jTextField15)
+                                .addComponent(jTextField14)
+                                .addComponent(jTextField13)
+                                .addComponent(jTextField12)
+                                .addComponent(jTextField11)
+                                .addComponent(jTextField10)
+                                .addComponent(jTextField9)
+                                .addComponent(jTextField8)
+                                .addComponent(jTextField7)
+                                .addComponent(jTextField6))))
+                    .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(jPanel12Layout.createSequentialGroup()
+                            .addComponent(jLabel54, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jTextField35))
+                        .addGroup(jPanel12Layout.createSequentialGroup()
+                            .addComponent(jLabel53, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jTextField34))
+                        .addGroup(jPanel12Layout.createSequentialGroup()
+                            .addComponent(jLabel52, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jTextField33))
+                        .addGroup(jPanel12Layout.createSequentialGroup()
+                            .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(jLabel42, javax.swing.GroupLayout.DEFAULT_SIZE, 60, Short.MAX_VALUE)
+                                .addComponent(jLabel41, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel40, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jTextField23, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
+                                .addComponent(jTextField22)
+                                .addComponent(jTextField21)))
+                        .addGroup(jPanel12Layout.createSequentialGroup()
+                            .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jLabel56, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel57, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jTextField38, javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jTextField37)))
+                        .addGroup(jPanel12Layout.createSequentialGroup()
+                            .addComponent(jLabel55, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jTextField36, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel12Layout.createSequentialGroup()
+                            .addComponent(jLabel51, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jTextField32))
+                        .addGroup(jPanel12Layout.createSequentialGroup()
+                            .addComponent(jLabel50, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jTextField31))
+                        .addGroup(jPanel12Layout.createSequentialGroup()
+                            .addComponent(jLabel49, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jTextField30))
+                        .addGroup(jPanel12Layout.createSequentialGroup()
+                            .addComponent(jLabel48, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jTextField29))
+                        .addGroup(jPanel12Layout.createSequentialGroup()
+                            .addComponent(jLabel47, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jTextField28))
+                        .addGroup(jPanel12Layout.createSequentialGroup()
+                            .addComponent(jLabel46, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jTextField27))
+                        .addGroup(jPanel12Layout.createSequentialGroup()
+                            .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(jLabel45, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel44, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel43, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jTextField25)
+                                .addComponent(jTextField24)
+                                .addComponent(jTextField26, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap(23, Short.MAX_VALUE))
         );
         jPanel12Layout.setVerticalGroup(
             jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel12Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel12Layout.createSequentialGroup()
-                        .addComponent(jTextField39)
-                        .addGap(1, 1, 1)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jTextField39, javax.swing.GroupLayout.DEFAULT_SIZE, 25, Short.MAX_VALUE))
+                .addGap(7, 7, 7)
+                .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel25, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -1284,7 +1298,7 @@ public class NewJFrame extends javax.swing.JFrame {
                 .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextField38, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel57, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                .addGap(6, 6, 6))
         );
 
         jScrollPane2.setViewportView(jPanel12);
@@ -1316,106 +1330,7 @@ public class NewJFrame extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, ""},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
+
             },
             new String [] {
                 "Address", "Data"
@@ -1437,7 +1352,13 @@ public class NewJFrame extends javax.swing.JFrame {
             }
         });
         jTable1.setCellSelectionEnabled(true);
+        jTable1.getTableHeader().setReorderingAllowed(false);
         jTable1.setUpdateSelectionOnSort(false);
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
         jTable1.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         if (jTable1.getColumnModel().getColumnCount() > 0) {
@@ -1457,7 +1378,7 @@ public class NewJFrame extends javax.swing.JFrame {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addGroup(jPanel13Layout.createSequentialGroup()
                         .addComponent(jLabel58)
-                        .addGap(0, 180, Short.MAX_VALUE)))
+                        .addGap(0, 168, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel13Layout.setVerticalGroup(
@@ -1474,109 +1395,10 @@ public class NewJFrame extends javax.swing.JFrame {
 
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
+
             },
             new String [] {
-                "Address", "Data"
+                "Address", "Representation"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -1587,6 +1409,7 @@ public class NewJFrame extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        jTable2.getTableHeader().setReorderingAllowed(false);
         jScrollPane5.setViewportView(jTable2);
         if (jTable2.getColumnModel().getColumnCount() > 0) {
             jTable2.getColumnModel().getColumn(0).setResizable(false);
@@ -1612,7 +1435,33 @@ public class NewJFrame extends javax.swing.JFrame {
                 .addGap(10, 10, 10)
                 .addComponent(jLabel18)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane5)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jLabel8.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        jLabel8.setText("GROUP 8");
+
+        jPanel15.setBackground(new java.awt.Color(204, 204, 204));
+
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jScrollPane3.setViewportView(jTextArea1);
+
+        javax.swing.GroupLayout jPanel15Layout = new javax.swing.GroupLayout(jPanel15);
+        jPanel15.setLayout(jPanel15Layout);
+        jPanel15Layout.setHorizontalGroup(
+            jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel15Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane3)
+                .addContainerGap())
+        );
+        jPanel15Layout.setVerticalGroup(
+            jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel15Layout.createSequentialGroup()
+                .addContainerGap(29, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -1621,39 +1470,83 @@ public class NewJFrame extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 490, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPanel14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel15, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(0, 0, 0))))
+            .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 460, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jPanel14, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel13, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel11, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jPanel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jPanel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void InitializeCS() {
+        String addTemp = "", repTemp = "00000000";
+        for (int i = 0; i < 2048; i++) {
+            addTemp = Integer.toHexString(i * 4);
+            if (addTemp.length() < 4) {
+                temp = "";
+                for (int j = 0; j < 4 - addTemp.length(); j++) {
+                    temp = temp + "0";
+                }
+                addTemp = temp + addTemp;
+            }
+            Object[] obj = {addTemp, repTemp};
+            codesegmentmodel.addRow(obj);
+        }
+        for (int i = 0; i < 2048; i++) {
+            datasegment.add("00");
+        }
+    }
+
+    private void InitializeDS() {
+        String addTemp = "", repTemp = "00000000";
+        for (int i = 2048; i < 4096; i++) {
+            addTemp = Integer.toHexString(i * 4);
+            if (addTemp.length() < 4) {
+                temp = "";
+                for (int j = 0; j < 4 - addTemp.length(); j++) {
+                    temp = temp + "0";
+                }
+                addTemp = temp + addTemp;
+            }
+            Object[] obj = {addTemp, repTemp};
+            datasegmentmodel.addRow(obj);
+        }
+    }
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
         // TODO add your handling code here:
@@ -1722,9 +1615,8 @@ public class NewJFrame extends javax.swing.JFrame {
         instruction = jComboBox1.getSelectedItem().toString();
 
         //special character checking upon add
-        labeladdress = jTextField5.getText();
-        labeladdress.toUpperCase();
-        m = p.matcher(labeladdress);
+        labeladdress = jTextField5.getText().toUpperCase();
+        m = labelcheck.matcher(labeladdress);
         if (labeladdress.matches("")) {
             labeladdress = "NO LABEL";
             proceed = true;
@@ -1845,6 +1737,8 @@ public class NewJFrame extends javax.swing.JFrame {
 
                 if (instruction.matches("DDIV")) {
                     instructionlist.add(instruction + " R" + rs + ", R" + rt);
+                    dependencylist.add("none");
+                    answerlist.add("none");
                     if (labeladdress.matches("NO LABEL")) {
                         Object[] obj = {instruction + " R" + rs + ", R" + rt, ' '};
                         opcodemodel.addRow(obj);
@@ -1856,6 +1750,16 @@ public class NewJFrame extends javax.swing.JFrame {
                     }
                 } else {
                     instructionlist.add(instruction + " R" + rd + ", R" + rs + ", R" + rt);
+                    if (rs != 0 && rt != 0) {
+                        dependencylist.add('R' + Integer.toString(rs) + ", R" + Integer.toString(rt));
+                    } else if (rs != 0) {
+                        dependencylist.add('R' + Integer.toString(rs));
+                    } else if (rt != 0) {
+                        dependencylist.add('R' + Integer.toString(rt));
+                    } else {
+                        dependencylist.add("none");
+                    }
+                    answerlist.add('R' + Integer.toString(rd));
                     if (labeladdress.matches("NO LABEL")) {
                         Object[] obj = {instruction + " R" + rd + ", R" + rs + ", R" + rt, ' '};
                         opcodemodel.addRow(obj);
@@ -1868,8 +1772,8 @@ public class NewJFrame extends javax.swing.JFrame {
                 }
                 jLabel23.setText("Successfully added!");
             } else if (instruction.matches("BEQ")) {
-                if (jTextField1.getText().matches("")) { //special characters or null
-                    //error message
+                m = p.matcher(jTextField1.getText());
+                if (jTextField1.getText().matches("") || m.find()) { //special characters or null
                     jLabel23.setText("Invalid Label");
                 } else if (jTextField1.getText().matches("DSUBU") || jTextField1.getText().matches("AND") || jTextField1.getText().matches("DSRLV")
                         || jTextField1.getText().matches("SLT") || jTextField1.getText().matches("DDIV") || jTextField1.getText().matches("BEQ")
@@ -1907,23 +1811,7 @@ public class NewJFrame extends javax.swing.JFrame {
                     rtbin = temp + rtbin;
 
                     addressbin = opcodebin + rsbin + rtbin;
-                    //offset
 
-                    /*
-                     jumpTo = jTextField1.getText();
-                     //address binary
-
-                     instructionlist.add(instruction + " R" + jComboBox7.getSelectedItem() + ", R" + jComboBox8.getSelectedItem() + " ," + jTextField1.getText().toUpperCase());
-                     opcodelist.add(addresshex);
-
-                     for (int i = 0; i < pclist.size(); i++) {
-                     if (labellist.get(i).matches(labeladdress)) {
-                     break;
-                     }
-                     }
-
-                     opcodelist.add(addresshex);
-                     */
                     instructionlist.add(instruction + " R" + jComboBox7.getSelectedItem() + ", R" + jComboBox8.getSelectedItem() + ", " + jTextField1.getText().toUpperCase());
                     if (labeladdress.matches("NO LABEL")) {
                         Object[] obj = {instruction + " R" + jComboBox7.getSelectedItem() + ", R" + jComboBox8.getSelectedItem() + ", " + jTextField1.getText().toUpperCase(), ' '};
@@ -1934,13 +1822,25 @@ public class NewJFrame extends javax.swing.JFrame {
                         opcodemodel.addRow(obj);
                         //jTextArea1.setText(jTextArea1.getText() + '\n' + labeladdress + ": " + instruction + " R" + jComboBox7.getSelectedItem() + ", R" + jComboBox8.getSelectedItem() + ", " + jTextField1.getText().toUpperCase());
                     }
+                    if (rs != 0 && rt != 0) {
+                        dependencylist.add('R' + Integer.toString(rs) + ", R" + Integer.toString(rt));
+                    } else if (rs != 0) {
+                        dependencylist.add('R' + Integer.toString(rs));
+                    } else if (rt != 0) {
+                        dependencylist.add('R' + Integer.toString(rt));
+                    } else {
+                        dependencylist.add("none");
+                    }
+
+                    answerlist.add("none");
                     opcodelist.add(addressbin);
                     labellist.add(labeladdress);
                     jLabel23.setText("Successfully added!");
                 }
 
             } else if (instruction.matches("LW") || instruction.matches("LWU") || instruction.matches("SW")) {
-                if (jTextField2.getText().matches("") && jTextField2.getText().length() != 4) { //error message special characters and letters g-z
+                m = immediate.matcher(jTextField2.getText());
+                if (jTextField2.getText().matches("") || jTextField2.getText().length() > 4 || m.find()) {
                     jLabel23.setText("Invalid Offset");
                 } else {
                     rd = jComboBox9.getSelectedIndex();
@@ -1979,6 +1879,7 @@ public class NewJFrame extends javax.swing.JFrame {
                     rdbin = temp + rdbin;
 
                     //rs binary
+                    temp = "";
                     rsbin = Integer.toBinaryString(rs);
                     if (rsbin.length() != 5) {
                         for (int i = 0; i < 5 - rsbin.length(); i++) {
@@ -2024,104 +1925,124 @@ public class NewJFrame extends javax.swing.JFrame {
                         //jTextArea1.setText(jTextArea1.getText() + '\n' + labeladdress + ": " + instruction + " R" + jComboBox9.getSelectedItem() + ", " + jTextField2.getText() + "(R" + jComboBox10.getSelectedItem() + ")");
                     }
 
+                    if (instruction.matches("SW")) {
+                        if (rd != 0 && rs != 0) {
+                            dependencylist.add('R' + Integer.toString(rd) + ", R" + Integer.toString(rs));
+                        } else if (rd != 0) {
+                            dependencylist.add('R' + Integer.toString(rd));
+                        } else if (rs != 0) {
+                            dependencylist.add('R' + Integer.toString(rs));
+                        } else {
+                            dependencylist.add("none");
+                        }
+                        answerlist.add("none");
+                    } else {
+                        if (rs != 0) {
+                            dependencylist.add('R' + Integer.toString(rs));
+                        } else {
+                            dependencylist.add("none");
+                        }
+                        answerlist.add('R' + Integer.toString(rd));
+                    }
                     jLabel23.setText("Successfully added!");
                 }
 
             } else if (instruction.matches("DADDIU") || instruction.matches("ORI")) {
-                if (jTextField3.getText().matches("") || jTextField3.getText().length() != 4) {
+                m = immediate.matcher(jTextField3.getText());
+                if (jTextField3.getText().matches("") || jTextField3.getText().length() > 4 || m.find()) {
                     jLabel23.setText("Invalid Offset.");
                 } else {
+                    rd = jComboBox11.getSelectedIndex();
+                    rs = jComboBox12.getSelectedIndex();
 
-                    String immediateTemp = jTextField3.getText();
-                    m = immediate.matcher(immediateTemp);
+                    //increment pc by 4
+                    pc = pc + 4;
+                    pclist.add(Integer.toHexString(pc));
 
-                    if (!m.find()) {
-                        rd = jComboBox11.getSelectedIndex();
-                        rs = jComboBox12.getSelectedIndex();
-
-                        //increment pc by 4
-                        pc = pc + 4;
-                        pclist.add(Integer.toHexString(pc));
-
-                        if (instruction.matches("DADDIU")) {
-                            opcode = 25;
-                        } else if (instruction.matches("ORI")) {
-                            opcode = 13;
-                        }
-
-                        opcodebin = Integer.toBinaryString(opcode);
-                        if (opcodebin.length() != 6) {
-                            temp = "";
-                            for (int i = 0; i < 6 - opcodebin.length(); i++) {
-                                temp = temp + "0";
-                            }
-                            opcodebin = temp + opcodebin;
-                        }
-
-                        //rs binary
-                        temp = "";
-                        rsbin = Integer.toBinaryString(rs);
-                        if (rsbin.length() != 5) {
-                            for (int i = 0; i < 5 - rsbin.length(); i++) {
-                                temp = temp + "0";
-                            }
-                        }
-                        rsbin = temp + rsbin;
-
-                        //rd binary
-                        temp = "";
-                        rdbin = Integer.toBinaryString(rd);
-                        if (rdbin.length() != 5) {
-                            for (int i = 0; i < 5 - rdbin.length(); i++) {
-                                temp = temp + "0";
-                            }
-                        }
-                        rdbin = temp + rdbin;
-
-                        offsetbin = Integer.toBinaryString(Integer.parseInt(jTextField3.getText(), 16));
-
-                        temp = "";
-                        if (offsetbin.length() != 16) {
-                            for (int i = 0; i < 16 - offsetbin.length(); i++) {
-                                temp = temp + "0";
-                            }
-                        }
-                        offsetbin = temp + offsetbin;
-
-                        //address in binary
-                        addressbin = opcodebin + rsbin + rdbin + offsetbin;
-
-                        //address in hex
-                        addresshex = new BigInteger(addressbin, 2).toString(16);
-                        if (addresshex.length() != 8) {
-                            temp = "";
-                            for (int i = 0; i < 8 - addresshex.length(); i++) {
-                                temp = temp + "0";
-                            }
-                            addresshex = temp + addresshex;
-                        }
-
-                        instructionlist.add(instruction + " R" + jComboBox11.getSelectedItem() + ", R" + jComboBox12.getSelectedItem() + ", #" + jTextField3.getText());
-
-                        if (labeladdress.matches("NO LABEL")) {
-                            Object[] obj = {instruction + " R" + jComboBox11.getSelectedItem() + ", R" + jComboBox12.getSelectedItem() + ", #" + jTextField3.getText(), ' '};
-                            opcodemodel.addRow(obj);
-                            //jTextArea1.setText(jTextArea1.getText() + '\n' + instruction + " R" + jComboBox11.getSelectedItem() + ", R" + jComboBox12.getSelectedItem() + ", #" + jTextField3.getText());
-                        } else {
-                            Object[] obj = {labeladdress + ": " +instruction + " R" + jComboBox11.getSelectedItem() + ", R" + jComboBox12.getSelectedItem() + ", #" + jTextField3.getText(), ' '};
-                            opcodemodel.addRow(obj);
-                            //jTextArea1.setText(jTextArea1.getText() + '\n' + labeladdress + ": " + instruction + " R" + jComboBox11.getSelectedItem() + ", R" + jComboBox12.getSelectedItem() + ", #" + jTextField3.getText());
-                        }
-
-                        opcodelist.add(addresshex);
-                        labellist.add(labeladdress);
-                    } else {
-                        jLabel23.setText("Invalid immediate value");
+                    if (instruction.matches("DADDIU")) {
+                        opcode = 25;
+                    } else if (instruction.matches("ORI")) {
+                        opcode = 13;
                     }
+
+                    opcodebin = Integer.toBinaryString(opcode);
+                    if (opcodebin.length() != 6) {
+                        temp = "";
+                        for (int i = 0; i < 6 - opcodebin.length(); i++) {
+                            temp = temp + "0";
+                        }
+                        opcodebin = temp + opcodebin;
+                    }
+
+                    //rs binary
+                    temp = "";
+                    rsbin = Integer.toBinaryString(rs);
+                    if (rsbin.length() != 5) {
+                        for (int i = 0; i < 5 - rsbin.length(); i++) {
+                            temp = temp + "0";
+                        }
+                    }
+                    rsbin = temp + rsbin;
+
+                    //rd binary
+                    temp = "";
+                    rdbin = Integer.toBinaryString(rd);
+                    if (rdbin.length() != 5) {
+                        for (int i = 0; i < 5 - rdbin.length(); i++) {
+                            temp = temp + "0";
+                        }
+                    }
+                    rdbin = temp + rdbin;
+
+                    offsetbin = Integer.toBinaryString(Integer.parseInt(jTextField3.getText(), 16));
+
+                    temp = "";
+                    if (offsetbin.length() != 16) {
+                        for (int i = 0; i < 16 - offsetbin.length(); i++) {
+                            temp = temp + "0";
+                        }
+                    }
+                    offsetbin = temp + offsetbin;
+
+                    //address in binary
+                    addressbin = opcodebin + rsbin + rdbin + offsetbin;
+
+                    //address in hex
+                    addresshex = new BigInteger(addressbin, 2).toString(16);
+                    if (addresshex.length() != 8) {
+                        temp = "";
+                        for (int i = 0; i < 8 - addresshex.length(); i++) {
+                            temp = temp + "0";
+                        }
+                        addresshex = temp + addresshex;
+                    }
+
+                    instructionlist.add(instruction + " R" + jComboBox11.getSelectedItem() + ", R" + jComboBox12.getSelectedItem() + ", #" + jTextField3.getText());
+
+                    if (labeladdress.matches("NO LABEL")) {
+                        Object[] obj = {instruction + " R" + jComboBox11.getSelectedItem() + ", R" + jComboBox12.getSelectedItem() + ", #" + jTextField3.getText(), ' '};
+                        opcodemodel.addRow(obj);
+                        //jTextArea1.setText(jTextArea1.getText() + '\n' + instruction + " R" + jComboBox11.getSelectedItem() + ", R" + jComboBox12.getSelectedItem() + ", #" + jTextField3.getText());
+                    } else {
+                        Object[] obj = {labeladdress + ": " + instruction + " R" + jComboBox11.getSelectedItem() + ", R" + jComboBox12.getSelectedItem() + ", #" + jTextField3.getText(), ' '};
+                        opcodemodel.addRow(obj);
+                        //jTextArea1.setText(jTextArea1.getText() + '\n' + labeladdress + ": " + instruction + " R" + jComboBox11.getSelectedItem() + ", R" + jComboBox12.getSelectedItem() + ", #" + jTextField3.getText());
+                    }
+
+                    if (rs != 0) {
+                        dependencylist.add('R' + Integer.toString(rs));
+                    } else {
+                        dependencylist.add("none");
+                    }
+                    answerlist.add('R' + Integer.toString(rd));
+                    opcodelist.add(addresshex);
+                    labellist.add(labeladdress);
+                    jLabel23.setText("Successfully added!");
                 }
 
             } else if (instruction.matches("J")) {
-                if (jTextField4.getText().matches("")) { //special characters
+                m = p.matcher(jTextField4.getText());
+                if (jTextField4.getText().matches("") || m.find()) { //special characters
                     jLabel23.setText("Invalid Offset");
                 } else {
 
@@ -2141,6 +2062,8 @@ public class NewJFrame extends javax.swing.JFrame {
                         opcodemodel.addRow(obj);
                         //jTextArea1.setText(jTextArea1.getText() + '\n' + labeladdress + ": " + instruction + " " + jTextField4.getText().toUpperCase());
                     }
+                    dependencylist.add("none");
+                    answerlist.add("none");
                     opcodelist.add(opcodebin);
                     labellist.add(labeladdress);
                 }
@@ -2164,6 +2087,7 @@ public class NewJFrame extends javax.swing.JFrame {
         opcodemodel.fireTableDataChanged();
         jButton1.setEnabled(false);
         jButton2.setEnabled(false);
+        jButton4.setEnabled(true);
         boolean proceed = true;
         int i, j, x, offset;
         String label;
@@ -2237,9 +2161,23 @@ public class NewJFrame extends javax.swing.JFrame {
         }
 
         if (proceed) {
+            int intvalue = 0;
+            String binvalue = "";
             for (i = 0; i < pclist.size(); i++) {
-                Object[] obj = {instructionlist.get(i), opcodelist.get(i)};
-                opcodemodel.addRow(obj);
+                intvalue = Integer.parseInt(opcodelist.get(i), 16);
+                binvalue = Integer.toBinaryString(intvalue);
+                temp = "";
+                for (j = 0; j < 32 - binvalue.length(); j++) {
+                    temp = temp + "0";
+                }
+                binvalue = temp + binvalue;
+                if (labellist.get(i).matches("NO LABEL")) {
+                    Object[] obj = {instructionlist.get(i), opcodelist.get(i), binvalue.substring(0, 6), binvalue.substring(6, 11), binvalue.substring(11, 16), binvalue.substring(16, 32)};
+                    opcodemodel.addRow(obj);
+                } else {
+                    Object[] obj = {labellist.get(i) + ": " + instructionlist.get(i), opcodelist.get(i), binvalue.substring(0, 6), binvalue.substring(6, 11), binvalue.substring(11, 16), binvalue.substring(16, 32)};
+                    opcodemodel.addRow(obj);
+                }
             }
         } else {
             System.out.println("ERROR");
@@ -2248,22 +2186,58 @@ public class NewJFrame extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
+        reset();
         jButton1.setEnabled(true);
         jButton2.setEnabled(true);
+        jButton4.setEnabled(false);
         opcodelist.clear();
         labellist.clear();
         instructionlist.clear();
         pclist.clear();
+        cyclelist.clear();
+        dependencylist.clear();
+        answerlist.clear();
         opcodemodel.getDataVector().removeAllElements();
         opcodemodel.fireTableDataChanged();
+        InitializeCS();
+        InitializeDS();
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    private void addCycle(String instruction) {
-        cyclelist.add(instruction + " IF");
-        cyclelist.add(instruction + " ID");
-        cyclelist.add(instruction + " EX");
-        cyclelist.add(instruction + " MEM");
-        cyclelist.add(instruction + " WB");
+    private void addCycle(int instnum, int at) {
+        for (int i = 0; i < pipeline.size(); i++) {
+            if (at < cyclelist.size()) {
+                cyclelist.set(at, cyclelist.get(at) + ", Inst" + Integer.toString(instnum) + " " + pipeline.get(i));
+            } else {
+                cyclelist.add("Inst" + Integer.toString(instnum) + " " + pipeline.get(i));
+            }
+            at++;
+        }
+    }
+
+    private void addIf(int instnum, int at) {
+        cyclelist.set(at, cyclelist.get(at) + ", Inst" + Integer.toString(instnum) + " IF");
+    }
+
+    private void addStall(int instnum, int at, int range) {
+        for (int i = 0; i < range + 1; i++) {
+            if (at < cyclelist.size()) {
+                cyclelist.set(at, cyclelist.get(at) + ", Inst" + Integer.toString(instnum) + " *");
+            } else {
+                cyclelist.add("Inst" + Integer.toString(instnum) + " *");
+            }
+            at++;
+        }
+    }
+
+    private void addCont(int instnum, int at) {
+        for (int i = 1; i < pipeline.size(); i++) {
+            if (at < cyclelist.size()) {
+                cyclelist.set(at, cyclelist.get(at) + ", Inst" + Integer.toString(instnum) + " " + pipeline.get(i));
+            } else {
+                cyclelist.add("Inst" + Integer.toString(instnum) + " " + pipeline.get(i));
+            }
+            at++;
+        }
     }
 
     private int checkRegister(int reg) {
@@ -2338,95 +2312,151 @@ public class NewJFrame extends javax.swing.JFrame {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
-        String inst = "", label;
-        int cmpR1, cmpR2;
+        String label;
+        int cmpR1, cmpR2, startsat = 0;
+        int depCheck = -1, j = 0;
+
+        ArrayList<Integer> endlist = new ArrayList<Integer>();
         for (int i = 0; i < pclist.size(); i++) {
-            if (instructionlist.get(i).contains("DSUBU")) {
-                inst = "DSUBU";
-                addCycle(inst);
-            } else if (instructionlist.get(i).contains("DDIV")) {
-                inst = "DDIV";
-                addCycle(inst);
-            } else if (instructionlist.get(i).contains("AND")) {
-                inst = "AND";
-                addCycle(inst);
-            } else if (instructionlist.get(i).contains("DSRLV")) {
-                inst = "DSRLV";
-                addCycle(inst);
-            } else if (instructionlist.get(i).contains("SLT")) {
-                inst = "SLT";
-                addCycle(inst);
-            } else if (instructionlist.get(i).contains("LW")) {
-                inst = "LW";
-                addCycle(inst);
-            } else if (instructionlist.get(i).contains("LWU")) {
-                inst = "LWU";
-                addCycle(inst);
-            } else if (instructionlist.get(i).contains("SW")) {
-                inst = "SW";
-                addCycle(inst);
-            } else if (instructionlist.get(i).contains("DADDIU")) {
-                inst = "DADDIU";
-                addCycle(inst);
-            } else if (instructionlist.get(i).contains("ORI")) {
-                inst = "ORI";
-                addCycle(inst);
+            depCheck = -1;
+
+            if (instructionlist.get(i).contains("DSUBU") || instructionlist.get(i).contains("DDIV") || instructionlist.get(i).contains("AND")
+                    || instructionlist.get(i).contains("DSRLV") || instructionlist.get(i).contains("SLT") || instructionlist.get(i).contains("LW")
+                    || instructionlist.get(i).contains("LWU") || instructionlist.get(i).contains("SW") || instructionlist.get(i).contains("DADDIU")
+                    || instructionlist.get(i).contains("ORI")) {
+                //inst = "DSUBU";
+                if (i == 0) {
+                    addCycle(i + 1, startsat);
+                    endlist.add(startsat + 4);
+                    startsat++;
+                } else {
+                    for (j = 0; j < i; j++) {
+                        if (dependencylist.get(i).contains(answerlist.get(j))) {
+                            depCheck = j;
+                        }
+                    }
+                    if (depCheck == -1) {
+                        addCycle(i + 1, startsat);
+                        endlist.add(startsat + 4);
+                        startsat++;
+                    } else {
+                        addIf(i + 1, startsat);
+                        startsat++;
+                        addStall(i + 1, startsat, endlist.get(depCheck) - startsat); //endlist.get(j)-startsat;
+                        startsat = startsat + (endlist.get(depCheck) - startsat) + 1;
+                        addCont(i + 1, startsat);
+                        endlist.add(startsat + 3);
+                    }
+                }
             } else if (instructionlist.get(i).contains("BEQ")) {
-                inst = "BEQ";
-                addCycle(inst);
+                //inst = "BEQ";
+
+                for (j = 0; j < i; j++) {
+                    if (dependencylist.get(i).contains(answerlist.get(j))) {
+                        depCheck = j;
+                    }
+                }
+                if (depCheck == -1) {
+                    addCycle(i + 1, startsat);
+                    endlist.add(startsat + 4);
+                    startsat++;
+                } else {
+                    addIf(i + 1, startsat);
+                    startsat++;
+                    addStall(i + 1, startsat, endlist.get(depCheck) - startsat); //endlist.get(j)-startsat;
+                    startsat = startsat + (endlist.get(depCheck) - startsat) + 1;
+                    addCont(i + 1, startsat);
+                    endlist.add(startsat + 3);
+                }
+
                 cmpR1 = Integer.parseInt(instructionlist.get(i).substring(5, instructionlist.get(i).indexOf(",")));
                 cmpR2 = Integer.parseInt(instructionlist.get(i).substring(instructionlist.get(i).lastIndexOf(", R") + 3, instructionlist.get(i).lastIndexOf(", ")));
                 cmpR1 = checkRegister(cmpR1);
                 cmpR2 = checkRegister(cmpR2);
-                if (cmpR1 == cmpR2) {
-                    cyclelist.add("IF");
-                    //skip
+
+                if (cmpR1 != cmpR2) {
+                } else {
                     label = instructionlist.get(i).substring(instructionlist.get(i).lastIndexOf(", ") + 2);
-                    for (int j = i; j < pclist.size(); j++) {
+
+                    i++;
+                    addIf(i + 1, startsat);
+                    endlist.add(startsat);
+
+                    for (j = i; j < pclist.size(); j++) {
                         if (label.matches(labellist.get(j))) {
                             i = j - 1;
+                            break;
                         }
                     }
+
+                    for (int k = 0; k < j; k++) {
+                        endlist.add(startsat);
+                    }
+                    startsat++;
                 }
             } else if (instructionlist.get(i).contains("J")) {
-                inst = "J";
-                addCycle(inst);
-                cyclelist.add("IF");
-                //skip
-                label = instructionlist.get(i).substring(2);
-                for (int j = i; j < pclist.size(); j++) {
+                addCycle(i + 1, startsat);
+                endlist.add(startsat + 4);
+                startsat++;
+
+                label = instructionlist.get(i).substring(instructionlist.get(i).indexOf(" ") + 1);
+
+                i++;
+                addIf(i + 1, startsat);
+                endlist.add(startsat);
+
+                for (j = i; j < pclist.size(); j++) {
                     if (label.matches(labellist.get(j))) {
                         i = j - 1;
+                        break;
                     }
                 }
+                for (int k = 0; k < j; k++) {
+                    endlist.add(startsat);
+                }
+                startsat++;
             }
         }
+
+        //display
         for (int i = 0; i < cyclelist.size(); i++) {
-            jTextArea3.setText(jTextArea3.getText() + '\n' + "Cycle " + (i+1) + ": " + cyclelist.get(i));
+            pipelinemodel.addColumn("Cycle " + (i + 1));
+            //jTextArea3.setText(jTextArea3.getText() + '\n' + "Cycle " + (i + 1) + ": " + cyclelist.get(i));
         }
+        for(int i=0; i<pclist.size(); i++) {
+            Object[] obj = {instructionlist.get(i)};
+            pipelinemodel.addRow(obj);
+        }
+        /*
+        for (int i = 0; i < cyclelist.size(); i++) {
+            Object[] obj = {};
+        }
+        */
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private String IntToHex(int r) {
         String tempReg = Integer.toHexString(r);
-        if(tempReg.length()!=16) {
+        if (tempReg.length() < 16) {
             temp = "";
-            for(int i=0; i<16-tempReg.length(); i++) {
-                temp = temp+"0";
+            for (int i = 0; i < 16 - tempReg.length(); i++) {
+                temp = temp + "0";
             }
             tempReg = temp + tempReg;
         }
         return tempReg;
     }
-    
+
     private void jTextField6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField6MouseClicked
         // TODO add your handling code here:
         String tempR1 = IntToHex(r1);
         tempR1 = JOptionPane.showInputDialog("Enter R1", tempR1);
-        
-        if(tempR1.matches("") || tempR1.length()>16) { //erro checking
-            
+
+        m = immediate.matcher(tempR1);
+        if (tempR1.matches("") || tempR1.length() > 16 || m.find()) { //erro checking
+
         } else {
             r1 = Integer.parseInt(tempR1, 16);
+            tempR1 = IntToHex(r1);
             jTextField6.setText(tempR1);
         }
     }//GEN-LAST:event_jTextField6MouseClicked
@@ -2435,11 +2465,13 @@ public class NewJFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         String tempR2 = IntToHex(r2);
         tempR2 = JOptionPane.showInputDialog("Enter R2", tempR2);
-        
-        if(tempR2.matches("") || tempR2.length()>16) {
-            
+
+        m = immediate.matcher(tempR2);
+        if (tempR2.matches("") || tempR2.length() > 16 || m.find()) {
+
         } else {
             r2 = Integer.parseInt(tempR2, 16);
+            tempR2 = IntToHex(r2);
             jTextField7.setText(tempR2);
         }
     }//GEN-LAST:event_jTextField7MouseClicked
@@ -2447,12 +2479,14 @@ public class NewJFrame extends javax.swing.JFrame {
     private void jTextField8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField8MouseClicked
         // TODO add your handling code here:
         String tempR3 = IntToHex(r3);
-        tempR3 = JOptionPane.showInputDialog("Enter R3", r3);
-        
-        if(tempR3.matches("") || tempR3.length()>16) {
-            
+        tempR3 = JOptionPane.showInputDialog("Enter R3", tempR3);
+
+        m = immediate.matcher(tempR3);
+        if (tempR3.matches("") || tempR3.length() > 16 || m.find()) {
+
         } else {
             r3 = Integer.parseInt(tempR3, 16);
+            tempR3 = IntToHex(r3);
             jTextField8.setText(tempR3);
         }
     }//GEN-LAST:event_jTextField8MouseClicked
@@ -2460,12 +2494,14 @@ public class NewJFrame extends javax.swing.JFrame {
     private void jTextField9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField9MouseClicked
         // TODO add your handling code here:
         String tempR4 = IntToHex(r4);
-        tempR4 = JOptionPane.showInputDialog("Enter R4", r4);
-        
-        if(tempR4.matches("") || tempR4.length()>16) {
-            
+        tempR4 = JOptionPane.showInputDialog("Enter R4", tempR4);
+
+        m = immediate.matcher(tempR4);
+        if (tempR4.matches("") || tempR4.length() > 16 || m.find()) {
+
         } else {
             r4 = Integer.parseInt(tempR4, 16);
+            tempR4 = IntToHex(r4);
             jTextField9.setText(tempR4);
         }
     }//GEN-LAST:event_jTextField9MouseClicked
@@ -2473,12 +2509,14 @@ public class NewJFrame extends javax.swing.JFrame {
     private void jTextField10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField10MouseClicked
         // TODO add your handling code here:
         String tempR5 = IntToHex(r5);
-        tempR5 = JOptionPane.showInputDialog("Enter R5", r5);
-        
-        if(tempR5.matches("") || tempR5.length()>16) {
-            
+        tempR5 = JOptionPane.showInputDialog("Enter R5", tempR5);
+
+        m = immediate.matcher(tempR5);
+        if (tempR5.matches("") || tempR5.length() > 16 || m.find()) {
+
         } else {
             r5 = Integer.parseInt(tempR5, 16);
+            tempR5 = IntToHex(r5);
             jTextField10.setText(tempR5);
         }
     }//GEN-LAST:event_jTextField10MouseClicked
@@ -2486,12 +2524,14 @@ public class NewJFrame extends javax.swing.JFrame {
     private void jTextField11MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField11MouseClicked
         // TODO add your handling code here:
         String tempR6 = IntToHex(r6);
-        tempR6 = JOptionPane.showInputDialog("Enter R6", r6);
-        
-        if(tempR6.matches("") || tempR6.length()>16) {
-            
+        tempR6 = JOptionPane.showInputDialog("Enter R6", tempR6);
+
+        m = immediate.matcher(tempR6);
+        if (tempR6.matches("") || tempR6.length() > 16 || m.find()) {
+
         } else {
-            r3 = Integer.parseInt(tempR6, 16);
+            r6 = Integer.parseInt(tempR6, 16);
+            tempR6 = IntToHex(r6);
             jTextField11.setText(tempR6);
         }
     }//GEN-LAST:event_jTextField11MouseClicked
@@ -2499,12 +2539,14 @@ public class NewJFrame extends javax.swing.JFrame {
     private void jTextField12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField12MouseClicked
         // TODO add your handling code here:
         String tempR7 = IntToHex(r7);
-        tempR7 = JOptionPane.showInputDialog("Enter R7", r7);
-        
-        if(tempR7.matches("") || tempR7.length()>16) {
-            
+        tempR7 = JOptionPane.showInputDialog("Enter R7", tempR7);
+
+        m = immediate.matcher(tempR7);
+        if (tempR7.matches("") || tempR7.length() > 16 || m.find()) {
+
         } else {
             r7 = Integer.parseInt(tempR7, 16);
+            tempR7 = IntToHex(r7);
             jTextField12.setText(tempR7);
         }
     }//GEN-LAST:event_jTextField12MouseClicked
@@ -2512,12 +2554,14 @@ public class NewJFrame extends javax.swing.JFrame {
     private void jTextField13MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField13MouseClicked
         // TODO add your handling code here:
         String tempR8 = IntToHex(r8);
-        tempR8 = JOptionPane.showInputDialog("Enter R8", r8);
-        
-        if(tempR8.matches("") || tempR8.length()>16) {
-            
+        tempR8 = JOptionPane.showInputDialog("Enter R8", tempR8);
+
+        m = immediate.matcher(tempR8);
+        if (tempR8.matches("") || tempR8.length() > 16 || m.find()) {
+
         } else {
             r8 = Integer.parseInt(tempR8, 16);
+            tempR8 = IntToHex(r8);
             jTextField13.setText(tempR8);
         }
     }//GEN-LAST:event_jTextField13MouseClicked
@@ -2525,12 +2569,14 @@ public class NewJFrame extends javax.swing.JFrame {
     private void jTextField14MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField14MouseClicked
         // TODO add your handling code here:
         String tempR9 = IntToHex(r9);
-        tempR9 = JOptionPane.showInputDialog("Enter R9", r9);
-        
-        if(tempR9.matches("") || tempR9.length()>16) {
-            
+        tempR9 = JOptionPane.showInputDialog("Enter R9", tempR9);
+
+        m = immediate.matcher(tempR9);
+        if (tempR9.matches("") || tempR9.length() > 16 || m.find()) {
+
         } else {
             r9 = Integer.parseInt(tempR9, 16);
+            tempR9 = IntToHex(r9);
             jTextField14.setText(tempR9);
         }
     }//GEN-LAST:event_jTextField14MouseClicked
@@ -2538,12 +2584,14 @@ public class NewJFrame extends javax.swing.JFrame {
     private void jTextField15MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField15MouseClicked
         // TODO add your handling code here:
         String tempR10 = IntToHex(r10);
-        tempR10 = JOptionPane.showInputDialog("Enter R10", r10);
-        
-        if(tempR10.matches("") || tempR10.length()>16) {
-            
+        tempR10 = JOptionPane.showInputDialog("Enter R10", tempR10);
+
+        m = immediate.matcher(tempR10);
+        if (tempR10.matches("") || tempR10.length() > 16 || m.find()) {
+
         } else {
             r10 = Integer.parseInt(tempR10, 16);
+            tempR10 = IntToHex(r10);
             jTextField15.setText(tempR10);
         }
     }//GEN-LAST:event_jTextField15MouseClicked
@@ -2551,12 +2599,14 @@ public class NewJFrame extends javax.swing.JFrame {
     private void jTextField16MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField16MouseClicked
         // TODO add your handling code here:
         String tempR11 = IntToHex(r11);
-        tempR11 = JOptionPane.showInputDialog("Enter R11", r11);
-        
-        if(tempR11.matches("") || tempR11.length()>16) {
-            
+        tempR11 = JOptionPane.showInputDialog("Enter R11", tempR11);
+
+        m = immediate.matcher(tempR11);
+        if (tempR11.matches("") || tempR11.length() > 16 || m.equals(lo)) {
+
         } else {
             r3 = Integer.parseInt(tempR11, 16);
+            tempR11 = IntToHex(r11);
             jTextField16.setText(tempR11);
         }
     }//GEN-LAST:event_jTextField16MouseClicked
@@ -2564,12 +2614,14 @@ public class NewJFrame extends javax.swing.JFrame {
     private void jTextField17MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField17MouseClicked
         // TODO add your handling code here:
         String tempR12 = IntToHex(r12);
-        tempR12 = JOptionPane.showInputDialog("Enter R12", r12);
-        
-        if(tempR12.matches("") || tempR12.length()>16) {
-            
+        tempR12 = JOptionPane.showInputDialog("Enter R12", tempR12);
+
+        m = immediate.matcher(tempR12);
+        if (tempR12.matches("") || tempR12.length() > 16 || m.find()) {
+
         } else {
             r12 = Integer.parseInt(tempR12, 16);
+            tempR12 = IntToHex(r12);
             jTextField17.setText(tempR12);
         }
     }//GEN-LAST:event_jTextField17MouseClicked
@@ -2577,12 +2629,14 @@ public class NewJFrame extends javax.swing.JFrame {
     private void jTextField18MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField18MouseClicked
         // TODO add your handling code here:
         String tempR13 = IntToHex(r13);
-        tempR13 = JOptionPane.showInputDialog("Enter R13", r13);
-        
-        if(tempR13.matches("") || tempR13.length()>16) {
-            
+        tempR13 = JOptionPane.showInputDialog("Enter R13", tempR13);
+
+        m = immediate.matcher(tempR13);
+        if (tempR13.matches("") || tempR13.length() > 16 || m.find()) {
+
         } else {
             r13 = Integer.parseInt(tempR13, 16);
+            tempR13 = IntToHex(r13);
             jTextField18.setText(tempR13);
         }
     }//GEN-LAST:event_jTextField18MouseClicked
@@ -2590,12 +2644,14 @@ public class NewJFrame extends javax.swing.JFrame {
     private void jTextField19MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField19MouseClicked
         // TODO add your handling code here:
         String tempR14 = IntToHex(r14);
-        tempR14 = JOptionPane.showInputDialog("Enter R14", r14);
-        
-        if(tempR14.matches("") || tempR14.length()>16) {
-            
+        tempR14 = JOptionPane.showInputDialog("Enter R14", tempR14);
+
+        m = immediate.matcher(tempR14);
+        if (tempR14.matches("") || tempR14.length() > 16 || m.equals(lo)) {
+
         } else {
             r14 = Integer.parseInt(tempR14, 16);
+            tempR14 = IntToHex(r14);
             jTextField19.setText(tempR14);
         }
     }//GEN-LAST:event_jTextField19MouseClicked
@@ -2603,12 +2659,14 @@ public class NewJFrame extends javax.swing.JFrame {
     private void jTextField20MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField20MouseClicked
         // TODO add your handling code here:
         String tempR15 = IntToHex(r15);
-        tempR15 = JOptionPane.showInputDialog("Enter R15", r15);
-        
-        if(tempR15.matches("") || tempR15.length()>16) {
-            
+        tempR15 = JOptionPane.showInputDialog("Enter R15", tempR15);
+
+        m = immediate.matcher(tempR15);
+        if (tempR15.matches("") || tempR15.length() > 16 || m.find()) {
+
         } else {
             r15 = Integer.parseInt(tempR15, 16);
+            tempR15 = IntToHex(r15);
             jTextField20.setText(tempR15);
         }
     }//GEN-LAST:event_jTextField20MouseClicked
@@ -2616,12 +2674,14 @@ public class NewJFrame extends javax.swing.JFrame {
     private void jTextField21MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField21MouseClicked
         // TODO add your handling code here:
         String tempR16 = IntToHex(r16);
-        tempR16 = JOptionPane.showInputDialog("Enter R16", r16);
-        
-        if(tempR16.matches("") || tempR16.length()>16) {
-            
+        tempR16 = JOptionPane.showInputDialog("Enter R16", tempR16);
+
+        m = immediate.matcher(tempR16);
+        if (tempR16.matches("") || tempR16.length() > 16 || m.find()) {
+
         } else {
             r16 = Integer.parseInt(tempR16, 16);
+            tempR16 = IntToHex(r16);
             jTextField21.setText(tempR16);
         }
     }//GEN-LAST:event_jTextField21MouseClicked
@@ -2629,12 +2689,14 @@ public class NewJFrame extends javax.swing.JFrame {
     private void jTextField22MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField22MouseClicked
         // TODO add your handling code here:
         String tempR17 = IntToHex(r17);
-        tempR17 = JOptionPane.showInputDialog("Enter R17", r17);
-        
-        if(tempR17.matches("") || tempR17.length()>16) {
-            
+        tempR17 = JOptionPane.showInputDialog("Enter R17", tempR17);
+
+        m = immediate.matcher(tempR17);
+        if (tempR17.matches("") || tempR17.length() > 16 || m.find()) {
+
         } else {
             r17 = Integer.parseInt(tempR17, 16);
+            tempR17 = IntToHex(r17);
             jTextField22.setText(tempR17);
         }
     }//GEN-LAST:event_jTextField22MouseClicked
@@ -2642,12 +2704,14 @@ public class NewJFrame extends javax.swing.JFrame {
     private void jTextField23MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField23MouseClicked
         // TODO add your handling code here:
         String tempR18 = IntToHex(r18);
-        tempR18 = JOptionPane.showInputDialog("Enter R18", r18);
-        
-        if(tempR18.matches("") || tempR18.length()>16) {
-            
+        tempR18 = JOptionPane.showInputDialog("Enter R18", tempR18);
+
+        m = immediate.matcher(tempR18);
+        if (tempR18.matches("") || tempR18.length() > 16 || m.find()) {
+
         } else {
             r18 = Integer.parseInt(tempR18, 16);
+            tempR18 = IntToHex(r18);
             jTextField23.setText(tempR18);
         }
     }//GEN-LAST:event_jTextField23MouseClicked
@@ -2655,12 +2719,14 @@ public class NewJFrame extends javax.swing.JFrame {
     private void jTextField24MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField24MouseClicked
         // TODO add your handling code here:
         String tempR19 = IntToHex(r19);
-        tempR19 = JOptionPane.showInputDialog("Enter R19", r19);
-        
-        if(tempR19.matches("") || tempR19.length()>16) {
-            
+        tempR19 = JOptionPane.showInputDialog("Enter R19", tempR19);
+
+        m = immediate.matcher(tempR19);
+        if (tempR19.matches("") || tempR19.length() > 16 || m.find()) {
+
         } else {
             r19 = Integer.parseInt(tempR19, 16);
+            tempR19 = IntToHex(r19);
             jTextField24.setText(tempR19);
         }
     }//GEN-LAST:event_jTextField24MouseClicked
@@ -2668,12 +2734,14 @@ public class NewJFrame extends javax.swing.JFrame {
     private void jTextField25MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField25MouseClicked
         // TODO add your handling code here:
         String tempR20 = IntToHex(r20);
-        tempR20 = JOptionPane.showInputDialog("Enter R20", r20);
-        
-        if(tempR20.matches("") || tempR20.length()>16) {
-            
+        tempR20 = JOptionPane.showInputDialog("Enter R20", tempR20);
+
+        m = immediate.matcher(tempR20);
+        if (tempR20.matches("") || tempR20.length() > 16 || m.find()) {
+
         } else {
             r20 = Integer.parseInt(tempR20, 16);
+            tempR20 = IntToHex(r20);
             jTextField25.setText(tempR20);
         }
     }//GEN-LAST:event_jTextField25MouseClicked
@@ -2681,12 +2749,14 @@ public class NewJFrame extends javax.swing.JFrame {
     private void jTextField26MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField26MouseClicked
         // TODO add your handling code here:
         String tempR21 = IntToHex(r21);
-        tempR21 = JOptionPane.showInputDialog("Enter R21", r21);
-        
-        if(tempR21.matches("") || tempR21.length()>16) {
-            
+        tempR21 = JOptionPane.showInputDialog("Enter R21", tempR21);
+
+        m = immediate.matcher(tempR21);
+        if (tempR21.matches("") || tempR21.length() > 16 || m.find()) {
+
         } else {
             r21 = Integer.parseInt(tempR21, 16);
+            tempR21 = IntToHex(r21);
             jTextField26.setText(tempR21);
         }
     }//GEN-LAST:event_jTextField26MouseClicked
@@ -2694,12 +2764,14 @@ public class NewJFrame extends javax.swing.JFrame {
     private void jTextField27MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField27MouseClicked
         // TODO add your handling code here:
         String tempR22 = IntToHex(r22);
-        tempR22 = JOptionPane.showInputDialog("Enter R22", r22);
-        
-        if(tempR22.matches("") || tempR22.length()>16) {
-            
+        tempR22 = JOptionPane.showInputDialog("Enter R22", tempR22);
+
+        m = immediate.matcher(tempR22);
+        if (tempR22.matches("") || tempR22.length() > 16 || m.find()) {
+
         } else {
             r22 = Integer.parseInt(tempR22, 16);
+            tempR22 = IntToHex(r22);
             jTextField27.setText(tempR22);
         }
     }//GEN-LAST:event_jTextField27MouseClicked
@@ -2707,12 +2779,14 @@ public class NewJFrame extends javax.swing.JFrame {
     private void jTextField28MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField28MouseClicked
         // TODO add your handling code here:
         String tempR23 = IntToHex(r23);
-        tempR23 = JOptionPane.showInputDialog("Enter R23", r23);
-        
-        if(tempR23.matches("") || tempR23.length()>16) {
-            
+        tempR23 = JOptionPane.showInputDialog("Enter R23", tempR23);
+
+        m = immediate.matcher(tempR23);
+        if (tempR23.matches("") || tempR23.length() > 16 || m.find()) {
+
         } else {
             r23 = Integer.parseInt(tempR23, 16);
+            tempR23 = IntToHex(r23);
             jTextField29.setText(tempR23);
         }
     }//GEN-LAST:event_jTextField28MouseClicked
@@ -2720,12 +2794,14 @@ public class NewJFrame extends javax.swing.JFrame {
     private void jTextField29MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField29MouseClicked
         // TODO add your handling code here:
         String tempR24 = IntToHex(r24);
-        tempR24 = JOptionPane.showInputDialog("Enter R24", r24);
-        
-        if(tempR24.matches("") || tempR24.length()>16) {
-            
+        tempR24 = JOptionPane.showInputDialog("Enter R24", tempR24);
+
+        m = immediate.matcher(tempR24);
+        if (tempR24.matches("") || tempR24.length() > 16 || m.find()) {
+
         } else {
             r24 = Integer.parseInt(tempR24, 16);
+            tempR24 = IntToHex(r24);
             jTextField29.setText(tempR24);
         }
     }//GEN-LAST:event_jTextField29MouseClicked
@@ -2733,12 +2809,14 @@ public class NewJFrame extends javax.swing.JFrame {
     private void jTextField30MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField30MouseClicked
         // TODO add your handling code here:
         String tempR25 = IntToHex(r25);
-        tempR25 = JOptionPane.showInputDialog("Enter R25", r25);
-        
-        if(tempR25.matches("") || tempR25.length()>16) {
-            
+        tempR25 = JOptionPane.showInputDialog("Enter R25", tempR25);
+
+        m = immediate.matcher(tempR25);
+        if (tempR25.matches("") || tempR25.length() > 16 || m.find()) {
+
         } else {
             r25 = Integer.parseInt(tempR25, 16);
+            tempR25 = IntToHex(r25);
             jTextField30.setText(tempR25);
         }
     }//GEN-LAST:event_jTextField30MouseClicked
@@ -2746,12 +2824,14 @@ public class NewJFrame extends javax.swing.JFrame {
     private void jTextField31MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField31MouseClicked
         // TODO add your handling code here:
         String tempR26 = IntToHex(r26);
-        tempR26 = JOptionPane.showInputDialog("Enter R26", r26);
-        
-        if(tempR26.matches("") || tempR26.length()>16) {
-            
+        tempR26 = JOptionPane.showInputDialog("Enter R26", tempR26);
+
+        m = immediate.matcher(tempR26);
+        if (tempR26.matches("") || tempR26.length() > 16 || m.find()) {
+
         } else {
             r26 = Integer.parseInt(tempR26, 16);
+            tempR26 = IntToHex(r26);
             jTextField31.setText(tempR26);
         }
     }//GEN-LAST:event_jTextField31MouseClicked
@@ -2759,12 +2839,14 @@ public class NewJFrame extends javax.swing.JFrame {
     private void jTextField32MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField32MouseClicked
         // TODO add your handling code here:
         String tempR27 = IntToHex(r27);
-        tempR27 = JOptionPane.showInputDialog("Enter R27", r27);
-        
-        if(tempR27.matches("") || tempR27.length()>16) {
-            
+        tempR27 = JOptionPane.showInputDialog("Enter R27", tempR27);
+
+        m = immediate.matcher(tempR27);
+        if (tempR27.matches("") || tempR27.length() > 16 || m.find()) {
+
         } else {
             r27 = Integer.parseInt(tempR27, 16);
+            tempR27 = IntToHex(r27);
             jTextField32.setText(tempR27);
         }
     }//GEN-LAST:event_jTextField32MouseClicked
@@ -2772,12 +2854,14 @@ public class NewJFrame extends javax.swing.JFrame {
     private void jTextField33MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField33MouseClicked
         // TODO add your handling code here:
         String tempR28 = IntToHex(r28);
-        tempR28 = JOptionPane.showInputDialog("Enter R28", r28);
-        
-        if(tempR28.matches("") || tempR28.length()>16) {
-            
+        tempR28 = JOptionPane.showInputDialog("Enter R28", tempR28);
+
+        m = immediate.matcher(tempR28);
+        if (tempR28.matches("") || tempR28.length() > 16 || m.find()) {
+
         } else {
             r28 = Integer.parseInt(tempR28, 16);
+            tempR28 = IntToHex(r28);
             jTextField33.setText(tempR28);
         }
     }//GEN-LAST:event_jTextField33MouseClicked
@@ -2785,12 +2869,14 @@ public class NewJFrame extends javax.swing.JFrame {
     private void jTextField34MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField34MouseClicked
         // TODO add your handling code here:
         String tempR29 = IntToHex(r29);
-        tempR29 = JOptionPane.showInputDialog("Enter R29", r29);
-        
-        if(tempR29.matches("") || tempR29.length()>16) {
-            
+        tempR29 = JOptionPane.showInputDialog("Enter R29", tempR29);
+
+        m = immediate.matcher(tempR29);
+        if (tempR29.matches("") || tempR29.length() > 16 || m.find()) {
+
         } else {
-            r3 = Integer.parseInt(tempR29, 16);
+            r29 = Integer.parseInt(tempR29, 16);
+            tempR29 = IntToHex(r29);
             jTextField34.setText(tempR29);
         }
     }//GEN-LAST:event_jTextField34MouseClicked
@@ -2798,12 +2884,14 @@ public class NewJFrame extends javax.swing.JFrame {
     private void jTextField35MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField35MouseClicked
         // TODO add your handling code here:
         String tempR30 = IntToHex(r30);
-        tempR30 = JOptionPane.showInputDialog("Enter R30", r30);
-        
-        if(tempR30.matches("") || tempR30.length()>16) {
-            
+        tempR30 = JOptionPane.showInputDialog("Enter R30", tempR30);
+
+        m = immediate.matcher(tempR30);
+        if (tempR30.matches("") || tempR30.length() > 16 || m.find()) {
+
         } else {
             r30 = Integer.parseInt(tempR30, 16);
+            tempR30 = IntToHex(r30);
             jTextField35.setText(tempR30);
         }
     }//GEN-LAST:event_jTextField35MouseClicked
@@ -2811,12 +2899,14 @@ public class NewJFrame extends javax.swing.JFrame {
     private void jTextField36MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField36MouseClicked
         // TODO add your handling code here:
         String tempR31 = IntToHex(r31);
-        tempR31 = JOptionPane.showInputDialog("Enter R31", r31);
-        
-        if(tempR31.matches("") || tempR31.length()>16) {
-            
+        tempR31 = JOptionPane.showInputDialog("Enter R31", tempR31);
+
+        m = immediate.matcher(tempR31);
+        if (tempR31.matches("") || tempR31.length() > 16 || m.find()) {
+
         } else {
             r31 = Integer.parseInt(tempR31, 16);
+            tempR31 = IntToHex(r31);
             jTextField36.setText(tempR31);
         }
     }//GEN-LAST:event_jTextField36MouseClicked
@@ -2824,12 +2914,14 @@ public class NewJFrame extends javax.swing.JFrame {
     private void jTextField37MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField37MouseClicked
         // TODO add your handling code here:
         String tempHI = IntToHex(hi);
-        tempHI = JOptionPane.showInputDialog("Enter HI", hi);
-        
-        if(tempHI.matches("") || tempHI.length()>16) {
-            
+        tempHI = JOptionPane.showInputDialog("Enter HI", tempHI);
+
+        m = immediate.matcher(tempHI);
+        if (tempHI.matches("") || tempHI.length() > 16 || m.find()) {
+
         } else {
             hi = Integer.parseInt(tempHI, 16);
+            tempHI = IntToHex(hi);
             jTextField37.setText(tempHI);
         }
     }//GEN-LAST:event_jTextField37MouseClicked
@@ -2837,15 +2929,66 @@ public class NewJFrame extends javax.swing.JFrame {
     private void jTextField38MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField38MouseClicked
         // TODO add your handling code here:
         String tempLO = IntToHex(lo);
-        tempLO = JOptionPane.showInputDialog("Enter LO", lo);
-        
-        if(tempLO.matches("") || tempLO.length()>16) {
-            
+        tempLO = JOptionPane.showInputDialog("Enter LO", tempLO);
+
+        m = immediate.matcher(tempLO);
+        if (tempLO.matches("") || tempLO.length() > 16 || m.find()) {
+
         } else {
             lo = Integer.parseInt(tempLO, 16);
+            tempLO = IntToHex(lo);
             jTextField38.setText(tempLO);
         }
     }//GEN-LAST:event_jTextField38MouseClicked
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        // TODO add your handling code here:
+        String mem = "", value = "", newval = "";
+        int row = jTable1.getSelectedRow();
+        mem = Integer.toHexString((row * 4) + 8192);
+
+        //get value from arraylist data segment
+        value = datasegment.get(row);
+
+        temp = "";
+        for (int j = 0; j < 8 - value.length(); j++) {
+            temp = temp + "0";
+        }
+        value = temp + value;
+
+        newval = JOptionPane.showInputDialog(mem, value);
+
+        m = immediate.matcher(newval);
+        if (m.find() || newval.length() > 8 || newval.matches("")) {
+
+        } else {
+            temp = "";
+            for (int i = 0; i < 8 - newval.length(); i++) {
+                temp = temp + "0";
+            }
+            newval = temp + newval;
+
+            //store value to arraylist data segment
+            datasegment.set(row, newval);
+
+            datasegmentmodel.getDataVector().removeAllElements();
+            datasegmentmodel.fireTableDataChanged();
+
+            //display
+            for (int i = 0; i < 2048; i++) {
+                newval = "";
+                mem = Integer.toHexString((i * 4) + 8192);
+                value = datasegment.get(i);
+                temp = "";
+                for (int j = 0; j < 8 - value.length(); j++) {
+                    temp = temp + "0";
+                }
+                newval = temp + value;
+                Object[] obj = {mem, newval};
+                datasegmentmodel.addRow(obj);
+            }
+        }
+    }//GEN-LAST:event_jTable1MouseClicked
 
     /**
      * @param args the command line arguments
@@ -2961,6 +3104,7 @@ public class NewJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel58;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
@@ -2968,6 +3112,7 @@ public class NewJFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel14;
+    private javax.swing.JPanel jPanel15;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
@@ -2978,13 +3123,16 @@ public class NewJFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
-    private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
+    private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
     private javax.swing.JTable jTable3;
-    private javax.swing.JTextArea jTextArea3;
+    private javax.swing.JTable jTable4;
+    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField10;
     private javax.swing.JTextField jTextField11;
