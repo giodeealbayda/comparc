@@ -11,7 +11,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 
 public class NewJFrame extends javax.swing.JFrame {
 
@@ -94,15 +96,15 @@ public class NewJFrame extends javax.swing.JFrame {
         pipeline.add("EX");
         pipeline.add("MEM");
         pipeline.add("WB");
-        
-        //set size for opcode table
-        
+
         TableColumn column = null;
-        for(int i=0; i<6; i++) {
+
+        //set size for opcode table
+        for (int i = 0; i < 6; i++) {
             column = jTable3.getColumnModel().getColumn(i);
-            if(i==0) {
+            if (i == 0) {
                 column.setPreferredWidth(175);
-            } else if(i==5) {
+            } else if (i == 5) {
                 column.setPreferredWidth(150);
             } else {
                 column.setPreferredWidth(50);
@@ -255,14 +257,17 @@ public class NewJFrame extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jLabel58 = new javax.swing.JLabel();
+        jTextField40 = new javax.swing.JTextField();
         jPanel14 = new javax.swing.JPanel();
         jScrollPane5 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
         jLabel18 = new javax.swing.JLabel();
+        jTextField41 = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         jPanel15 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
+        jRadioButton1 = new javax.swing.JRadioButton();
 
         jLabel12.setText("jLabel12");
 
@@ -630,29 +635,11 @@ public class NewJFrame extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Instruction"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false
-            };
 
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
             }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
+        ));
         jTable4.getTableHeader().setReorderingAllowed(false);
         jScrollPane4.setViewportView(jTable4);
-        if (jTable4.getColumnModel().getColumnCount() > 0) {
-            jTable4.getColumnModel().getColumn(0).setResizable(false);
-        }
 
         jScrollPane8.setViewportView(jScrollPane4);
 
@@ -660,20 +647,22 @@ public class NewJFrame extends javax.swing.JFrame {
         jPanel10.setLayout(jPanel10Layout);
         jPanel10Layout.setHorizontalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel10Layout.createSequentialGroup()
+            .addGroup(jPanel10Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 551, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 727, Short.MAX_VALUE)
+                    .addGroup(jPanel10Layout.createSequentialGroup()
+                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel10Layout.setVerticalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel10Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton4)
-                    .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(6, 6, 6)
+                .addComponent(jButton4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -1390,6 +1379,22 @@ public class NewJFrame extends javax.swing.JFrame {
 
         jLabel58.setText("Data Segment");
 
+        jTextField40.setForeground(new java.awt.Color(153, 153, 153));
+        jTextField40.setText("Search");
+        jTextField40.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jTextField40FocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jTextField40FocusLost(evt);
+            }
+        });
+        jTextField40.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextField40KeyReleased(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel13Layout = new javax.swing.GroupLayout(jPanel13);
         jPanel13.setLayout(jPanel13Layout);
         jPanel13Layout.setHorizontalGroup(
@@ -1400,16 +1405,19 @@ public class NewJFrame extends javax.swing.JFrame {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addGroup(jPanel13Layout.createSequentialGroup()
                         .addComponent(jLabel58)
-                        .addGap(0, 168, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 88, Short.MAX_VALUE)
+                        .addComponent(jTextField40, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel13Layout.setVerticalGroup(
             jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel13Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel58)
+                .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel58)
+                    .addComponent(jTextField40, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 474, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 468, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -1440,22 +1448,43 @@ public class NewJFrame extends javax.swing.JFrame {
 
         jLabel18.setText("Code Segment");
 
+        jTextField41.setForeground(new java.awt.Color(153, 153, 153));
+        jTextField41.setText("Search");
+        jTextField41.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jTextField41FocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jTextField41FocusLost(evt);
+            }
+        });
+        jTextField41.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextField41KeyReleased(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel14Layout = new javax.swing.GroupLayout(jPanel14);
         jPanel14.setLayout(jPanel14Layout);
         jPanel14Layout.setHorizontalGroup(
             jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel14Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel18))
+                    .addGroup(jPanel14Layout.createSequentialGroup()
+                        .addComponent(jLabel18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jTextField41, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel14Layout.setVerticalGroup(
             jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel14Layout.createSequentialGroup()
-                .addGap(10, 10, 10)
-                .addComponent(jLabel18)
+                .addGap(7, 7, 7)
+                .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel18)
+                    .addComponent(jTextField41, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                 .addContainerGap())
@@ -1470,19 +1499,32 @@ public class NewJFrame extends javax.swing.JFrame {
         jTextArea1.setRows(5);
         jScrollPane3.setViewportView(jTextArea1);
 
+        jRadioButton1.setText("jRadioButton1");
+        jRadioButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jRadioButton1MouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel15Layout = new javax.swing.GroupLayout(jPanel15);
         jPanel15.setLayout(jPanel15Layout);
         jPanel15Layout.setHorizontalGroup(
             jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel15Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane3)
+                .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel15Layout.createSequentialGroup()
+                        .addComponent(jRadioButton1)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane3))
                 .addContainerGap())
         );
         jPanel15Layout.setVerticalGroup(
             jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel15Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
+                .addComponent(jRadioButton1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -2178,7 +2220,7 @@ public class NewJFrame extends javax.swing.JFrame {
                 }
             }
         }
-        
+
         if (proceed) {
             int intvalue = 0;
             String binvalue = "";
@@ -2331,6 +2373,7 @@ public class NewJFrame extends javax.swing.JFrame {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
+        jButton4.setEnabled(false);
         String label;
         int cmpR1, cmpR2, startsat = 0;
         int depCheck = -1, j = 0;
@@ -2437,21 +2480,46 @@ public class NewJFrame extends javax.swing.JFrame {
             }
         }
 
-        //display
-        for (int i = 0; i < cyclelist.size(); i++) {
-            pipelinemodel.addColumn("Cycle " + (i + 1));
+        //display pipeline map
+        pipelinemodel.setColumnCount(cyclelist.size() + 1);
+        pipelinemodel.fireTableStructureChanged();
+
+        JTableHeader th = jTable4.getTableHeader();
+        TableColumnModel tcm = th.getColumnModel();
+        TableColumn tc = tcm.getColumn(0);
+        tc.setHeaderValue("Instruction");
+
+        for (int i = 1; i <= cyclelist.size(); i++) {
+            tc = tcm.getColumn(i);
+            tc.setHeaderValue("Cycle " + i);
             //jTextArea3.setText(jTextArea3.getText() + '\n' + "Cycle " + (i + 1) + ": " + cyclelist.get(i));
         }
+        th.repaint();
+        pipelinemodel.fireTableDataChanged();
 
-        for (int i = 0; i < pclist.size(); i++) {
-            Object[] obj = {instructionlist.get(i)};
+        for (int i = 0; i < instructionlist.size(); i++) {
+            Object[] obj = {instructionlist.get(i).toString()};
             pipelinemodel.addRow(obj);
         }
-        /*
-         for (int i = 0; i < cyclelist.size(); i++) {
-         Object[] obj = {};
-         }
-         */
+
+        int start, last, index;
+        String data = "";
+        for (j = 0; j < pclist.size(); j++) {
+            index = j + 1;
+            for (int i = 0; i < cyclelist.size(); i++) {
+                if (cyclelist.get(i).contains("Inst" + index)) {
+                    start = cyclelist.get(i).indexOf(String.valueOf(index)) + 2;
+                    last = cyclelist.get(i).indexOf(",", start);
+                    if (last == -1) {
+                        data = cyclelist.get(i).substring(start);
+                    } else {
+                        data = cyclelist.get(i).substring(start, last);
+                    }
+                    pipelinemodel.setValueAt(data, j, i + 1); //row, column
+                }
+            }
+        }
+        pipelinemodel.fireTableDataChanged();
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private String IntToHex(int r) {
@@ -3010,6 +3078,75 @@ public class NewJFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jTable1MouseClicked
 
+    private void jTextField40KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField40KeyReleased
+        // TODO add your handling code here:
+        String mem = jTextField40.getText();
+    }//GEN-LAST:event_jTextField40KeyReleased
+
+    private void jTextField40FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField40FocusGained
+        // TODO add your handling code here:
+        jTextField40.setText("");
+    }//GEN-LAST:event_jTextField40FocusGained
+
+    private void jTextField40FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField40FocusLost
+        // TODO add your handling code here:
+        jTextField40.setText("Search");
+    }//GEN-LAST:event_jTextField40FocusLost
+
+    private void jTextField41KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField41KeyReleased
+        // TODO add your handling code here:
+        String mem = jTextField41.getText();
+    }//GEN-LAST:event_jTextField41KeyReleased
+
+    private void jTextField41FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField41FocusGained
+        // TODO add your handling code here:
+        jTextField41.setText("");
+    }//GEN-LAST:event_jTextField41FocusGained
+
+    private void jTextField41FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField41FocusLost
+        // TODO add your handling code here:
+        jTextField41.setText("Search");
+    }//GEN-LAST:event_jTextField41FocusLost
+
+    private void jRadioButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jRadioButton1MouseClicked
+        // TODO add your handling code here:
+        int inst=-1;
+        String[] data;
+        for (int i = 0; i < cyclelist.size(); i++) {
+            data = cyclelist.get(i).split(", ");
+            /*
+            if (cyclelist.get(i).contains("Inst" + index)) {
+                start = cyclelist.get(i).indexOf(String.valueOf(index)) + 2;
+                last = cyclelist.get(i).indexOf(",", start);
+                if (last == -1) {
+                    data = cyclelist.get(i).substring(start);
+                } else {
+                    data = cyclelist.get(i).substring(start, last);
+                }
+                System.out.println(data);
+                pipelinemodel.setValueAt(data, j, i + 1); //row, column
+            }
+            */
+            //System.out.println("Cycle "+(i+1));
+            for(int j=0; j<data.length; j++) {
+                //inst = Integer.valueOf(String.valueOf(data[j].charAt(5)));
+                System.out.println(inst);
+                if(data[j].contains("IF")) {
+                    
+                } else if(data[j].contains("EX")) {
+                    
+                } else if(data[j].contains("MEM")) {
+                    
+                } else if(data[j].contains("WB")) {
+                    
+                } else {
+                    
+                }
+                //System.out.println(data[j]);
+            }
+        }
+    }//GEN-LAST:event_jRadioButton1MouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -3141,6 +3278,7 @@ public class NewJFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
+    private javax.swing.JRadioButton jRadioButton1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
@@ -3187,6 +3325,8 @@ public class NewJFrame extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField38;
     private javax.swing.JTextField jTextField39;
     private javax.swing.JTextField jTextField4;
+    private javax.swing.JTextField jTextField40;
+    private javax.swing.JTextField jTextField41;
     private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField6;
     private javax.swing.JTextField jTextField7;
