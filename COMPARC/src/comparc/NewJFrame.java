@@ -21,18 +21,10 @@ public class NewJFrame extends javax.swing.JFrame {
     /**
      * Creates new form NewJFrame
      */
-    int rd, rs, rt;
-    int opcode;
-    int pc = 0;
-    int pcTarget = -1;
-    boolean check = false;
+    int rd, rs, rt, opcode, pc = 0, func = 0;
     boolean proceed = true;
-    String instruction, labeladdress;
-    String rdbin, rsbin, rtbin, opcodebin, temp = "", offsetbin, addressbin;
-    String pcBin;
-    int func = 0;
-    String addbin = "", funcbin;
-    String addresshex = "";
+    String rdbin, rsbin, rtbin, opcodebin, temp = "", offsetbin, addressbin, instruction, labeladdress;
+    String addbin = "", funcbin, addresshex = "";
     int r1 = 0, r2 = 0, r3 = 0, r4 = 0, r5 = 0, r6 = 0, r7 = 0, r8 = 0, r9 = 0, r10 = 0,
             r11 = 0, r12 = 0, r13 = 0, r14 = 0, r15 = 0, r16 = 0, r17 = 0, r18 = 0, r19 = 0, r20 = 0,
             r21 = 0, r22 = 0, r23 = 0, r24 = 0, r25 = 0, r26 = 0, r27 = 0, r28 = 0, r29 = 0, r30 = 0,
@@ -47,7 +39,6 @@ public class NewJFrame extends javax.swing.JFrame {
 
     Instruction tempinst = new Instruction();
     ArrayList<Instruction> instlist = new ArrayList<Instruction>();
-    int index = 0;
     ArrayList<String> cyclelist = new ArrayList<String>();
 
     DefaultTableModel opcodemodel;
@@ -107,10 +98,6 @@ public class NewJFrame extends javax.swing.JFrame {
                 column.setPreferredWidth(50);
             }
         }
-    }
-
-    public void generateOpcode(ArrayList<String> pclist, ArrayList<String> instructionlist) {
-
     }
 
     /**
@@ -262,9 +249,10 @@ public class NewJFrame extends javax.swing.JFrame {
         jTextField41 = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         jPanel15 = new javax.swing.JPanel();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
-        jRadioButton1 = new javax.swing.JRadioButton();
+        jPanel16 = new javax.swing.JPanel();
+        jPanel17 = new javax.swing.JPanel();
+        jButton5 = new javax.swing.JButton();
+        jButton6 = new javax.swing.JButton();
 
         jLabel12.setText("jLabel12");
 
@@ -323,10 +311,11 @@ public class NewJFrame extends javax.swing.JFrame {
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -534,10 +523,11 @@ public class NewJFrame extends javax.swing.JFrame {
                     .addComponent(jLabel17)
                     .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox12, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jTextField3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jComboBox12, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jComboBox11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(23, Short.MAX_VALUE))
         );
 
@@ -1450,7 +1440,7 @@ public class NewJFrame extends javax.swing.JFrame {
                     .addComponent(jLabel58)
                     .addComponent(jTextField40, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 468, Short.MAX_VALUE)
+                .addComponent(jScrollPane1)
                 .addContainerGap())
         );
 
@@ -1528,14 +1518,32 @@ public class NewJFrame extends javax.swing.JFrame {
 
         jPanel15.setBackground(new java.awt.Color(204, 204, 204));
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane3.setViewportView(jTextArea1);
+        jPanel16.setLayout(new java.awt.CardLayout());
 
-        jRadioButton1.setText("jRadioButton1");
-        jRadioButton1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jRadioButton1MouseClicked(evt);
+        javax.swing.GroupLayout jPanel17Layout = new javax.swing.GroupLayout(jPanel17);
+        jPanel17.setLayout(jPanel17Layout);
+        jPanel17Layout.setHorizontalGroup(
+            jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        jPanel17Layout.setVerticalGroup(
+            jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        jPanel16.add(jPanel17, "card2");
+
+        jButton5.setText("Single");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+
+        jButton6.setText("Full");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
             }
         });
 
@@ -1544,21 +1552,27 @@ public class NewJFrame extends javax.swing.JFrame {
         jPanel15Layout.setHorizontalGroup(
             jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel15Layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel15Layout.createSequentialGroup()
-                        .addComponent(jRadioButton1)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane3))
+                        .addContainerGap()
+                        .addComponent(jPanel16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel15Layout.createSequentialGroup()
+                        .addGap(106, 106, 106)
+                        .addComponent(jButton5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton6)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel15Layout.setVerticalGroup(
             jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel15Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jRadioButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton5)
+                    .addComponent(jButton6))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel16, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -1607,17 +1621,22 @@ public class NewJFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private String padZeros(String str, int num) {
+        temp = "";
+        if (str.length() < num) {
+            for (int i = 0; i < num - str.length(); i++) {
+                temp = temp + "0";
+            }
+            str = temp + str;
+        }
+        return str;
+    }
+
     private void InitializeCS() {
         String addTemp = "", repTemp = "00000000";
         for (int i = 0; i < 2048; i++) {
             addTemp = Integer.toHexString(i * 4);
-            if (addTemp.length() < 4) {
-                temp = "";
-                for (int j = 0; j < 4 - addTemp.length(); j++) {
-                    temp = temp + "0";
-                }
-                addTemp = temp + addTemp;
-            }
+            addTemp = padZeros(addTemp, 4);
             Object[] obj = {addTemp, repTemp};
             codesegmentmodel.addRow(obj);
         }
@@ -1630,13 +1649,7 @@ public class NewJFrame extends javax.swing.JFrame {
         String addTemp = "", repTemp = "00000000";
         for (int i = 2048; i < 4096; i++) {
             addTemp = Integer.toHexString(i * 4);
-            if (addTemp.length() < 4) {
-                temp = "";
-                for (int j = 0; j < 4 - addTemp.length(); j++) {
-                    temp = temp + "0";
-                }
-                addTemp = temp + addTemp;
-            }
+            addTemp = padZeros(addTemp, 4);
             Object[] obj = {addTemp, repTemp};
             datasegmentmodel.addRow(obj);
         }
@@ -1756,35 +1769,19 @@ public class NewJFrame extends javax.swing.JFrame {
 
                 //rs binary
                 rsbin = Integer.toBinaryString(rs);
-                if (rsbin.length() != 5) {
-                    for (int i = 0; i < 5 - rsbin.length(); i++) {
-                        temp = temp + "0";
-                    }
-                }
-                rsbin = temp + rsbin;
+                rsbin = padZeros(rsbin, 5);
 
                 //rt binary
                 temp = "";
                 rtbin = Integer.toBinaryString(rt);
-                if (rtbin.length() != 5) {
-                    for (int i = 0; i < 5 - rtbin.length(); i++) {
-                        temp = temp + "0";
-                    }
-                }
-                rtbin = temp + rtbin;
+                rtbin = padZeros(rtbin, 5);
 
                 //rd binary
                 if (instruction.matches("DDIV")) {
                     rdbin = "00000";
                 } else {
-                    temp = "";
                     rdbin = Integer.toBinaryString(rd);
-                    if (rdbin.length() != 5) {
-                        for (int i = 0; i < 5 - rdbin.length(); i++) {
-                            temp = temp + "0";
-                        }
-                    }
-                    rdbin = temp + rdbin;
+                    rdbin = padZeros(rdbin, 5);
                 }
 
                 //additional 5 bits
@@ -1803,28 +1800,14 @@ public class NewJFrame extends javax.swing.JFrame {
                     func = 42;
                 }
                 funcbin = Integer.toBinaryString(func);
-                if (funcbin.length() != 6) {
-                    temp = "";
-                    if (funcbin.length() != 6) {
-                        for (int i = 0; i < 6 - funcbin.length(); i++) {
-                            temp = temp + "0";
-                        }
-                    }
-                    funcbin = temp + funcbin;
-                }
+                funcbin = padZeros(funcbin, 6);
 
                 //address in binary
                 addressbin = opcodebin + rsbin + rtbin + rdbin + addbin + funcbin;
 
                 //convert to hex
                 addresshex = new BigInteger(addressbin, 2).toString(16);
-                if (addresshex.length() != 8) {
-                    temp = "";
-                    for (int i = 0; i < 8 - addresshex.length(); i++) {
-                        temp = temp + "0";
-                    }
-                    addresshex = temp + addresshex;
-                }
+                addresshex = padZeros(addresshex, 8);
 
                 tempinst.setOpcode(addresshex);
                 tempinst.setLabel(labeladdress);
@@ -1891,24 +1874,12 @@ public class NewJFrame extends javax.swing.JFrame {
                     opcodebin = "000100";
 
                     //rs binary
-                    temp = "";
                     rsbin = Integer.toBinaryString(rs);
-                    if (rsbin.length() != 5) {
-                        for (int i = 0; i < 5 - rsbin.length(); i++) {
-                            temp = temp + "0";
-                        }
-                    }
-                    rsbin = temp + rsbin;
+                    rsbin = padZeros(rsbin, 5);
 
                     //rt binary
-                    temp = "";
                     rtbin = Integer.toBinaryString(rt);
-                    if (rtbin.length() != 5) {
-                        for (int i = 0; i < 5 - rtbin.length(); i++) {
-                            temp = temp + "0";
-                        }
-                    }
-                    rtbin = temp + rtbin;
+                    rtbin = padZeros(rtbin, 5);
 
                     addressbin = opcodebin + rsbin + rtbin;
 
@@ -1960,55 +1931,24 @@ public class NewJFrame extends javax.swing.JFrame {
                     }
 
                     opcodebin = Integer.toBinaryString(opcode);
-                    if (opcodebin.length() != 6) {
-                        temp = "";
-                        for (int i = 0; i < 6 - opcodebin.length(); i++) {
-                            temp = temp + "0";
-                        }
-                        opcodebin = temp + opcodebin;
-                    }
+                    opcodebin = padZeros(opcodebin, 6);
 
                     //rd binary
-                    temp = "";
                     rdbin = Integer.toBinaryString(rd);
-                    if (rdbin.length() != 5) {
-                        for (int i = 0; i < 5 - rdbin.length(); i++) {
-                            temp = temp + "0";
-                        }
-                    }
-                    rdbin = temp + rdbin;
+                    rdbin = padZeros(rdbin, 5);
 
                     //rs binary
-                    temp = "";
                     rsbin = Integer.toBinaryString(rs);
-                    if (rsbin.length() != 5) {
-                        for (int i = 0; i < 5 - rsbin.length(); i++) {
-                            temp = temp + "0";
-                        }
-                    }
-                    rsbin = temp + rsbin;
+                    rsbin = padZeros(rsbin, 5);
 
                     offsetbin = Integer.toBinaryString(Integer.parseInt(jTextField2.getText(), 16));
-
-                    temp = "";
-                    if (offsetbin.length() != 16) {
-                        for (int i = 0; i < 16 - offsetbin.length(); i++) {
-                            temp = temp + "0";
-                        }
-                    }
-                    offsetbin = temp + offsetbin;
+                    offsetbin = padZeros(offsetbin, 16);
 
                     //address in binary
                     addressbin = opcodebin + rsbin + rdbin + offsetbin;
 
                     addresshex = new BigInteger(addressbin, 2).toString(16);
-                    if (addresshex.length() != 8) {
-                        temp = "";
-                        for (int i = 0; i < 8 - addresshex.length(); i++) {
-                            temp = temp + "0";
-                        }
-                        addresshex = temp + addresshex;
-                    }
+                    addresshex = padZeros(addresshex, 8);
 
                     tempinst.setOpcode(addresshex);
 
@@ -2066,56 +2006,25 @@ public class NewJFrame extends javax.swing.JFrame {
                     }
 
                     opcodebin = Integer.toBinaryString(opcode);
-                    if (opcodebin.length() != 6) {
-                        temp = "";
-                        for (int i = 0; i < 6 - opcodebin.length(); i++) {
-                            temp = temp + "0";
-                        }
-                        opcodebin = temp + opcodebin;
-                    }
+                    opcodebin = padZeros(opcodebin, 6);
 
                     //rs binary
-                    temp = "";
                     rsbin = Integer.toBinaryString(rs);
-                    if (rsbin.length() != 5) {
-                        for (int i = 0; i < 5 - rsbin.length(); i++) {
-                            temp = temp + "0";
-                        }
-                    }
-                    rsbin = temp + rsbin;
+                    rsbin = padZeros(rsbin, 5);
 
                     //rd binary
-                    temp = "";
                     rdbin = Integer.toBinaryString(rd);
-                    if (rdbin.length() != 5) {
-                        for (int i = 0; i < 5 - rdbin.length(); i++) {
-                            temp = temp + "0";
-                        }
-                    }
-                    rdbin = temp + rdbin;
+                    rdbin = padZeros(rdbin, 5);
 
                     offsetbin = Integer.toBinaryString(Integer.parseInt(jTextField3.getText(), 16));
-
-                    temp = "";
-                    if (offsetbin.length() != 16) {
-                        for (int i = 0; i < 16 - offsetbin.length(); i++) {
-                            temp = temp + "0";
-                        }
-                    }
-                    offsetbin = temp + offsetbin;
+                    offsetbin = padZeros(offsetbin, 16);
 
                     //address in binary
                     addressbin = opcodebin + rsbin + rdbin + offsetbin;
 
                     //address in hex
                     addresshex = new BigInteger(addressbin, 2).toString(16);
-                    if (addresshex.length() != 8) {
-                        temp = "";
-                        for (int i = 0; i < 8 - addresshex.length(); i++) {
-                            temp = temp + "0";
-                        }
-                        addresshex = temp + addresshex;
-                    }
+                    addresshex = padZeros(addresshex, 8);
 
                     tempinst.setInst(instruction + " R" + jComboBox11.getSelectedItem() + ", R" + jComboBox12.getSelectedItem() + ", #" + jTextField3.getText());
 
@@ -2209,25 +2118,12 @@ public class NewJFrame extends javax.swing.JFrame {
                 } else { //label above
                     offset = j - (i + 1);
                     offsetbin = Integer.toBinaryString(offset);
+                    offsetbin = padZeros(offsetbin, 16);
 
-                    if (offsetbin.length() > 16) {
-                        offsetbin = offsetbin.substring(16);
-                    } else {
-                        temp = "";
-                        for (x = 0; x < 16 - offsetbin.length(); x++) {
-                            temp = temp + "0";
-                        }
-                        offsetbin = temp + offsetbin;
-                    }
                     offsetbin = instlist.get(i).getOpcode() + offsetbin;
+
                     addresshex = new BigInteger(offsetbin, 2).toString(16);
-                    if (addresshex.length() != 8) {
-                        temp = "";
-                        for (int m = 0; m < 8 - addresshex.length(); m++) {
-                            temp = temp + "0";
-                        }
-                        addresshex = temp + addresshex;
-                    }
+                    addresshex = padZeros(addresshex, 8);
                     instlist.get(i).setOpcode(addresshex);
                 }
             } else if (instlist.get(i).getInst().contains("J")) {
@@ -2243,23 +2139,11 @@ public class NewJFrame extends javax.swing.JFrame {
                 } else {
                     ctr = j;
                     offsetbin = Integer.toBinaryString(ctr);
-                    if (offsetbin.length() != 26) {
-                        temp = "";
-                        for (x = 0; x < 26 - offsetbin.length(); x++) {
-                            temp = temp + "0";
-                        }
-                        offsetbin = temp + offsetbin;
-                    }
+                    offsetbin = padZeros(offsetbin, 26);
                     offsetbin = instlist.get(i).getOpcode() + offsetbin;
 
                     addresshex = new BigInteger(offsetbin, 2).toString(16);
-                    if (addresshex.length() != 8) {
-                        temp = "";
-                        for (int m = 0; m < 8 - addresshex.length(); m++) {
-                            temp = temp + "0";
-                        }
-                        addresshex = temp + addresshex;
-                    }
+                    addresshex = padZeros(addresshex, 8);
                     instlist.get(i).setOpcode(addresshex);
                 }
             }
@@ -2271,11 +2155,7 @@ public class NewJFrame extends javax.swing.JFrame {
             for (i = 0; i < instlist.size(); i++) {
                 intvalue = Integer.parseInt(instlist.get(i).getOpcode(), 16);
                 binvalue = Integer.toBinaryString(intvalue);
-                temp = "";
-                for (j = 0; j < 32 - binvalue.length(); j++) {
-                    temp = temp + "0";
-                }
-                binvalue = temp + binvalue;
+                binvalue = padZeros(binvalue, 32);
                 if (instlist.get(i).getLabel().matches("NO LABEL")) {
                     Object[] obj = {instlist.get(i).getInst(), instlist.get(i).getOpcode(), binvalue.substring(0, 6), binvalue.substring(6, 11), binvalue.substring(11, 16), binvalue.substring(16, 32)};
                     opcodemodel.addRow(obj);
@@ -2563,13 +2443,7 @@ public class NewJFrame extends javax.swing.JFrame {
 
     private String IntToHex(int r) {
         String tempReg = Integer.toHexString(r);
-        if (tempReg.length() < 16) {
-            temp = "";
-            for (int i = 0; i < 16 - tempReg.length(); i++) {
-                temp = temp + "0";
-            }
-            tempReg = temp + tempReg;
-        }
+        tempReg = padZeros(tempReg, 16);
         return tempReg;
     }
 
@@ -3076,12 +2950,7 @@ public class NewJFrame extends javax.swing.JFrame {
 
         //get value from arraylist data segment
         value = datasegment.get(row);
-
-        temp = "";
-        for (int j = 0; j < 8 - value.length(); j++) {
-            temp = temp + "0";
-        }
-        value = temp + value;
+        value = padZeros(value, 8);
 
         newval = JOptionPane.showInputDialog(mem, value);
 
@@ -3089,11 +2958,7 @@ public class NewJFrame extends javax.swing.JFrame {
         if (m.find() || newval.length() > 8 || newval.matches("")) {
 
         } else {
-            temp = "";
-            for (int i = 0; i < 8 - newval.length(); i++) {
-                temp = temp + "0";
-            }
-            newval = temp + newval;
+            newval = padZeros(newval, 8);
 
             //store value to arraylist data segment
             datasegment.set(row, newval);
@@ -3106,11 +2971,7 @@ public class NewJFrame extends javax.swing.JFrame {
                 newval = "";
                 mem = Integer.toHexString((i * 4) + 8192);
                 value = datasegment.get(i);
-                temp = "";
-                for (int j = 0; j < 8 - value.length(); j++) {
-                    temp = temp + "0";
-                }
-                newval = temp + value;
+                newval = padZeros(value, 8);
                 Object[] obj = {mem, newval};
                 datasegmentmodel.addRow(obj);
             }
@@ -3147,44 +3008,102 @@ public class NewJFrame extends javax.swing.JFrame {
         jTextField41.setText("Search");
     }//GEN-LAST:event_jTextField41FocusLost
 
-    private void jRadioButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jRadioButton1MouseClicked
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
-        int inst = -1;
-        String[] data;
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        // TODO add your handling code here:
+        jPanel16.removeAll();
+        jPanel16.repaint();
+        jPanel16.revalidate();
+
+        jPanel16.add(jPanel17);
+        jPanel16.repaint();
+        jPanel16.revalidate();
+
+        int num = 0, end = 0, intvalue = 0, tempint, COND=0, ans;
+        String IR, NPC, PC;
+        String A="", B="", IMM="", ALUOUTPUT="";
+        String binvalue;
+        String inst;
         for (int i = 0; i < cyclelist.size(); i++) {
-            data = cyclelist.get(i).split(", ");
-            /*
-             if (cyclelist.get(i).contains("Inst" + index)) {
-             start = cyclelist.get(i).indexOf(String.valueOf(index)) + 2;
-             last = cyclelist.get(i).indexOf(",", start);
-             if (last == -1) {
-             data = cyclelist.get(i).substring(start);
-             } else {
-             data = cyclelist.get(i).substring(start, last);
-             }
-             System.out.println(data);
-             pipelinemodel.setValueAt(data, j, i + 1); //row, column
-             }
-             */
-            //System.out.println("Cycle "+(i+1));
+            String[] data = cyclelist.get(i).split(", ");
             for (int j = 0; j < data.length; j++) {
-                //inst = Integer.valueOf(String.valueOf(data[j].charAt(5)));
-                System.out.println(inst);
-                if (data[j].contains("IF")) {
+                end = data[j].indexOf(" ");
+                num = Integer.parseInt(data[j].substring(4, end)) - 1; //instruction number
+                inst = data[j].substring(end + 1);
+                intvalue = Integer.parseInt(instlist.get(i).getOpcode(), 16);
+                binvalue = Integer.toBinaryString(intvalue);
+                binvalue = padZeros(binvalue, 32);
+                if (inst.matches("IF")) {
+                    if (instlist.get(num).getInst().contains("J")) {
 
-                } else if (data[j].contains("EX")) {
+                    } else if (instlist.get(num).getInst().contains("BEQ")) {
 
-                } else if (data[j].contains("MEM")) {
+                    } else {
+                        IR = instlist.get(num).getOpcode();
+                        NPC = instlist.get(num).getPc();
+                        PC = instlist.get(num).getPc();
+                        instlist.get(num).setIF(IR, NPC, PC);
+                    }
+                } else if (inst.matches("ID")) {
+                    tempint = checkRegister(Integer.parseInt(binvalue.substring(6, 11), 2));
+                    A = Integer.toHexString(tempint);
+                    A = padZeros(A, 16);
+                    
+                    tempint = checkRegister(Integer.parseInt(binvalue.substring(11, 16), 2));
+                    B = Integer.toHexString(tempint);
+                    B = padZeros(B, 16);
+                    
+                    tempint = checkRegister(Integer.parseInt(binvalue.substring(16, 32), 2));
+                    IMM = Integer.toHexString(tempint);
+                    IMM = padZeros(IMM, 16);
+                    
+                    IR = instlist.get(num).getOpcode();
+                    
+                    instlist.get(num).setID(A, B, IMM, IR);
+                } else if (inst.matches("EX")) {
+                    if(instlist.get(num).getInst().contains("DSUBU")) {
+                        ans = Integer.parseInt(instlist.get(num).getID().getA(), 16) - Integer.parseInt(instlist.get(num).getID().getB());
+                        ALUOUTPUT = Integer.toHexString(ans);
+                        ALUOUTPUT = padZeros(ALUOUTPUT, 16);
+                    } else if(instlist.get(num).getInst().contains("DDIV")) {
+                        
+                    } else if(instlist.get(num).getInst().contains("AND")) {
+                        
+                    } else if(instlist.get(num).getInst().contains("DSRLV")) {
+                        
+                    } else if(instlist.get(num).getInst().contains("SLT")) {
+                        
+                    } else if(instlist.get(num).getInst().contains("BEQ")) {
+                        
+                    } else if(instlist.get(num).getInst().contains("LW")) {
+                        
+                    } else if(instlist.get(num).getInst().contains("LWU")) {
+                        
+                    } else if(instlist.get(num).getInst().contains("SW")) {
+                        
+                    } else if(instlist.get(num).getInst().contains("DADDIU")) {
+                        
+                    } else if(instlist.get(num).getInst().contains("ORI")) {
+                        
+                    } else if(instlist.get(num).getInst().contains("J")) {
+                        
+                    }
+                    
+                    B = instlist.get(num).getID().getB();
+                    IR = instlist.get(num).getOpcode();
+                    
+                    instlist.get(num).setEX(IR, ALUOUTPUT, B, COND);
+                } else if (inst.matches("MEM")) {
 
-                } else if (data[j].contains("WB")) {
-
-                } else {
+                } else if (inst.matches("WB")) {
 
                 }
-                //System.out.println(data[j]);
             }
         }
-    }//GEN-LAST:event_jRadioButton1MouseClicked
+    }//GEN-LAST:event_jButton6ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -3232,6 +3151,8 @@ public class NewJFrame extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
     private javax.swing.JComboBox jComboBox1;
     private javax.swing.JComboBox jComboBox10;
     private javax.swing.JComboBox jComboBox11;
@@ -3309,6 +3230,8 @@ public class NewJFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel15;
+    private javax.swing.JPanel jPanel16;
+    private javax.swing.JPanel jPanel17;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
@@ -3317,10 +3240,8 @@ public class NewJFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
-    private javax.swing.JRadioButton jRadioButton1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane7;
@@ -3329,7 +3250,6 @@ public class NewJFrame extends javax.swing.JFrame {
     private javax.swing.JTable jTable2;
     private javax.swing.JTable jTable3;
     private javax.swing.JTable jTable4;
-    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField10;
     private javax.swing.JTextField jTextField11;

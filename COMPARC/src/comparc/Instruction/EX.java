@@ -13,9 +13,9 @@ public class EX {
     private String IR;
     private String ALUOUTPUT;
     private String B;
-    private String COND;
+    private int COND;
     
-    public EX(String IR, String ALUOUPUT, String B, String COND) {
+    public EX(String IR, String ALUOUPUT, String B, int COND) {
         this.IR = IR;
         this.ALUOUTPUT = ALUOUTPUT;
         this.B = B;
@@ -46,11 +46,11 @@ public class EX {
         this.B = B;
     }
 
-    public String getCOND() {
+    public int getCOND() {
         return COND;
     }
 
-    public void setCOND(String COND) {
+    public void setCOND(int COND) {
         this.COND = COND;
     }
 }

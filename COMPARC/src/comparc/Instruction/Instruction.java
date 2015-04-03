@@ -27,11 +27,11 @@ public class Instruction {
         ifinst = new IF(IR, NPC, PC);
     }
 
-    public void setID(String A, String B, String IMM, String NPC, String IR) {
-        idinst = new ID(A, B, IMM, NPC, IR);
+    public void setID(String A, String B, String IMM, String IR) {
+        idinst = new ID(A, B, IMM, IR);
     }
 
-    public void setEX(String IR, String ALUOUTPUT, String B, String COND) {
+    public void setEX(String IR, String ALUOUTPUT, String B, int COND) {
         exinst = new EX(IR, ALUOUTPUT, B, COND);
     }
 
@@ -74,7 +74,7 @@ public class Instruction {
     public String getOpcode() {
         return opcode;
     }
-
+    
     public void setOpcode(String opcode) {
         this.opcode = opcode;
     }
@@ -94,10 +94,7 @@ public class Instruction {
     public void setInst(String inst) {
         this.inst = inst;
     }
-
-    /**
-     * @return the dependency
-     */
+    
     public String getDependency() {
         return dependency;
     }

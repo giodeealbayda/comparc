@@ -13,14 +13,12 @@ public class ID {
     private String A;
     private String B;
     private String IMM;
-    private String NPC;
     private String IR;
     
-    public ID(String A, String B, String IMM, String NPC, String IR) {
+    public ID(String A, String B, String IMM, String IR) {
         this.A = A;
         this.B = B;
         this.IMM = IMM;
-        this.NPC = NPC;
         this.IR = IR;
     }
 
@@ -46,14 +44,6 @@ public class ID {
 
     public void setIMM(String IMM) {
         this.IMM = IMM;
-    }
-
-    public String getNPC() {
-        return NPC;
-    }
-
-    public void setNPC(String NPC) {
-        this.NPC = NPC;
     }
 
     public String getIR() {
