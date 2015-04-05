@@ -15,9 +15,9 @@ public class EX {
     private String B;
     private int COND;
     
-    public EX(String IR, String ALUOUPUT, String B, int COND) {
+    public EX(String IR, String ALU, String B, int COND) {
         this.IR = IR;
-        this.ALUOUTPUT = ALUOUTPUT;
+        this.ALUOUTPUT = ALU;
         this.B = B;
         this.COND = COND;
     }

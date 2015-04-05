@@ -18,14 +18,11 @@ import javax.swing.table.TableColumnModel;
 
 public class NewJFrame extends javax.swing.JFrame {
 
-    /**
-     * Creates new form NewJFrame
-     */
     int rd, rs, rt, opcode, pc = 0, func = 0;
     boolean proceed = true;
     String rdbin, rsbin, rtbin, opcodebin, temp = "", offsetbin, addressbin, instruction, labeladdress;
     String addbin = "", funcbin, addresshex = "";
-    int r1 = 0, r2 = 0, r3 = 0, r4 = 0, r5 = 0, r6 = 0, r7 = 0, r8 = 0, r9 = 0, r10 = 0,
+    int r0 =0, r1 = 0, r2 = 0, r3 = 0, r4 = 0, r5 = 0, r6 = 0, r7 = 0, r8 = 0, r9 = 0, r10 = 0,
             r11 = 0, r12 = 0, r13 = 0, r14 = 0, r15 = 0, r16 = 0, r17 = 0, r18 = 0, r19 = 0, r20 = 0,
             r21 = 0, r22 = 0, r23 = 0, r24 = 0, r25 = 0, r26 = 0, r27 = 0, r28 = 0, r29 = 0, r30 = 0,
             r31 = 0;
@@ -249,10 +246,10 @@ public class NewJFrame extends javax.swing.JFrame {
         jTextField41 = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         jPanel15 = new javax.swing.JPanel();
-        jPanel16 = new javax.swing.JPanel();
-        jPanel17 = new javax.swing.JPanel();
         jButton5 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
 
         jLabel12.setText("jLabel12");
 
@@ -574,12 +571,6 @@ public class NewJFrame extends javax.swing.JFrame {
         });
 
         jLabel19.setText("Label (optional)");
-
-        jTextField5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField5ActionPerformed(evt);
-            }
-        });
 
         jLabel22.setText("Status");
 
@@ -1126,7 +1117,7 @@ public class NewJFrame extends javax.swing.JFrame {
                         .addGroup(jPanel12Layout.createSequentialGroup()
                             .addComponent(jLabel54, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jTextField35))
+                            .addComponent(jTextField35, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE))
                         .addGroup(jPanel12Layout.createSequentialGroup()
                             .addComponent(jLabel53, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -1156,7 +1147,7 @@ public class NewJFrame extends javax.swing.JFrame {
                         .addGroup(jPanel12Layout.createSequentialGroup()
                             .addComponent(jLabel55, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jTextField36, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jTextField36))
                         .addGroup(jPanel12Layout.createSequentialGroup()
                             .addComponent(jLabel51, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -1189,8 +1180,8 @@ public class NewJFrame extends javax.swing.JFrame {
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(jTextField25)
-                                .addComponent(jTextField24)
-                                .addComponent(jTextField26, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(jTextField24, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
+                                .addComponent(jTextField26)))))
                 .addContainerGap(23, Short.MAX_VALUE))
         );
         jPanel12Layout.setVerticalGroup(
@@ -1321,9 +1312,9 @@ public class NewJFrame extends javax.swing.JFrame {
                     .addComponent(jTextField35)
                     .addComponent(jLabel54, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel55, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField36, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel55, javax.swing.GroupLayout.DEFAULT_SIZE, 25, Short.MAX_VALUE)
+                    .addComponent(jTextField36))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextField37, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1518,21 +1509,6 @@ public class NewJFrame extends javax.swing.JFrame {
 
         jPanel15.setBackground(new java.awt.Color(204, 204, 204));
 
-        jPanel16.setLayout(new java.awt.CardLayout());
-
-        javax.swing.GroupLayout jPanel17Layout = new javax.swing.GroupLayout(jPanel17);
-        jPanel17.setLayout(jPanel17Layout);
-        jPanel17Layout.setHorizontalGroup(
-            jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        jPanel17Layout.setVerticalGroup(
-            jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-
-        jPanel16.add(jPanel17, "card2");
-
         jButton5.setText("Single");
         jButton5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1547,21 +1523,23 @@ public class NewJFrame extends javax.swing.JFrame {
             }
         });
 
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jScrollPane3.setViewportView(jTextArea1);
+
         javax.swing.GroupLayout jPanel15Layout = new javax.swing.GroupLayout(jPanel15);
         jPanel15.setLayout(jPanel15Layout);
         jPanel15Layout.setHorizontalGroup(
             jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel15Layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel15Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jPanel16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel15Layout.createSequentialGroup()
-                        .addGap(106, 106, 106)
                         .addComponent(jButton5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton6)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 353, Short.MAX_VALUE))
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addContainerGap())
         );
         jPanel15Layout.setVerticalGroup(
@@ -1572,7 +1550,7 @@ public class NewJFrame extends javax.swing.JFrame {
                     .addComponent(jButton5)
                     .addComponent(jButton6))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel16, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 327, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -1625,9 +1603,44 @@ public class NewJFrame extends javax.swing.JFrame {
         temp = "";
         if (str.length() < num) {
             for (int i = 0; i < num - str.length(); i++) {
-                temp = temp + "0";
+                temp = temp + '0';
             }
             str = temp + str;
+        }
+        return str;
+    }
+
+    private String signExtend(String str, int num, String format) {
+        temp = "";
+        String charStr;
+        charStr = Character.toString(str.charAt(0));
+        if (format.matches("hex")) {
+            if (charStr.matches("8") || charStr.matches("9") || charStr.matches("A")
+                    || charStr.matches("B") || charStr.matches("C")
+                    || charStr.matches("D") || charStr.matches("E")
+                    || charStr.matches("F")) {
+                for (int i = 0; i < num - str.length(); i++) {
+                    temp = temp + 'F';
+                }
+                str = temp + str;
+            } else {
+                for (int i = 0; i < num - str.length(); i++) {
+                    temp = temp + '0';
+                }
+                str = temp + str;
+            }
+        } else if (format.matches("binary")) {
+            if (charStr.matches("1")) {
+                for (int i = 0; i < num - str.length(); i++) {
+                    temp = temp + '1';
+                }
+                str = temp + str;
+            } else {
+                for (int i = 0; i < num - str.length(); i++) {
+                    temp = temp + '0';
+                }
+                str = temp + str;
+            }
         }
         return str;
     }
@@ -1721,7 +1734,6 @@ public class NewJFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         instruction = jComboBox1.getSelectedItem().toString();
         tempinst = new Instruction();
-        //special character checking upon add
         labeladdress = jTextField5.getText().toUpperCase();
         m = labelcheck.matcher(labeladdress);
         if (labeladdress.matches("")) {
@@ -1733,7 +1745,6 @@ public class NewJFrame extends javax.swing.JFrame {
                 || labeladdress.matches("DADDIU") || labeladdress.matches("ORI") || labeladdress.matches("J")) {
             proceed = false;
         } else {
-
             if (m.find()) { //check for special characters
                 proceed = false;
             } else {
@@ -1753,7 +1764,7 @@ public class NewJFrame extends javax.swing.JFrame {
 
                 //increment pc by 4
                 pc = pc + 4;
-                tempinst.setPc(Integer.toHexString(pc));
+                tempinst.setPc(padZeros(Integer.toHexString(pc), 16));
 
                 if (instruction.matches("DDIV")) {
                     rs = jComboBox5.getSelectedIndex();
@@ -1814,6 +1825,7 @@ public class NewJFrame extends javax.swing.JFrame {
 
                 if (instruction.matches("DDIV")) {
                     tempinst.setInst(instruction + " R" + rs + ", R" + rt);
+                    //store dependency
                     if (rs == 0 && rt == 0) {
                         tempinst.setDependency("none");
                     } else if (rs == 0) {
@@ -1833,6 +1845,7 @@ public class NewJFrame extends javax.swing.JFrame {
                     }
                 } else {
                     tempinst.setInst(instruction + " R" + rd + ", R" + rs + ", R" + rt);
+                    //store dependency
                     if (rs == 0 && rt == 0) {
                         tempinst.setDependency("none");
                     } else if (rs == 0) {
@@ -1866,7 +1879,7 @@ public class NewJFrame extends javax.swing.JFrame {
                 } else {
                     //increment pc by 4
                     pc = pc + 4;
-                    tempinst.setPc(Integer.toHexString(pc));
+                    tempinst.setPc(padZeros(Integer.toHexString(pc), 16));
 
                     rs = jComboBox7.getSelectedIndex();
                     rt = jComboBox8.getSelectedIndex();
@@ -1919,7 +1932,7 @@ public class NewJFrame extends javax.swing.JFrame {
 
                     //increment pc by 4
                     pc = pc + 4;
-                    tempinst.setPc(Integer.toHexString(pc));
+                    tempinst.setPc(padZeros(Integer.toHexString(pc), 16));
 
                     //opcode binary
                     if (instruction.matches("LW")) {
@@ -1964,14 +1977,15 @@ public class NewJFrame extends javax.swing.JFrame {
                     }
 
                     if (instruction.matches("SW")) {
-                        if (rd != 0 && rs != 0) {
-                            tempinst.setDependency('R' + Integer.toString(rd) + ", R" + Integer.toString(rs));
-                        } else if (rd != 0) {
-                            tempinst.setDependency('R' + Integer.toString(rd));
-                        } else if (rs != 0) {
-                            tempinst.setDependency('R' + Integer.toString(rs));
-                        } else {
+                        //store dependency
+                        if (rd == 0 && rs == 0) {
                             tempinst.setDependency("none");
+                        } else if (rd == 0) {
+                            tempinst.setDependency('R' + Integer.toString(rs));
+                        } else if (rs == 0) {
+                            tempinst.setDependency('R' + Integer.toString(rd));
+                        } else {
+                            tempinst.setDependency('R' + Integer.toString(rd) + ", R" + Integer.toString(rs));
                         }
                         tempinst.setAnswer("none");
                     } else {
@@ -1997,7 +2011,7 @@ public class NewJFrame extends javax.swing.JFrame {
 
                     //increment pc by 4
                     pc = pc + 4;
-                    tempinst.setPc(Integer.toHexString(pc));
+                    tempinst.setPc(padZeros(Integer.toHexString(pc), 16));
 
                     if (instruction.matches("DADDIU")) {
                         opcode = 25;
@@ -2031,21 +2045,21 @@ public class NewJFrame extends javax.swing.JFrame {
                     if (labeladdress.matches("NO LABEL")) {
                         Object[] obj = {instruction + " R" + jComboBox11.getSelectedItem() + ", R" + jComboBox12.getSelectedItem() + ", #" + jTextField3.getText(), ' '};
                         opcodemodel.addRow(obj);
-                        //jTextArea1.setText(jTextArea1.getText() + '\n' + instruction + " R" + jComboBox11.getSelectedItem() + ", R" + jComboBox12.getSelectedItem() + ", #" + jTextField3.getText());
                     } else {
                         Object[] obj = {labeladdress + ": " + instruction + " R" + jComboBox11.getSelectedItem() + ", R" + jComboBox12.getSelectedItem() + ", #" + jTextField3.getText(), ' '};
                         opcodemodel.addRow(obj);
-                        //jTextArea1.setText(jTextArea1.getText() + '\n' + labeladdress + ": " + instruction + " R" + jComboBox11.getSelectedItem() + ", R" + jComboBox12.getSelectedItem() + ", #" + jTextField3.getText());
                     }
 
-                    if (rs != 0) {
-                        tempinst.setDependency('R' + Integer.toString(rs));
-                    } else {
+                    //store dependency
+                    if (rs == 0) {
                         tempinst.setDependency("none");
+                    } else {
+                        tempinst.setDependency('R' + Integer.toString(rs));
                     }
                     tempinst.setAnswer('R' + Integer.toString(rd));
                     tempinst.setOpcode(addresshex);
                     tempinst.setLabel(labeladdress);
+                    
                     if (instlist.add(tempinst)) {
                         jLabel23.setText("Successfully added!");
                     }
@@ -2059,7 +2073,7 @@ public class NewJFrame extends javax.swing.JFrame {
 
                     //increment pc by 4
                     pc = pc + 4;
-                    tempinst.setPc(Integer.toHexString(pc));
+                    tempinst.setPc(padZeros(Integer.toHexString(pc), 16));
 
                     opcodebin = "000010";
                     tempinst.setInst(instruction + " " + jTextField4.getText().toUpperCase());
@@ -2067,11 +2081,9 @@ public class NewJFrame extends javax.swing.JFrame {
                     if (labeladdress.matches("NO LABEL")) {
                         Object[] obj = {instruction + " " + jTextField4.getText().toUpperCase(), ' '};
                         opcodemodel.addRow(obj);
-                        //jTextArea1.setText(jTextArea1.getText() + '\n' + instruction + " " + jTextField4.getText().toUpperCase());
                     } else {
                         Object[] obj = {labeladdress + ": " + instruction + " " + jTextField4.getText().toUpperCase(), ' '};
                         opcodemodel.addRow(obj);
-                        //jTextArea1.setText(jTextArea1.getText() + '\n' + labeladdress + ": " + instruction + " " + jTextField4.getText().toUpperCase());
                     }
                     tempinst.setAnswer("none");
                     tempinst.setDependency("none");
@@ -2081,7 +2093,6 @@ public class NewJFrame extends javax.swing.JFrame {
                         jLabel23.setText("Successfully Added!");
                     }
                 }
-
             }
         } else {
             jLabel23.setText("Invalid label");
@@ -2089,11 +2100,6 @@ public class NewJFrame extends javax.swing.JFrame {
 
         reset();
     }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void jTextField5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField5ActionPerformed
-        // TODO add your handling code here:
-        labeladdress = jTextField5.getText();
-    }//GEN-LAST:event_jTextField5ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
@@ -2103,7 +2109,7 @@ public class NewJFrame extends javax.swing.JFrame {
         jButton2.setEnabled(false);
         jButton4.setEnabled(true);
         boolean proceed = true;
-        int i, j, x, offset;
+        int i, j, offset;
         String label;
         for (i = 0; i < instlist.size(); i++) {
             if (instlist.get(i).getInst().contains("BEQ")) {
@@ -2113,12 +2119,12 @@ public class NewJFrame extends javax.swing.JFrame {
                         break;
                     }
                 }
-                if (j == instlist.size()) {
+                if (j == instlist.size()) { //label not found
                     proceed = false;
                 } else { //label above
                     offset = j - (i + 1);
                     offsetbin = Integer.toBinaryString(offset);
-                    offsetbin = padZeros(offsetbin, 16);
+                    offsetbin = signExtend(offsetbin, 64, "binary");
 
                     offsetbin = instlist.get(i).getOpcode() + offsetbin;
 
@@ -2137,7 +2143,7 @@ public class NewJFrame extends javax.swing.JFrame {
                 if (j == instlist.size()) {
                     proceed = false;
                 } else {
-                    ctr = j;
+                    ctr = ((Integer.parseInt(instlist.get(j).getPc(), 16)) - 4) / 4;
                     offsetbin = Integer.toBinaryString(ctr);
                     offsetbin = padZeros(offsetbin, 26);
                     offsetbin = instlist.get(i).getOpcode() + offsetbin;
@@ -2165,7 +2171,7 @@ public class NewJFrame extends javax.swing.JFrame {
                 }
             }
         } else {
-            System.out.println("ERROR");
+            jLabel23.setText("Error");
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -2181,6 +2187,9 @@ public class NewJFrame extends javax.swing.JFrame {
         opcodemodel.fireTableDataChanged();
         InitializeCS();
         InitializeDS();
+        //SET REGISTER TO ZERO
+        //REMOVE PIPELINE MAP
+        //REMOVE EXECUTION
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void addCycle(int instnum, int at) {
@@ -2220,74 +2229,487 @@ public class NewJFrame extends javax.swing.JFrame {
         }
     }
 
+    private void setRegister(int reg, int value) {
+        switch (reg) {
+            case 0: r0 = 0;
+            case 1: 
+                {   r1 = value;
+                    temp = Integer.toHexString(r1);
+                    temp = padZeros(temp, 16).toUpperCase();
+                    jTextField6.setText(temp);
+                    break;
+                }
+            case 2: 
+                {   r2 = value;
+                    temp = Integer.toHexString(r2);
+                    temp = padZeros(temp, 16).toUpperCase();
+                    jTextField7.setText(temp);
+                    break;
+                }
+            case 3: 
+                {   r3 = value;
+                    temp = Integer.toHexString(r3);
+                    temp = padZeros(temp, 16).toUpperCase();
+                    jTextField8.setText(temp);
+                    break;
+                }
+            case 4: 
+                {   r4 = value;
+                    temp = Integer.toHexString(r4);
+                    temp = padZeros(temp, 16).toUpperCase();
+                    jTextField9.setText(temp);
+                    break;
+                }
+            case 5: 
+                {   r5 = value;
+                    temp = Integer.toHexString(r5);
+                    temp = padZeros(temp, 16).toUpperCase();
+                    jTextField10.setText(temp);
+                    break;
+                }
+            case 6: 
+                {   r6 = value;
+                    temp = Integer.toHexString(r6);
+                    temp = padZeros(temp, 16).toUpperCase();
+                    jTextField11.setText(temp);
+                    break;
+                }
+            case 7: 
+                {   r7 = value;
+                    temp = Integer.toHexString(r7);
+                    temp = padZeros(temp, 16).toUpperCase();
+                    jTextField12.setText(temp);
+                    break;
+                }
+            case 8: 
+                {   r8 = value;
+                    temp = Integer.toHexString(r8);
+                    temp = padZeros(temp, 16).toUpperCase();
+                    jTextField13.setText(temp);
+                    break;
+                }
+            case 9: 
+                {   r9 = value;
+                    temp = Integer.toHexString(r9);
+                    temp = padZeros(temp, 16).toUpperCase();
+                    jTextField14.setText(temp);
+                    break;
+                }
+            case 10: 
+                {   r10 = value;
+                    temp = Integer.toHexString(r10);
+                    temp = padZeros(temp, 16).toUpperCase();
+                    jTextField15.setText(temp);
+                    break;
+                }
+            case 11: 
+                {   r11 = value;
+                    temp = Integer.toHexString(r11);
+                    temp = padZeros(temp, 16).toUpperCase();
+                    jTextField16.setText(temp);
+                    break;
+                }
+            case 12: 
+                {   r12 = value;
+                    temp = Integer.toHexString(r12);
+                    temp = padZeros(temp, 16).toUpperCase();
+                    jTextField17.setText(temp);
+                    break;
+                }
+            case 13: 
+                {   r13 = value;
+                    temp = Integer.toHexString(r13);
+                    temp = padZeros(temp, 16).toUpperCase();
+                    jTextField18.setText(temp);
+                    break;
+                }
+            case 14: 
+                {   r14 = value;
+                    temp = Integer.toHexString(r14);
+                    temp = padZeros(temp, 16).toUpperCase();
+                    jTextField19.setText(temp);
+                    break;
+                }
+            case 15: 
+                {   r15 = value;
+                    temp = Integer.toHexString(r15);
+                    temp = padZeros(temp, 16).toUpperCase();
+                    jTextField20.setText(temp);
+                    break;
+                }
+            case 16: 
+                {   r16 = value;
+                    temp = Integer.toHexString(r16);
+                    temp = padZeros(temp, 16).toUpperCase();
+                    jTextField21.setText(temp);
+                    break;
+                }
+            case 17: 
+                {   r17 = value;
+                    temp = Integer.toHexString(r17);
+                    temp = padZeros(temp, 16).toUpperCase();
+                    jTextField22.setText(temp);
+                    break;
+                }
+            case 18: 
+                {   r18 = value;
+                    temp = Integer.toHexString(r18);
+                    temp = padZeros(temp, 16).toUpperCase();
+                    jTextField23.setText(temp);
+                    break;
+                }
+            case 19: 
+                {   r19 = value;
+                    temp = Integer.toHexString(r19);
+                    temp = padZeros(temp, 16).toUpperCase();
+                    jTextField24.setText(temp);
+                    break;
+                }
+            case 20: 
+                {   r20 = value;
+                    temp = Integer.toHexString(r20);
+                    temp = padZeros(temp, 16).toUpperCase();
+                    jTextField25.setText(temp);
+                    break;
+                }
+            case 21: 
+                {   r21 = value;
+                    temp = Integer.toHexString(r21);
+                    temp = padZeros(temp, 16).toUpperCase();
+                    jTextField26.setText(temp);
+                    break;
+                }
+            case 22: 
+                {   r22 = value;
+                    temp = Integer.toHexString(r22);
+                    temp = padZeros(temp, 16).toUpperCase();
+                    jTextField27.setText(temp);
+                    break;
+                }
+            case 23: 
+                {   r23 = value;
+                    temp = Integer.toHexString(r23);
+                    temp = padZeros(temp, 16).toUpperCase();
+                    jTextField28.setText(temp);
+                    break;
+                }
+            case 24: 
+                {   r24 = value;
+                    temp = Integer.toHexString(r24);
+                    temp = padZeros(temp, 16).toUpperCase();
+                    jTextField29.setText(temp);
+                    break;
+                }
+            case 25: 
+                {   r25 = value;
+                    temp = Integer.toHexString(r25);
+                    temp = padZeros(temp, 16).toUpperCase();
+                    jTextField30.setText(temp);
+                    break;
+                }
+            case 26: 
+                {   r26 = value;
+                    temp = Integer.toHexString(r26);
+                    temp = padZeros(temp, 16).toUpperCase();
+                    jTextField31.setText(temp);
+                    break;
+                }
+            case 27: 
+                {   r27 = value;
+                    temp = Integer.toHexString(r27);
+                    temp = padZeros(temp, 16).toUpperCase();
+                    jTextField32.setText(temp);
+                    break;
+                }
+            case 28: 
+                {   r28 = value;
+                    temp = Integer.toHexString(r28);
+                    temp = padZeros(temp, 16).toUpperCase();
+                    jTextField33.setText(temp);
+                    break;
+                }
+            case 29: 
+                {   r29 = value;
+                    temp = Integer.toHexString(r29);
+                    temp = padZeros(temp, 16).toUpperCase();
+                    jTextField34.setText(temp);
+                    break;
+                }
+            case 30:
+                {   r30 = value;
+                    temp = Integer.toHexString(r30);
+                    temp = padZeros(temp, 16).toUpperCase();
+                    jTextField35.setText(temp);
+                    break;
+                }
+            case 31: 
+                {   r31 = value;
+                    temp = Integer.toHexString(r31);
+                    temp = padZeros(temp, 16).toUpperCase();
+                    jTextField36.setText(temp);
+                    break;
+                }
+        }
+    }
+
     private int checkRegister(int reg) {
         switch (reg) {
-            case 0:
-                return 0;
-            case 1:
-                return r1;
-            case 2:
-                return r2;
-            case 3:
-                return r3;
-            case 4:
-                return r4;
-            case 5:
-                return r5;
-            case 6:
-                return r6;
-            case 7:
-                return r7;
-            case 8:
-                return r8;
-            case 9:
-                return r9;
-            case 10:
-                return r10;
-            case 11:
-                return r11;
-            case 12:
-                return r12;
-            case 13:
-                return r13;
-            case 14:
-                return r14;
-            case 15:
-                return r15;
-            case 16:
-                return r16;
-            case 17:
-                return r17;
-            case 18:
-                return r18;
-            case 19:
-                return r19;
-            case 20:
-                return r20;
-            case 21:
-                return r21;
-            case 22:
-                return r22;
-            case 23:
-                return r23;
-            case 24:
-                return r24;
-            case 25:
-                return r25;
-            case 26:
-                return r26;
-            case 27:
-                return r27;
-            case 28:
-                return r28;
-            case 29:
-                return r29;
-            case 30:
-                return r30;
-            case 31:
-                return r31;
+            case 0: return 0;
+            case 1: return r1;
+            case 2: return r2;
+            case 3: return r3;
+            case 4: return r4;
+            case 5: return r5;
+            case 6: return r6;
+            case 7: return r7;
+            case 8: return r8;
+            case 9: return r9;
+            case 10: return r10;
+            case 11: return r11;
+            case 12: return r12;
+            case 13: return r13;
+            case 14: return r14;
+            case 15: return r15;
+            case 16: return r16;
+            case 17: return r17;
+            case 18: return r18;
+            case 19: return r19;
+            case 20: return r20;
+            case 21: return r21;
+            case 22: return r22;
+            case 23: return r23;
+            case 24: return r24;
+            case 25: return r25;
+            case 26: return r26;
+            case 27: return r27;
+            case 28: return r28;
+            case 29: return r29;
+            case 30: return r30;
+            case 31: return r31;
+            default: return 0;
         }
-        return 0;
+    }
+
+    public void addIFtoWB(int index) {
+        String IR = "", NPC = "", PC = "";
+        String A = "", B = "", IMM = "", ALUOUTPUT = "", LMD = "", MEMALU = "", REG = "";
+        String charA, charB;
+        int COND = 0;
+        int tempint, intvalue;
+        String tempstr, tempA, tempB;
+
+        //IF
+        IR = instlist.get(index).getOpcode();
+        if (index != 0) {
+            if (instlist.get(index - 1).getInst().contains("J")) {
+                tempstr = instlist.get(index - 1).getOpcode().substring(4);
+                tempint = Integer.parseInt(tempstr, 16) * 4;
+                NPC = Integer.toHexString(tempint);
+                NPC = padZeros(NPC, 16);
+                PC = NPC;
+            } else if (instlist.get(index - 1).getEX().getCOND() == 1 && instlist.get(index - 1).getInst().contains("BEQ")) {
+                tempstr = instlist.get(index - 1).getOpcode().substring(4);
+                tempint = Integer.parseInt(tempstr, 16) * 4 + Integer.parseInt(instlist.get(index).getPc(), 16);
+                NPC = Integer.toHexString(tempint);
+                NPC = padZeros(NPC, 16);
+                PC = NPC;
+            } else {
+                NPC = instlist.get(index).getPc();
+                PC = instlist.get(index).getPc();
+            }
+        } else {
+            NPC = instlist.get(index).getPc();
+            PC = instlist.get(index).getPc();
+        }
+        instlist.get(index).setIF(IR, NPC, PC);
+
+        //ID
+        intvalue = Integer.parseInt(instlist.get(index).getOpcode(), 16);
+        tempstr = Integer.toBinaryString(intvalue);
+        tempstr = padZeros(tempstr, 32);
+        tempint = checkRegister(Integer.parseInt(tempstr.substring(6, 11), 2));
+        A = Integer.toHexString(tempint);
+        A = padZeros(A, 16);
+
+        tempint = checkRegister(Integer.parseInt(tempstr.substring(11, 16), 2));
+        B = Integer.toHexString(tempint);
+        B = padZeros(B, 16);
+
+        tempint = Integer.parseInt(tempstr.substring(16, 32), 2);
+        IMM = Integer.toHexString(tempint);
+        IMM = padZeros(IMM, 16);
+
+        instlist.get(index).setID(A, B, IMM, IR);
+
+        //EX
+        if (instlist.get(index).getInst().contains("DSUBU")) {
+            intvalue = Integer.parseInt(instlist.get(index).getID().getA(), 16) - Integer.parseInt(instlist.get(index).getID().getB(), 16);
+
+            ALUOUTPUT = Integer.toHexString(intvalue);
+            ALUOUTPUT = signExtend(ALUOUTPUT, 16, "hex");
+            COND = 0;
+        } else if (instlist.get(index).getInst().contains("DDIV")) {
+            lo = Integer.parseInt(instlist.get(index).getID().getA(), 16) / Integer.parseInt(instlist.get(index).getID().getB());
+            hi = Integer.parseInt(instlist.get(index).getID().getA(), 16) % Integer.parseInt(instlist.get(index).getID().getB());
+            
+            ALUOUTPUT = Integer.toHexString(lo);
+            ALUOUTPUT = padZeros(ALUOUTPUT, 16);
+            COND = 0;
+        } else if (instlist.get(index).getInst().contains("AND")) {
+            tempA = Integer.toBinaryString(Integer.parseInt(A, 16));
+            tempB = Integer.toBinaryString(Integer.parseInt(B, 16));
+            tempA = padZeros(tempA, 64);
+            tempB = padZeros(tempA, 64);
+
+            tempstr = "";
+            for (int i = 0; i < 64; i++) {
+                charA = Character.toString(tempA.charAt(i));
+                charB = Character.toString(tempB.charAt(i));
+                if (charA.matches("1") && charB.matches("1")) {
+                    tempstr = tempstr + '1';
+                } else {
+                    tempstr = tempstr + '0';
+                }
+            }
+
+            ALUOUTPUT = new BigInteger(tempstr, 2).toString(16);
+            ALUOUTPUT = padZeros(ALUOUTPUT, 16);
+
+            COND = 0;
+        } else if (instlist.get(index).getInst().contains("DSRLV")) {
+            tempA = Integer.toBinaryString(Integer.parseInt(A, 16));
+            tempA = padZeros(tempA, 64);
+            tempint = Integer.parseInt(B, 16);
+
+            tempB = tempA.substring(0, 64 - tempint);
+            tempB = padZeros(tempB, 64);
+
+            ALUOUTPUT = new BigInteger(tempB, 2).toString(16);
+            ALUOUTPUT = padZeros(ALUOUTPUT, 16);
+
+            COND = 0;
+        } else if (instlist.get(index).getInst().contains("SLT")) {
+            
+            COND = 0;
+        } else if (instlist.get(index).getInst().contains("BEQ")) {
+            tempint = Integer.parseInt(instlist.get(index).getIF().getNPC(), 16) + (Integer.parseInt(IMM, 16) * 4);
+
+            ALUOUTPUT = Integer.toHexString(tempint);
+            ALUOUTPUT = padZeros(ALUOUTPUT, 16);
+
+            if (A.matches(B)) {
+                COND = 1;
+            } else {
+                COND = 0;
+            }
+        } else if (instlist.get(index).getInst().contains("LWU")
+                || instlist.get(index).getInst().contains("SW")
+                || instlist.get(index).getInst().contains("LW")) {
+            intvalue = Integer.parseInt(instlist.get(index).getID().getA(), 16) + Integer.parseInt(instlist.get(index).getID().getIMM(), 16);
+            ALUOUTPUT = Integer.toHexString(intvalue);
+            ALUOUTPUT = padZeros(ALUOUTPUT, 16);
+
+            COND = 0;
+        } else if (instlist.get(index).getInst().contains("DADDIU")) {
+            intvalue = Integer.parseInt(instlist.get(index).getID().getA(), 16) + Integer.parseInt(instlist.get(index).getID().getIMM(), 16);
+            ALUOUTPUT = Integer.toHexString(intvalue);
+            ALUOUTPUT = padZeros(ALUOUTPUT, 16);
+
+            COND = 0;
+        } else if (instlist.get(index).getInst().contains("ORI")) {
+            tempA = Integer.toBinaryString(Integer.parseInt(A, 16));
+            tempB = Integer.toBinaryString(Integer.parseInt(IMM, 16));
+            tempA = padZeros(tempA, 64);
+            tempB = padZeros(tempB, 64);
+
+            tempstr = "";
+            for (int i = 0; i < 64; i++) {
+                charA = Character.toString(tempA.charAt(i));
+                charB = Character.toString(tempB.charAt(i));
+                if (charA.matches("0") && charB.matches("0")) {
+                    tempstr = tempstr + '0';
+                } else {
+                    tempstr = tempstr + '1';
+                }
+            }
+
+            ALUOUTPUT = new BigInteger(tempstr, 2).toString(16);
+            ALUOUTPUT = padZeros(ALUOUTPUT, 16);
+
+            COND = 0;
+        } else if (instlist.get(index).getInst().contains("J")) {
+            ALUOUTPUT = Integer.toHexString(Integer.parseInt(IMM, 16) * 4);
+            ALUOUTPUT = padZeros(ALUOUTPUT, 16);
+
+            COND = 1;
+        }
+
+        instlist.get(index).setEX(IR, ALUOUTPUT, B, COND);
+
+        //MEM
+        IR = instlist.get(index).getOpcode();
+
+        if (instlist.get(index).getInst().contains("DSUBU")
+                || instlist.get(index).getInst().contains("DDIV")
+                || instlist.get(index).getInst().contains("AND")
+                || instlist.get(index).getInst().contains("DSRLV")
+                || instlist.get(index).getInst().contains("SLT")
+                || instlist.get(index).getInst().contains("DADDIU")
+                || instlist.get(index).getInst().contains("ORI")) {
+            ALUOUTPUT = instlist.get(index).getEX().getALUOUTPUT();
+            
+            LMD = "N/A";
+            MEMALU = "N/A";
+        } else if (instlist.get(index).getInst().contains("LW")) {
+            //LMD
+            
+            ALUOUTPUT = "N/A";
+            MEMALU = "N/A";            
+        } else if (instlist.get(index).getInst().contains("LWU")) {
+            //LMD
+            
+            ALUOUTPUT = "N/A";
+            MEMALU = "N/A";
+        } else if (instlist.get(index).getInst().contains("SW")) {
+            //MEMALU
+            
+            LMD = "N/A";
+            ALUOUTPUT = "N/A";
+        } else if(instlist.get(index).getInst().contains("BEQ")
+                || instlist.get(index).getInst().contains("J")) {
+            
+            LMD = "N/A";
+            ALUOUTPUT = instlist.get(index).getEX().getALUOUTPUT();
+            MEMALU = "N/A";
+        }
+
+        instlist.get(index).setMEM(IR, ALUOUTPUT, LMD, MEMALU);
+
+        //WB
+        tempstr = instlist.get(index).getAnswer().substring(1);
+        
+        if(tempstr.contains("one")) {
+            REG = "N/A";
+            instlist.get(index).setWB(REG);
+        } else {
+            tempint = Integer.parseInt(tempstr);
+            
+            if(instlist.get(index).getInst().contains("LW")
+                || instlist.get(index).getInst().contains("LWU")) {
+                setRegister(tempint, Integer.parseInt(LMD, 16));
+                instlist.get(index).setWB(LMD);
+            } else {
+                setRegister(tempint, Integer.parseInt(ALUOUTPUT, 16));
+                instlist.get(index).setWB(ALUOUTPUT);
+                
+                tempstr = Integer.toHexString(hi);
+                tempstr = padZeros(tempstr, 16).toUpperCase();
+                jTextField37.setText(tempstr);
+                tempstr = Integer.toHexString(lo);
+                tempstr = padZeros(tempstr, 16).toUpperCase();
+                jTextField38.setText(tempstr);
+            }
+        }
     }
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -2305,7 +2727,6 @@ public class NewJFrame extends javax.swing.JFrame {
                     || instlist.get(i).getInst().contains("DSRLV") || instlist.get(i).getInst().contains("SLT") || instlist.get(i).getInst().contains("LW")
                     || instlist.get(i).getInst().contains("LWU") || instlist.get(i).getInst().contains("SW") || instlist.get(i).getInst().contains("DADDIU")
                     || instlist.get(i).getInst().contains("ORI")) {
-                //inst = "DSUBU";
                 if (i == 0) {
                     addCycle(i + 1, startsat);
                     endlist.add(startsat + 4);
@@ -2397,6 +2818,7 @@ public class NewJFrame extends javax.swing.JFrame {
                 }
                 startsat++;
             }
+            addIFtoWB(i);
         }
 
         //display pipeline map
@@ -2449,495 +2871,406 @@ public class NewJFrame extends javax.swing.JFrame {
 
     private void jTextField6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField6MouseClicked
         // TODO add your handling code here:
-        String tempR1 = IntToHex(r1);
+        String tempR1 = IntToHex(r1).toUpperCase();
         tempR1 = JOptionPane.showInputDialog("Enter R1", tempR1);
-
         m = immediate.matcher(tempR1);
-        if (tempR1.matches("") || tempR1.length() > 16 || m.find()) { //erro checking
-
+        if (tempR1.matches("") || tempR1.length() > 16 || m.find()) { //error checking
+            System.out.println("here");
         } else {
-            r1 = Integer.parseInt(tempR1, 16);
-            tempR1 = IntToHex(r1);
-            jTextField6.setText(tempR1);
+            setRegister(1, Integer.parseInt(tempR1, 16));
         }
     }//GEN-LAST:event_jTextField6MouseClicked
 
     private void jTextField7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField7MouseClicked
         // TODO add your handling code here:
-        String tempR2 = IntToHex(r2);
+        String tempR2 = IntToHex(r2).toUpperCase();
         tempR2 = JOptionPane.showInputDialog("Enter R2", tempR2);
-
         m = immediate.matcher(tempR2);
         if (tempR2.matches("") || tempR2.length() > 16 || m.find()) {
 
         } else {
-            r2 = Integer.parseInt(tempR2, 16);
-            tempR2 = IntToHex(r2);
-            jTextField7.setText(tempR2);
+            setRegister(2, Integer.parseInt(tempR2, 16));
         }
     }//GEN-LAST:event_jTextField7MouseClicked
 
     private void jTextField8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField8MouseClicked
         // TODO add your handling code here:
-        String tempR3 = IntToHex(r3);
+        String tempR3 = IntToHex(r3).toUpperCase();
         tempR3 = JOptionPane.showInputDialog("Enter R3", tempR3);
-
         m = immediate.matcher(tempR3);
         if (tempR3.matches("") || tempR3.length() > 16 || m.find()) {
 
         } else {
-            r3 = Integer.parseInt(tempR3, 16);
-            tempR3 = IntToHex(r3);
-            jTextField8.setText(tempR3);
+            setRegister(3, Integer.parseInt(tempR3, 16));
         }
     }//GEN-LAST:event_jTextField8MouseClicked
 
     private void jTextField9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField9MouseClicked
         // TODO add your handling code here:
-        String tempR4 = IntToHex(r4);
+        String tempR4 = IntToHex(r4).toUpperCase();
         tempR4 = JOptionPane.showInputDialog("Enter R4", tempR4);
-
         m = immediate.matcher(tempR4);
         if (tempR4.matches("") || tempR4.length() > 16 || m.find()) {
 
         } else {
-            r4 = Integer.parseInt(tempR4, 16);
-            tempR4 = IntToHex(r4);
-            jTextField9.setText(tempR4);
+            setRegister(4, Integer.parseInt(tempR4, 16));
         }
     }//GEN-LAST:event_jTextField9MouseClicked
 
     private void jTextField10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField10MouseClicked
         // TODO add your handling code here:
-        String tempR5 = IntToHex(r5);
+        String tempR5 = IntToHex(r5).toUpperCase();
         tempR5 = JOptionPane.showInputDialog("Enter R5", tempR5);
-
         m = immediate.matcher(tempR5);
         if (tempR5.matches("") || tempR5.length() > 16 || m.find()) {
 
         } else {
-            r5 = Integer.parseInt(tempR5, 16);
-            tempR5 = IntToHex(r5);
-            jTextField10.setText(tempR5);
+            setRegister(5, Integer.parseInt(tempR5, 16));
         }
     }//GEN-LAST:event_jTextField10MouseClicked
 
     private void jTextField11MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField11MouseClicked
         // TODO add your handling code here:
-        String tempR6 = IntToHex(r6);
+        String tempR6 = IntToHex(r6).toUpperCase();
         tempR6 = JOptionPane.showInputDialog("Enter R6", tempR6);
-
         m = immediate.matcher(tempR6);
         if (tempR6.matches("") || tempR6.length() > 16 || m.find()) {
 
         } else {
-            r6 = Integer.parseInt(tempR6, 16);
-            tempR6 = IntToHex(r6);
-            jTextField11.setText(tempR6);
+            setRegister(6, Integer.parseInt(tempR6, 16));
         }
     }//GEN-LAST:event_jTextField11MouseClicked
 
     private void jTextField12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField12MouseClicked
         // TODO add your handling code here:
-        String tempR7 = IntToHex(r7);
+        String tempR7 = IntToHex(r7).toUpperCase();
         tempR7 = JOptionPane.showInputDialog("Enter R7", tempR7);
-
         m = immediate.matcher(tempR7);
         if (tempR7.matches("") || tempR7.length() > 16 || m.find()) {
 
         } else {
-            r7 = Integer.parseInt(tempR7, 16);
-            tempR7 = IntToHex(r7);
-            jTextField12.setText(tempR7);
+            setRegister(7, Integer.parseInt(tempR7, 16));
         }
     }//GEN-LAST:event_jTextField12MouseClicked
 
     private void jTextField13MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField13MouseClicked
         // TODO add your handling code here:
-        String tempR8 = IntToHex(r8);
+        String tempR8 = IntToHex(r8).toUpperCase();
         tempR8 = JOptionPane.showInputDialog("Enter R8", tempR8);
-
         m = immediate.matcher(tempR8);
         if (tempR8.matches("") || tempR8.length() > 16 || m.find()) {
 
         } else {
             r8 = Integer.parseInt(tempR8, 16);
             tempR8 = IntToHex(r8);
+            tempR8 = tempR8.toUpperCase();
             jTextField13.setText(tempR8);
         }
     }//GEN-LAST:event_jTextField13MouseClicked
 
     private void jTextField14MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField14MouseClicked
         // TODO add your handling code here:
-        String tempR9 = IntToHex(r9);
+        String tempR9 = IntToHex(r9).toUpperCase();
         tempR9 = JOptionPane.showInputDialog("Enter R9", tempR9);
-
         m = immediate.matcher(tempR9);
         if (tempR9.matches("") || tempR9.length() > 16 || m.find()) {
 
         } else {
-            r9 = Integer.parseInt(tempR9, 16);
-            tempR9 = IntToHex(r9);
-            jTextField14.setText(tempR9);
+            setRegister(9, Integer.parseInt(tempR9, 16));
         }
     }//GEN-LAST:event_jTextField14MouseClicked
 
     private void jTextField15MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField15MouseClicked
         // TODO add your handling code here:
-        String tempR10 = IntToHex(r10);
+        String tempR10 = IntToHex(r10).toUpperCase();
         tempR10 = JOptionPane.showInputDialog("Enter R10", tempR10);
-
         m = immediate.matcher(tempR10);
         if (tempR10.matches("") || tempR10.length() > 16 || m.find()) {
 
         } else {
-            r10 = Integer.parseInt(tempR10, 16);
-            tempR10 = IntToHex(r10);
-            jTextField15.setText(tempR10);
+            setRegister(10, Integer.parseInt(tempR10, 16));
         }
     }//GEN-LAST:event_jTextField15MouseClicked
 
     private void jTextField16MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField16MouseClicked
         // TODO add your handling code here:
-        String tempR11 = IntToHex(r11);
+        String tempR11 = IntToHex(r11).toUpperCase();
         tempR11 = JOptionPane.showInputDialog("Enter R11", tempR11);
-
         m = immediate.matcher(tempR11);
         if (tempR11.matches("") || tempR11.length() > 16 || m.equals(lo)) {
 
         } else {
-            r3 = Integer.parseInt(tempR11, 16);
-            tempR11 = IntToHex(r11);
-            jTextField16.setText(tempR11);
+            setRegister(11, Integer.parseInt(tempR11, 16));
         }
     }//GEN-LAST:event_jTextField16MouseClicked
 
     private void jTextField17MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField17MouseClicked
         // TODO add your handling code here:
-        String tempR12 = IntToHex(r12);
+        String tempR12 = IntToHex(r12).toUpperCase();
         tempR12 = JOptionPane.showInputDialog("Enter R12", tempR12);
-
         m = immediate.matcher(tempR12);
         if (tempR12.matches("") || tempR12.length() > 16 || m.find()) {
 
         } else {
-            r12 = Integer.parseInt(tempR12, 16);
-            tempR12 = IntToHex(r12);
-            jTextField17.setText(tempR12);
+            setRegister(12, Integer.parseInt(tempR12, 16));
         }
     }//GEN-LAST:event_jTextField17MouseClicked
 
     private void jTextField18MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField18MouseClicked
         // TODO add your handling code here:
-        String tempR13 = IntToHex(r13);
+        String tempR13 = IntToHex(r13).toUpperCase();
         tempR13 = JOptionPane.showInputDialog("Enter R13", tempR13);
-
         m = immediate.matcher(tempR13);
         if (tempR13.matches("") || tempR13.length() > 16 || m.find()) {
 
         } else {
-            r13 = Integer.parseInt(tempR13, 16);
-            tempR13 = IntToHex(r13);
-            jTextField18.setText(tempR13);
+            setRegister(13, Integer.parseInt(tempR13, 16));
         }
     }//GEN-LAST:event_jTextField18MouseClicked
 
     private void jTextField19MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField19MouseClicked
         // TODO add your handling code here:
-        String tempR14 = IntToHex(r14);
+        String tempR14 = IntToHex(r14).toUpperCase();
         tempR14 = JOptionPane.showInputDialog("Enter R14", tempR14);
-
         m = immediate.matcher(tempR14);
         if (tempR14.matches("") || tempR14.length() > 16 || m.equals(lo)) {
 
         } else {
-            r14 = Integer.parseInt(tempR14, 16);
-            tempR14 = IntToHex(r14);
-            jTextField19.setText(tempR14);
+            setRegister(14, Integer.parseInt(tempR14, 16));
         }
     }//GEN-LAST:event_jTextField19MouseClicked
 
     private void jTextField20MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField20MouseClicked
         // TODO add your handling code here:
-        String tempR15 = IntToHex(r15);
+        String tempR15 = IntToHex(r15).toUpperCase();
         tempR15 = JOptionPane.showInputDialog("Enter R15", tempR15);
-
         m = immediate.matcher(tempR15);
         if (tempR15.matches("") || tempR15.length() > 16 || m.find()) {
 
         } else {
-            r15 = Integer.parseInt(tempR15, 16);
-            tempR15 = IntToHex(r15);
-            jTextField20.setText(tempR15);
+            setRegister(15, Integer.parseInt(tempR15, 16));
         }
     }//GEN-LAST:event_jTextField20MouseClicked
 
     private void jTextField21MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField21MouseClicked
         // TODO add your handling code here:
-        String tempR16 = IntToHex(r16);
+        String tempR16 = IntToHex(r16).toUpperCase();
         tempR16 = JOptionPane.showInputDialog("Enter R16", tempR16);
-
         m = immediate.matcher(tempR16);
         if (tempR16.matches("") || tempR16.length() > 16 || m.find()) {
 
         } else {
-            r16 = Integer.parseInt(tempR16, 16);
-            tempR16 = IntToHex(r16);
-            jTextField21.setText(tempR16);
+            setRegister(16, Integer.parseInt(tempR16, 16));
         }
     }//GEN-LAST:event_jTextField21MouseClicked
 
     private void jTextField22MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField22MouseClicked
         // TODO add your handling code here:
-        String tempR17 = IntToHex(r17);
+        String tempR17 = IntToHex(r17).toUpperCase();
         tempR17 = JOptionPane.showInputDialog("Enter R17", tempR17);
-
         m = immediate.matcher(tempR17);
         if (tempR17.matches("") || tempR17.length() > 16 || m.find()) {
 
         } else {
-            r17 = Integer.parseInt(tempR17, 16);
-            tempR17 = IntToHex(r17);
-            jTextField22.setText(tempR17);
+            setRegister(17, Integer.parseInt(tempR17, 16));
         }
     }//GEN-LAST:event_jTextField22MouseClicked
 
     private void jTextField23MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField23MouseClicked
         // TODO add your handling code here:
-        String tempR18 = IntToHex(r18);
+        String tempR18 = IntToHex(r18).toUpperCase();
         tempR18 = JOptionPane.showInputDialog("Enter R18", tempR18);
-
         m = immediate.matcher(tempR18);
         if (tempR18.matches("") || tempR18.length() > 16 || m.find()) {
 
         } else {
-            r18 = Integer.parseInt(tempR18, 16);
-            tempR18 = IntToHex(r18);
-            jTextField23.setText(tempR18);
+            setRegister(18, Integer.parseInt(tempR18, 16));
         }
     }//GEN-LAST:event_jTextField23MouseClicked
 
     private void jTextField24MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField24MouseClicked
         // TODO add your handling code here:
-        String tempR19 = IntToHex(r19);
+        String tempR19 = IntToHex(r19).toUpperCase();
         tempR19 = JOptionPane.showInputDialog("Enter R19", tempR19);
-
         m = immediate.matcher(tempR19);
         if (tempR19.matches("") || tempR19.length() > 16 || m.find()) {
 
         } else {
-            r19 = Integer.parseInt(tempR19, 16);
-            tempR19 = IntToHex(r19);
-            jTextField24.setText(tempR19);
+            setRegister(19, Integer.parseInt(tempR19, 16));
         }
     }//GEN-LAST:event_jTextField24MouseClicked
 
     private void jTextField25MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField25MouseClicked
         // TODO add your handling code here:
-        String tempR20 = IntToHex(r20);
+        String tempR20 = IntToHex(r20).toUpperCase();
         tempR20 = JOptionPane.showInputDialog("Enter R20", tempR20);
-
         m = immediate.matcher(tempR20);
         if (tempR20.matches("") || tempR20.length() > 16 || m.find()) {
 
         } else {
-            r20 = Integer.parseInt(tempR20, 16);
-            tempR20 = IntToHex(r20);
-            jTextField25.setText(tempR20);
+            setRegister(20, Integer.parseInt(tempR20, 16));
         }
     }//GEN-LAST:event_jTextField25MouseClicked
 
     private void jTextField26MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField26MouseClicked
         // TODO add your handling code here:
-        String tempR21 = IntToHex(r21);
+        String tempR21 = IntToHex(r21).toUpperCase();
         tempR21 = JOptionPane.showInputDialog("Enter R21", tempR21);
-
         m = immediate.matcher(tempR21);
         if (tempR21.matches("") || tempR21.length() > 16 || m.find()) {
 
         } else {
-            r21 = Integer.parseInt(tempR21, 16);
-            tempR21 = IntToHex(r21);
-            jTextField26.setText(tempR21);
+            setRegister(21, Integer.parseInt(tempR21, 16));
         }
     }//GEN-LAST:event_jTextField26MouseClicked
 
     private void jTextField27MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField27MouseClicked
         // TODO add your handling code here:
-        String tempR22 = IntToHex(r22);
+        String tempR22 = IntToHex(r22).toUpperCase();
         tempR22 = JOptionPane.showInputDialog("Enter R22", tempR22);
-
         m = immediate.matcher(tempR22);
         if (tempR22.matches("") || tempR22.length() > 16 || m.find()) {
 
         } else {
-            r22 = Integer.parseInt(tempR22, 16);
-            tempR22 = IntToHex(r22);
-            jTextField27.setText(tempR22);
+            setRegister(22, Integer.parseInt(tempR22, 16));
         }
     }//GEN-LAST:event_jTextField27MouseClicked
 
     private void jTextField28MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField28MouseClicked
         // TODO add your handling code here:
-        String tempR23 = IntToHex(r23);
+        String tempR23 = IntToHex(r23).toUpperCase();
         tempR23 = JOptionPane.showInputDialog("Enter R23", tempR23);
-
         m = immediate.matcher(tempR23);
         if (tempR23.matches("") || tempR23.length() > 16 || m.find()) {
 
         } else {
-            r23 = Integer.parseInt(tempR23, 16);
-            tempR23 = IntToHex(r23);
-            jTextField29.setText(tempR23);
+            setRegister(23, Integer.parseInt(tempR23, 16));
         }
     }//GEN-LAST:event_jTextField28MouseClicked
 
     private void jTextField29MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField29MouseClicked
         // TODO add your handling code here:
-        String tempR24 = IntToHex(r24);
+        String tempR24 = IntToHex(r24).toUpperCase();
         tempR24 = JOptionPane.showInputDialog("Enter R24", tempR24);
-
         m = immediate.matcher(tempR24);
         if (tempR24.matches("") || tempR24.length() > 16 || m.find()) {
 
         } else {
-            r24 = Integer.parseInt(tempR24, 16);
-            tempR24 = IntToHex(r24);
-            jTextField29.setText(tempR24);
+            setRegister(24, Integer.parseInt(tempR24, 16));
         }
     }//GEN-LAST:event_jTextField29MouseClicked
 
     private void jTextField30MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField30MouseClicked
         // TODO add your handling code here:
-        String tempR25 = IntToHex(r25);
+        String tempR25 = IntToHex(r25).toUpperCase();
         tempR25 = JOptionPane.showInputDialog("Enter R25", tempR25);
-
         m = immediate.matcher(tempR25);
         if (tempR25.matches("") || tempR25.length() > 16 || m.find()) {
 
         } else {
-            r25 = Integer.parseInt(tempR25, 16);
-            tempR25 = IntToHex(r25);
-            jTextField30.setText(tempR25);
+            setRegister(25, Integer.parseInt(tempR25, 16));
         }
     }//GEN-LAST:event_jTextField30MouseClicked
 
     private void jTextField31MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField31MouseClicked
         // TODO add your handling code here:
-        String tempR26 = IntToHex(r26);
+        String tempR26 = IntToHex(r26).toUpperCase();
         tempR26 = JOptionPane.showInputDialog("Enter R26", tempR26);
-
         m = immediate.matcher(tempR26);
         if (tempR26.matches("") || tempR26.length() > 16 || m.find()) {
 
         } else {
-            r26 = Integer.parseInt(tempR26, 16);
-            tempR26 = IntToHex(r26);
-            jTextField31.setText(tempR26);
+            setRegister(26, Integer.parseInt(tempR26, 16));
         }
     }//GEN-LAST:event_jTextField31MouseClicked
 
     private void jTextField32MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField32MouseClicked
         // TODO add your handling code here:
-        String tempR27 = IntToHex(r27);
+        String tempR27 = IntToHex(r27).toUpperCase();
         tempR27 = JOptionPane.showInputDialog("Enter R27", tempR27);
-
         m = immediate.matcher(tempR27);
         if (tempR27.matches("") || tempR27.length() > 16 || m.find()) {
 
         } else {
-            r27 = Integer.parseInt(tempR27, 16);
-            tempR27 = IntToHex(r27);
-            jTextField32.setText(tempR27);
+            setRegister(27, Integer.parseInt(tempR27, 16));
         }
     }//GEN-LAST:event_jTextField32MouseClicked
 
     private void jTextField33MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField33MouseClicked
         // TODO add your handling code here:
-        String tempR28 = IntToHex(r28);
+        String tempR28 = IntToHex(r28).toUpperCase();
         tempR28 = JOptionPane.showInputDialog("Enter R28", tempR28);
-
         m = immediate.matcher(tempR28);
         if (tempR28.matches("") || tempR28.length() > 16 || m.find()) {
 
         } else {
-            r28 = Integer.parseInt(tempR28, 16);
-            tempR28 = IntToHex(r28);
-            jTextField33.setText(tempR28);
+            setRegister(28, Integer.parseInt(tempR28, 16));
         }
     }//GEN-LAST:event_jTextField33MouseClicked
 
     private void jTextField34MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField34MouseClicked
         // TODO add your handling code here:
-        String tempR29 = IntToHex(r29);
+        String tempR29 = IntToHex(r29).toUpperCase();
         tempR29 = JOptionPane.showInputDialog("Enter R29", tempR29);
-
         m = immediate.matcher(tempR29);
         if (tempR29.matches("") || tempR29.length() > 16 || m.find()) {
 
         } else {
-            r29 = Integer.parseInt(tempR29, 16);
-            tempR29 = IntToHex(r29);
-            jTextField34.setText(tempR29);
+            setRegister(29, Integer.parseInt(tempR29, 16));
         }
     }//GEN-LAST:event_jTextField34MouseClicked
 
     private void jTextField35MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField35MouseClicked
         // TODO add your handling code here:
-        String tempR30 = IntToHex(r30);
+        String tempR30 = IntToHex(r30).toUpperCase();
         tempR30 = JOptionPane.showInputDialog("Enter R30", tempR30);
-
         m = immediate.matcher(tempR30);
         if (tempR30.matches("") || tempR30.length() > 16 || m.find()) {
 
         } else {
-            r30 = Integer.parseInt(tempR30, 16);
-            tempR30 = IntToHex(r30);
-            jTextField35.setText(tempR30);
+            setRegister(30, Integer.parseInt(tempR30, 16));
         }
     }//GEN-LAST:event_jTextField35MouseClicked
 
     private void jTextField36MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField36MouseClicked
         // TODO add your handling code here:
         String tempR31 = IntToHex(r31);
+        tempR31 = tempR31.toUpperCase();
         tempR31 = JOptionPane.showInputDialog("Enter R31", tempR31);
-
         m = immediate.matcher(tempR31);
         if (tempR31.matches("") || tempR31.length() > 16 || m.find()) {
 
         } else {
-            r31 = Integer.parseInt(tempR31, 16);
-            tempR31 = IntToHex(r31);
-            jTextField36.setText(tempR31);
+            setRegister(31, Integer.parseInt(tempR31, 16));
         }
     }//GEN-LAST:event_jTextField36MouseClicked
 
     private void jTextField37MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField37MouseClicked
         // TODO add your handling code here:
-        String tempHI = IntToHex(hi);
+        String tempHI = IntToHex(hi).toUpperCase();
         tempHI = JOptionPane.showInputDialog("Enter HI", tempHI);
-
         m = immediate.matcher(tempHI);
         if (tempHI.matches("") || tempHI.length() > 16 || m.find()) {
 
         } else {
             hi = Integer.parseInt(tempHI, 16);
             tempHI = IntToHex(hi);
+            tempHI = tempHI.toUpperCase();
             jTextField37.setText(tempHI);
         }
     }//GEN-LAST:event_jTextField37MouseClicked
 
     private void jTextField38MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField38MouseClicked
         // TODO add your handling code here:
-        String tempLO = IntToHex(lo);
+        String tempLO = IntToHex(lo).toUpperCase();
         tempLO = JOptionPane.showInputDialog("Enter LO", tempLO);
-
         m = immediate.matcher(tempLO);
         if (tempLO.matches("") || tempLO.length() > 16 || m.find()) {
 
         } else {
             lo = Integer.parseInt(tempLO, 16);
             tempLO = IntToHex(lo);
+            tempLO = tempLO.toUpperCase();
             jTextField38.setText(tempLO);
         }
     }//GEN-LAST:event_jTextField38MouseClicked
@@ -3014,95 +3347,34 @@ public class NewJFrame extends javax.swing.JFrame {
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         // TODO add your handling code here:
-        jPanel16.removeAll();
-        jPanel16.repaint();
-        jPanel16.revalidate();
-
-        jPanel16.add(jPanel17);
-        jPanel16.repaint();
-        jPanel16.revalidate();
-
-        int num = 0, end = 0, intvalue = 0, tempint, COND=0, ans;
-        String IR, NPC, PC;
-        String A="", B="", IMM="", ALUOUTPUT="";
-        String binvalue;
-        String inst;
-        for (int i = 0; i < cyclelist.size(); i++) {
-            String[] data = cyclelist.get(i).split(", ");
-            for (int j = 0; j < data.length; j++) {
-                end = data[j].indexOf(" ");
-                num = Integer.parseInt(data[j].substring(4, end)) - 1; //instruction number
-                inst = data[j].substring(end + 1);
-                intvalue = Integer.parseInt(instlist.get(i).getOpcode(), 16);
-                binvalue = Integer.toBinaryString(intvalue);
-                binvalue = padZeros(binvalue, 32);
-                if (inst.matches("IF")) {
-                    if (instlist.get(num).getInst().contains("J")) {
-
-                    } else if (instlist.get(num).getInst().contains("BEQ")) {
-
-                    } else {
-                        IR = instlist.get(num).getOpcode();
-                        NPC = instlist.get(num).getPc();
-                        PC = instlist.get(num).getPc();
-                        instlist.get(num).setIF(IR, NPC, PC);
-                    }
-                } else if (inst.matches("ID")) {
-                    tempint = checkRegister(Integer.parseInt(binvalue.substring(6, 11), 2));
-                    A = Integer.toHexString(tempint);
-                    A = padZeros(A, 16);
-                    
-                    tempint = checkRegister(Integer.parseInt(binvalue.substring(11, 16), 2));
-                    B = Integer.toHexString(tempint);
-                    B = padZeros(B, 16);
-                    
-                    tempint = checkRegister(Integer.parseInt(binvalue.substring(16, 32), 2));
-                    IMM = Integer.toHexString(tempint);
-                    IMM = padZeros(IMM, 16);
-                    
-                    IR = instlist.get(num).getOpcode();
-                    
-                    instlist.get(num).setID(A, B, IMM, IR);
-                } else if (inst.matches("EX")) {
-                    if(instlist.get(num).getInst().contains("DSUBU")) {
-                        ans = Integer.parseInt(instlist.get(num).getID().getA(), 16) - Integer.parseInt(instlist.get(num).getID().getB());
-                        ALUOUTPUT = Integer.toHexString(ans);
-                        ALUOUTPUT = padZeros(ALUOUTPUT, 16);
-                    } else if(instlist.get(num).getInst().contains("DDIV")) {
-                        
-                    } else if(instlist.get(num).getInst().contains("AND")) {
-                        
-                    } else if(instlist.get(num).getInst().contains("DSRLV")) {
-                        
-                    } else if(instlist.get(num).getInst().contains("SLT")) {
-                        
-                    } else if(instlist.get(num).getInst().contains("BEQ")) {
-                        
-                    } else if(instlist.get(num).getInst().contains("LW")) {
-                        
-                    } else if(instlist.get(num).getInst().contains("LWU")) {
-                        
-                    } else if(instlist.get(num).getInst().contains("SW")) {
-                        
-                    } else if(instlist.get(num).getInst().contains("DADDIU")) {
-                        
-                    } else if(instlist.get(num).getInst().contains("ORI")) {
-                        
-                    } else if(instlist.get(num).getInst().contains("J")) {
-                        
-                    }
-                    
-                    B = instlist.get(num).getID().getB();
-                    IR = instlist.get(num).getOpcode();
-                    
-                    instlist.get(num).setEX(IR, ALUOUTPUT, B, COND);
-                } else if (inst.matches("MEM")) {
-
-                } else if (inst.matches("WB")) {
-
-                }
-            }
-        }
+        jTextArea1.setEditable(false);
+        
+        //TESTING
+        System.out.println("IF");
+        System.out.println("IF/ID.IR    "+instlist.get(0).getIF().getIR());
+        System.out.println("IF/ID.NPC   "+instlist.get(0).getIF().getNPC());
+        System.out.println("IF/ID.PC    "+instlist.get(0).getIF().getPC());
+        
+        System.out.println("ID");
+        System.out.println("ID/EX.A     "+instlist.get(0).getID().getA());
+        System.out.println("ID/EX.B     "+instlist.get(0).getID().getB());
+        System.out.println("ID/EX.IMM   "+instlist.get(0).getID().getIMM());
+        System.out.println("ID/EX.IR    "+instlist.get(0).getID().getIR());
+        
+        System.out.println("EX");
+        System.out.println("EX/MEM.ALUOUTPUT    "+instlist.get(0).getEX().getALUOUTPUT());
+        System.out.println("EX/MEM.B            "+instlist.get(0).getEX().getB());
+        System.out.println("EX/MEM.IR           "+instlist.get(0).getEX().getIR());
+        System.out.println("EX/MEM.COND         "+instlist.get(0).getEX().getCOND());
+                
+        System.out.println("MEM");
+        System.out.println("MEM/WB.ALUOUTPUT    "+instlist.get(0).getMEM().getALUOUTPUT());
+        System.out.println("MEM/WB.IR           "+instlist.get(0).getMEM().getIR());
+        System.out.println("MEM/WB.LMD          "+instlist.get(0).getMEM().getLMD());
+        System.out.println("MEM/WB.MEMALU       "+instlist.get(0).getMEM().getMEMALU());
+        
+        System.out.println("WB");
+        System.out.println("REG     "+instlist.get(0).getWB().getREG());
     }//GEN-LAST:event_jButton6ActionPerformed
 
     /**
@@ -3230,8 +3502,6 @@ public class NewJFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel15;
-    private javax.swing.JPanel jPanel16;
-    private javax.swing.JPanel jPanel17;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
@@ -3242,6 +3512,7 @@ public class NewJFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane7;
@@ -3250,6 +3521,7 @@ public class NewJFrame extends javax.swing.JFrame {
     private javax.swing.JTable jTable2;
     private javax.swing.JTable jTable3;
     private javax.swing.JTable jTable4;
+    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField10;
     private javax.swing.JTextField jTextField11;
