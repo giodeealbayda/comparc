@@ -5,6 +5,8 @@
  */
 package comparc;
 
+import java.math.BigInteger;
+
 /**
  *
  * @author Danica
@@ -19,6 +21,7 @@ public class Sample {
         //System.out.println(Integer.parseInt("FFFF", 2));
         
         //AND
+        /*
         String tempA="11010", tempB="11100", ans="";
         String charA, charB;
         
@@ -39,6 +42,10 @@ public class Sample {
         int x=8, y=10, z=0;
         z = x-y;
         System.out.println(Integer.toHexString(z));
+                */
+        
+        //System.out.println(Integer.parseInt("8c012000", 16));
+        System.out.println(new BigInteger("8C012000", 16).toString(2));
     }
     
 }

@@ -1654,7 +1654,7 @@ public class NewJFrame extends javax.swing.JFrame {
             codesegmentmodel.addRow(obj);
         }
         for (int i = 0; i < 2048; i++) {
-            datasegment.add("00");
+            datasegment.add("00000000");
         }
     }
 
@@ -2159,8 +2159,7 @@ public class NewJFrame extends javax.swing.JFrame {
             int intvalue = 0;
             String binvalue = "";
             for (i = 0; i < instlist.size(); i++) {
-                intvalue = Integer.parseInt(instlist.get(i).getOpcode(), 16);
-                binvalue = Integer.toBinaryString(intvalue);
+                binvalue = new BigInteger(instlist.get(i).getOpcode(), 16).toString(2);
                 binvalue = padZeros(binvalue, 32);
                 if (instlist.get(i).getLabel().matches("NO LABEL")) {
                     Object[] obj = {instlist.get(i).getInst(), instlist.get(i).getOpcode(), binvalue.substring(0, 6), binvalue.substring(6, 11), binvalue.substring(11, 16), binvalue.substring(16, 32)};
@@ -2524,8 +2523,7 @@ public class NewJFrame extends javax.swing.JFrame {
         instlist.get(index).setIF(IR, NPC, PC);
 
         //ID
-        intvalue = Integer.parseInt(instlist.get(index).getOpcode(), 16);
-        tempstr = Integer.toBinaryString(intvalue);
+        tempstr = new BigInteger(instlist.get(index).getOpcode(), 16).toString(16);
         tempstr = padZeros(tempstr, 32);
         tempint = checkRegister(Integer.parseInt(tempstr.substring(6, 11), 2));
         A = Integer.toHexString(tempint);
@@ -2535,8 +2533,7 @@ public class NewJFrame extends javax.swing.JFrame {
         B = Integer.toHexString(tempint);
         B = padZeros(B, 16);
 
-        tempint = Integer.parseInt(tempstr.substring(16, 32), 2);
-        IMM = Integer.toHexString(tempint);
+        IMM = instlist.get(index).getOpcode().substring(4, 8);
         IMM = padZeros(IMM, 16);
 
         instlist.get(index).setID(A, B, IMM, IR);
@@ -2660,16 +2657,48 @@ public class NewJFrame extends javax.swing.JFrame {
             
             LMD = "N/A";
             MEMALU = "N/A";
-        } else if (instlist.get(index).getInst().contains("LW")) {
-            //LMD
+        } else if (instlist.get(index).getInst().contains("LW") || instlist.get(index).getInst().contains("LWU")) {
+            temp = "";
+            LMD = "";
+            tempstr = ALUOUTPUT.substring(12, 16);
+            for(int x = 0; x < 2048; x++) {
+                if(LMD.length()!=8) {
+                    if(tempstr.matches(Integer.toHexString((x*4)+8192)) && LMD.length()!=8) {
+                        LMD = LMD + datasegment.get(x).substring(6, 8);
+                        System.out.println("1: " + tempstr);
+                        System.out.println(LMD);
+                        tempstr = Integer.toHexString(Integer.parseInt(tempstr, 16)+1);
+                    }
+                    if(tempstr.matches(Integer.toHexString((x*4)+8193)) && LMD.length()!=8) {
+                        LMD = LMD + datasegment.get(x).substring(4, 6);
+                        System.out.println("2: " + tempstr);
+                        System.out.println(LMD);
+                        tempstr = Integer.toHexString(Integer.parseInt(tempstr, 16)+1);
+                    }
+                    if(tempstr.matches(Integer.toHexString((x*4)+8194)) && LMD.length()!=8) {
+                        LMD = LMD + datasegment.get(x).substring(2, 4);
+                        System.out.println("3: " + tempstr);
+                        System.out.println(LMD);
+                        tempstr = Integer.toHexString(Integer.parseInt(tempstr, 16)+1);
+                    }
+                    if(tempstr.matches(Integer.toHexString((x*4)+8195)) && LMD.length()!=8) {
+                        LMD = LMD + datasegment.get(x).substring(0, 2);
+                        System.out.println("4: " + tempstr);
+                        System.out.println(LMD);
+                        tempstr = Integer.toHexString(Integer.parseInt(tempstr, 16)+1);
+                    }
+                } else {
+                    break;
+                }
+            }
+            if(instlist.get(index).getInst().contains("LWU")) {
+                LMD = padZeros(LMD, 16);
+            } else if(instlist.get(index).getInst().contains("LW")) {
+                LMD = signExtend(LMD, 16, "hex");
+            }
             
             ALUOUTPUT = "N/A";
             MEMALU = "N/A";            
-        } else if (instlist.get(index).getInst().contains("LWU")) {
-            //LMD
-            
-            ALUOUTPUT = "N/A";
-            MEMALU = "N/A";
         } else if (instlist.get(index).getInst().contains("SW")) {
             //MEMALU
             
