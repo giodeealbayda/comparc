@@ -6,6 +6,9 @@
 package comparc;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  *
@@ -45,7 +48,13 @@ public class Sample {
                 */
         
         //System.out.println(Integer.parseInt("8c012000", 16));
-        System.out.println(new BigInteger("8C012000", 16).toString(2));
+        //System.out.println(new BigInteger("8C012000", 16).toString(2));
+        
+        List<String> register = new ArrayList<String>(Collections.nCopies(31, "00000000"));
+        
+        for(int i = 0; i<register.size(); i++) {
+            System.out.println("R" + i + ": " + register.get(i));
+        }
     }
     
 }
