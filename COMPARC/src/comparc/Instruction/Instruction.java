@@ -39,8 +39,8 @@ public class Instruction {
         meminst = new MEM(IR, ALUOUTPUT, LMD, MEMALU);
     }
 
-    public void setWB(String REG) {
-        wbinst = new WB(REG);
+    public void setWB(String REG, String value) {
+        wbinst = new WB(REG, value);
     }
 
     public IF getIF() {

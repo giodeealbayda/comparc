@@ -6,36 +6,34 @@
 package comparc;
 
 import comparc.Instruction.Instruction;
+import comparc.Instruction.Register;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
+import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 public class NewJFrame extends javax.swing.JFrame {
 
     int rd, rs, rt, opcode, pc = 0, func = 0;
     boolean proceed = true;
-    String rdbin, rsbin, rtbin, opcodebin, temp = "", offsetbin, addressbin, instruction, labeladdress;
-    String addbin = "", funcbin, addresshex = "";
-    List<String> register;
-    String hi, lo;
-    /*int r0 =0, r1 = 0, r2 = 0, r3 = 0, r4 = 0, r5 = 0, r6 = 0, r7 = 0, r8 = 0, r9 = 0, r10 = 0,
-     r11 = 0, r12 = 0, r13 = 0, r14 = 0, r15 = 0, r16 = 0, r17 = 0, r18 = 0, r19 = 0, r20 = 0,
-     r21 = 0, r22 = 0, r23 = 0, r24 = 0, r25 = 0, r26 = 0, r27 = 0, r28 = 0, r29 = 0, r30 = 0,
-     r31 = 0;
-     int hi = 0, lo = 0;*/
+    String rdbin, rsbin, rtbin, opcodebin, temp = "", offsetbin, addressbin, instruction, labeladdress, addbin = "", funcbin, addresshex = "";
+    Register register;
+    Register initialregister;
+    Register registerforSingle;
 
     // regex
-    Pattern p = Pattern.compile("[^a-z0-9 ]", Pattern.CASE_INSENSITIVE);
     Pattern immediate = Pattern.compile("[^a-f0-9]", Pattern.CASE_INSENSITIVE);
-    Pattern labelcheck = Pattern.compile("^[0-9][a-z0-9]", Pattern.CASE_INSENSITIVE);
+    Pattern labelcheck = Pattern.compile("^[a-zA-Z]+[a-zA-Z0-9]*$", Pattern.CASE_INSENSITIVE);
+    Pattern digitcheck = Pattern.compile("^[0-9]", Pattern.CASE_INSENSITIVE);
     Matcher m;
 
     Instruction tempinst = new Instruction();
@@ -46,8 +44,12 @@ public class NewJFrame extends javax.swing.JFrame {
     DefaultTableModel datasegmentmodel;
     DefaultTableModel codesegmentmodel;
     DefaultTableModel pipelinemodel;
-    ArrayList<String> datasegment = new ArrayList<String>();
+    DefaultTableModel fullmodel;
+    DefaultTableModel singlemodel;
 
+    ArrayList<String> datasegment = new ArrayList<String>();
+    ArrayList<String> datasegmentinitial = new ArrayList<String>();
+    ArrayList<String> datasegmentSingle = new ArrayList<String>();
     ArrayList<String> pipeline = new ArrayList<String>();
 
     public NewJFrame() {
@@ -71,18 +73,42 @@ public class NewJFrame extends javax.swing.JFrame {
         jTextField22.setEditable(false);
         jTextField23.setEditable(false);
         jTextField24.setEditable(false);
+        jTextField25.setEditable(false);
+        jTextField26.setEditable(false);
+        jTextField27.setEditable(false);
+        jTextField28.setEditable(false);
+        jTextField29.setEditable(false);
+        jTextField30.setEditable(false);
+        jTextField31.setEditable(false);
+        jTextField32.setEditable(false);
+        jTextField33.setEditable(false);
+        jTextField34.setEditable(false);
+        jTextField35.setEditable(false);
+        jTextField36.setEditable(false);
+        jTextField37.setEditable(false);
+        jTextField38.setEditable(false);
         jTextField39.setEditable(false);
+        jButton2.setEnabled(false);
         jButton4.setEnabled(false);
+        jButton5.setEnabled(false);
+        jButton6.setEnabled(false);
 
         opcodemodel = (DefaultTableModel) jTable3.getModel();
         datasegmentmodel = (DefaultTableModel) jTable1.getModel();
         codesegmentmodel = (DefaultTableModel) jTable2.getModel();
         pipelinemodel = (DefaultTableModel) jTable4.getModel();
+        fullmodel = (DefaultTableModel) jTable5.getModel();
+        singlemodel = (DefaultTableModel) jTable6.getModel();
+
         InitializeCS();
         InitializeDS();
-        register = new ArrayList<String>(Collections.nCopies(32, "0000000000000000"));
-        hi = "00000000";
-        lo = "00000000";
+
+        register = new Register();
+        initialregister = new Register();
+        registerforSingle = new Register();
+        register.setRegister(new ArrayList<String>(Collections.nCopies(32, "0000000000000000")));
+        register.setHi("00000000");
+        register.setLo("00000000");
         pipeline.add("IF");
         pipeline.add("ID");
         pipeline.add("EX");
@@ -251,12 +277,18 @@ public class NewJFrame extends javax.swing.JFrame {
         jTable2 = new javax.swing.JTable();
         jLabel18 = new javax.swing.JLabel();
         jTextField41 = new javax.swing.JTextField();
-        jLabel8 = new javax.swing.JLabel();
         jPanel15 = new javax.swing.JPanel();
         jButton5 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
+        jPanel16 = new javax.swing.JPanel();
+        jPanel17 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        jTable5 = new javax.swing.JTable();
+        jPanel18 = new javax.swing.JPanel();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        jTable6 = new javax.swing.JTable();
+        jButton7 = new javax.swing.JButton();
+        jLabel8 = new javax.swing.JLabel();
 
         jLabel12.setText("jLabel12");
 
@@ -600,20 +632,20 @@ public class NewJFrame extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(9, 9, 9)
-                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap())
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(93, 93, 93)
+                        .addGap(97, 97, 97)
                         .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
@@ -635,16 +667,16 @@ public class NewJFrame extends javax.swing.JFrame {
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(9, 9, 9)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(40, Short.MAX_VALUE))
         );
 
         jComboBox1.getAccessibleContext().setAccessibleName("");
 
         jPanel10.setBackground(new java.awt.Color(204, 204, 204));
 
-        jButton4.setText("Show Pipeline Map");
+        jButton4.setText("Generate Pipeline Map");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton4ActionPerformed(evt);
@@ -671,7 +703,7 @@ public class NewJFrame extends javax.swing.JFrame {
             .addGroup(jPanel10Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 727, Short.MAX_VALUE)
+                    .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 644, Short.MAX_VALUE)
                     .addGroup(jPanel10Layout.createSequentialGroup()
                         .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
@@ -764,9 +796,10 @@ public class NewJFrame extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton3))
-                    .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jButton3)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         jPanel11.setBackground(new java.awt.Color(204, 204, 204));
@@ -1083,27 +1116,21 @@ public class NewJFrame extends javax.swing.JFrame {
                 .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addGroup(jPanel12Layout.createSequentialGroup()
-                            .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jTextField39, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE))
-                        .addGroup(jPanel12Layout.createSequentialGroup()
                             .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(jLabel38, javax.swing.GroupLayout.DEFAULT_SIZE, 60, Short.MAX_VALUE)
-                                .addComponent(jLabel37, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel36, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel35, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel34, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel33, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel32, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel31, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel30, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel29, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel28, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel27, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel26, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel25, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel39, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel38, javax.swing.GroupLayout.DEFAULT_SIZE, 54, Short.MAX_VALUE)
+                                .addComponent(jLabel37, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel36, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel35, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel34, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel33, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel32, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel31, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel30, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel29, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel27, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel28, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel39, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGap(10, 10, 10)
                             .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(jTextField20, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
                                 .addComponent(jTextField19)
@@ -1117,9 +1144,21 @@ public class NewJFrame extends javax.swing.JFrame {
                                 .addComponent(jTextField11)
                                 .addComponent(jTextField10)
                                 .addComponent(jTextField9)
-                                .addComponent(jTextField8)
+                                .addComponent(jTextField8)))
+                        .addGroup(jPanel12Layout.createSequentialGroup()
+                            .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanel12Layout.createSequentialGroup()
+                                    .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE))
+                                .addGroup(jPanel12Layout.createSequentialGroup()
+                                    .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(jLabel25, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jLabel26, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addGap(11, 11, 11)))
+                            .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jTextField6, javax.swing.GroupLayout.DEFAULT_SIZE, 109, Short.MAX_VALUE)
                                 .addComponent(jTextField7)
-                                .addComponent(jTextField6))))
+                                .addComponent(jTextField39, javax.swing.GroupLayout.Alignment.TRAILING))))
                     .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addGroup(jPanel12Layout.createSequentialGroup()
                             .addComponent(jLabel54, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1134,11 +1173,12 @@ public class NewJFrame extends javax.swing.JFrame {
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(jTextField33))
                         .addGroup(jPanel12Layout.createSequentialGroup()
-                            .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(jLabel42, javax.swing.GroupLayout.DEFAULT_SIZE, 60, Short.MAX_VALUE)
-                                .addComponent(jLabel41, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel40, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(jLabel41, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 54, Short.MAX_VALUE)
+                                    .addComponent(jLabel40, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(jLabel42, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                             .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(jTextField23, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
                                 .addComponent(jTextField22)
@@ -1426,7 +1466,7 @@ public class NewJFrame extends javax.swing.JFrame {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addGroup(jPanel13Layout.createSequentialGroup()
                         .addComponent(jLabel58)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 88, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 76, Short.MAX_VALUE)
                         .addComponent(jTextField40, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
@@ -1438,7 +1478,7 @@ public class NewJFrame extends javax.swing.JFrame {
                     .addComponent(jLabel58)
                     .addComponent(jTextField40, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -1449,12 +1489,19 @@ public class NewJFrame extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Address", "Representation"
+                "Address", "Representation", "Label", "Instruction"
             }
         ) {
-            boolean[] canEdit = new boolean [] {
-                false, false
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
@@ -1465,6 +1512,8 @@ public class NewJFrame extends javax.swing.JFrame {
         if (jTable2.getColumnModel().getColumnCount() > 0) {
             jTable2.getColumnModel().getColumn(0).setResizable(false);
             jTable2.getColumnModel().getColumn(1).setResizable(false);
+            jTable2.getColumnModel().getColumn(2).setResizable(false);
+            jTable2.getColumnModel().getColumn(3).setResizable(false);
         }
 
         jLabel18.setText("Code Segment");
@@ -1491,13 +1540,13 @@ public class NewJFrame extends javax.swing.JFrame {
             jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel14Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addGroup(jPanel14Layout.createSequentialGroup()
                         .addComponent(jLabel18)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 169, Short.MAX_VALUE)
                         .addComponent(jTextField41, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         jPanel14Layout.setVerticalGroup(
             jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1507,12 +1556,9 @@ public class NewJFrame extends javax.swing.JFrame {
                     .addComponent(jLabel18)
                     .addComponent(jTextField41, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addComponent(jScrollPane5)
                 .addContainerGap())
         );
-
-        jLabel8.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        jLabel8.setText("GROUP 8");
 
         jPanel15.setBackground(new java.awt.Color(204, 204, 204));
 
@@ -1530,9 +1576,120 @@ public class NewJFrame extends javax.swing.JFrame {
             }
         });
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane3.setViewportView(jTextArea1);
+        jPanel16.setLayout(new java.awt.CardLayout());
+
+        jTable5.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "", ""
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane3.setViewportView(jTable5);
+        if (jTable5.getColumnModel().getColumnCount() > 0) {
+            jTable5.getColumnModel().getColumn(0).setResizable(false);
+            jTable5.getColumnModel().getColumn(1).setResizable(false);
+        }
+
+        javax.swing.GroupLayout jPanel17Layout = new javax.swing.GroupLayout(jPanel17);
+        jPanel17.setLayout(jPanel17Layout);
+        jPanel17Layout.setHorizontalGroup(
+            jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel17Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 374, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel17Layout.setVerticalGroup(
+            jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel17Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 345, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jPanel16.add(jPanel17, "card2");
+
+        jTable6.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "", ""
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane6.setViewportView(jTable6);
+        if (jTable6.getColumnModel().getColumnCount() > 0) {
+            jTable6.getColumnModel().getColumn(0).setResizable(false);
+            jTable6.getColumnModel().getColumn(1).setResizable(false);
+        }
+
+        jButton7.setText("NEXT");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel18Layout = new javax.swing.GroupLayout(jPanel18);
+        jPanel18.setLayout(jPanel18Layout);
+        jPanel18Layout.setHorizontalGroup(
+            jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel18Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 374, Short.MAX_VALUE)
+                    .addGroup(jPanel18Layout.createSequentialGroup()
+                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton7)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        jPanel18Layout.setVerticalGroup(
+            jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel18Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+        jPanel16.add(jPanel18, "card2");
 
         javax.swing.GroupLayout jPanel15Layout = new javax.swing.GroupLayout(jPanel15);
         jPanel15.setLayout(jPanel15Layout);
@@ -1541,23 +1698,23 @@ public class NewJFrame extends javax.swing.JFrame {
             .addGroup(jPanel15Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel15Layout.createSequentialGroup()
                         .addComponent(jButton5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jButton6)
-                        .addGap(0, 353, Short.MAX_VALUE))
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel15Layout.setVerticalGroup(
             jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel15Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
                 .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton5)
                     .addComponent(jButton6))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 327, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -1568,15 +1725,14 @@ public class NewJFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel15, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-            .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jPanel15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 460, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -1585,22 +1741,19 @@ public class NewJFrame extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 137, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPanel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jPanel15, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addComponent(jPanel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                    .addComponent(jPanel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel14, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
 
         pack();
@@ -1649,30 +1802,49 @@ public class NewJFrame extends javax.swing.JFrame {
                 str = temp + str;
             }
         }
+        if (str.length() > num) {
+            str = str.substring(str.length() - num, str.length());
+        }
         return str;
     }
 
     private void InitializeCS() {
         String addTemp = "", repTemp = "00000000";
-        for (int i = 0; i < 2048; i++) {
-            addTemp = Integer.toHexString(i * 4);
+        for (int i = 0; i < 8192; i++) {
+            addTemp = Integer.toHexString(i);
             addTemp = padZeros(addTemp, 4);
             Object[] obj = {addTemp, repTemp};
             codesegmentmodel.addRow(obj);
         }
-        for (int i = 0; i < 2048; i++) {
-            datasegment.add("00000000");
-        }
     }
 
     private void InitializeDS() {
-        String addTemp = "", repTemp = "00000000";
-        for (int i = 2048; i < 4096; i++) {
-            addTemp = Integer.toHexString(i * 4);
+        String addTemp = "", repTemp = "00";
+        for (int i = 8192; i < 16384; i++) {
+            addTemp = Integer.toHexString(i);
             addTemp = padZeros(addTemp, 4);
             Object[] obj = {addTemp, repTemp};
             datasegmentmodel.addRow(obj);
         }
+
+        for (int i = 0; i < 8192; i++) {
+            datasegment.add("00");
+        }
+    }
+
+    private void UpdateDS(ArrayList<String> datasegment) {
+        datasegmentmodel.getDataVector().removeAllElements();
+        datasegmentmodel.fireTableDataChanged();
+
+        String addTemp = "", repTemp = "00";
+        for (int i = 0; i < 8192; i++) {
+            addTemp = Integer.toHexString(i + 8192);
+            addTemp = padZeros(addTemp, 4);
+            repTemp = datasegment.get(i);
+            Object[] obj = {addTemp, repTemp};
+            datasegmentmodel.addRow(obj);
+        }
+        datasegmentmodel.fireTableDataChanged();
     }
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
@@ -1717,7 +1889,7 @@ public class NewJFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
-    private void reset() {
+    private void resetAddCommand() {
         jTextField1.setText("");
         jTextField2.setText("");
         jTextField3.setText("");
@@ -1737,8 +1909,45 @@ public class NewJFrame extends javax.swing.JFrame {
         jComboBox12.setSelectedIndex(0);
     }
 
+    public void resetAll() {
+        resetAddCommand();
+        jButton1.setEnabled(true);
+        jButton2.setEnabled(false);
+        jButton4.setEnabled(false);
+        jButton5.setEnabled(false);
+        jButton6.setEnabled(false);
+        instlist.clear();
+        cyclelist.clear();
+        register = new Register();
+        datasegment.clear();
+        opcodemodel.getDataVector().removeAllElements();
+        opcodemodel.fireTableDataChanged();
+        pipelinemodel.getDataVector().removeAllElements();
+        pipelinemodel.fireTableDataChanged();
+        codesegmentmodel.getDataVector().removeAllElements();
+        codesegmentmodel.fireTableDataChanged();
+        datasegmentmodel.getDataVector().removeAllElements();
+        datasegmentmodel.fireTableDataChanged();
+        fullmodel.getDataVector().removeAllElements();
+        fullmodel.fireTableDataChanged();
+        singlemodel.getDataVector().removeAllElements();
+        singlemodel.fireTableDataChanged();
+        InitializeCS();
+        InitializeDS();
+        register.setRegister(new ArrayList<String>(Collections.nCopies(32, "0000000000000000")));
+        for (int i = 0; i < 32; i++) {
+            setRegister(i, register.getRegister(i), register);
+        }
+        register.setHi("00000000");
+        jTextField37.setText(register.getHi());
+        register.setLo("00000000");
+        jTextField38.setText(register.getLo());
+        jLabel23.setText("");
+    }
+
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        jButton2.setEnabled(true);
         instruction = jComboBox1.getSelectedItem().toString();
         tempinst = new Instruction();
         labeladdress = jTextField5.getText().toUpperCase();
@@ -1752,7 +1961,7 @@ public class NewJFrame extends javax.swing.JFrame {
                 || labeladdress.matches("DADDIU") || labeladdress.matches("ORI") || labeladdress.matches("J")) {
             proceed = false;
         } else {
-            if (m.find()) { //check for special characters
+            if (!m.find()) { //check for special characters and digits at the beginning of the label
                 proceed = false;
             } else {
                 proceed = true;
@@ -1875,8 +2084,8 @@ public class NewJFrame extends javax.swing.JFrame {
                     jLabel23.setText("Successfully added!");
                 }
             } else if (instruction.matches("BEQ")) {
-                m = p.matcher(jTextField1.getText());
-                if (jTextField1.getText().matches("") || m.find()) { //special characters or null
+                m = labelcheck.matcher(jTextField1.getText());
+                if (jTextField1.getText().matches("") || !m.find()) { //special characters or null
                     jLabel23.setText("Invalid Label");
                 } else if (jTextField1.getText().matches("DSUBU") || jTextField1.getText().matches("AND") || jTextField1.getText().matches("DSRLV")
                         || jTextField1.getText().matches("SLT") || jTextField1.getText().matches("DDIV") || jTextField1.getText().matches("BEQ")
@@ -1934,77 +2143,82 @@ public class NewJFrame extends javax.swing.JFrame {
                 if (jTextField2.getText().matches("") || jTextField2.getText().length() > 4 || m.find()) {
                     jLabel23.setText("Invalid Offset");
                 } else {
-                    rd = jComboBox9.getSelectedIndex();
-                    rs = jComboBox10.getSelectedIndex();
 
-                    //increment pc by 4
-                    pc = pc + 4;
-                    tempinst.setPc(padZeros(Integer.toHexString(pc), 16));
-
-                    //opcode binary
-                    if (instruction.matches("LW")) {
-                        opcode = 35;
-                    } else if (instruction.matches("LWU")) {
-                        opcode = 39;
-                    } else if (instruction.matches("SW")) {
-                        opcode = 43;
-                    }
-
-                    opcodebin = Integer.toBinaryString(opcode);
-                    opcodebin = padZeros(opcodebin, 6);
-
-                    //rd binary
-                    rdbin = Integer.toBinaryString(rd);
-                    rdbin = padZeros(rdbin, 5);
-
-                    //rs binary
-                    rsbin = Integer.toBinaryString(rs);
-                    rsbin = padZeros(rsbin, 5);
-
-                    offsetbin = Integer.toBinaryString(Integer.parseInt(jTextField2.getText(), 16));
-                    offsetbin = padZeros(offsetbin, 16);
-
-                    //address in binary
-                    addressbin = opcodebin + rsbin + rdbin + offsetbin;
-
-                    addresshex = new BigInteger(addressbin, 2).toString(16);
-                    addresshex = padZeros(addresshex, 8);
-
-                    tempinst.setOpcode(addresshex.toUpperCase());
-
-                    tempinst.setInst(instruction + " R" + jComboBox9.getSelectedItem() + ", " + jTextField2.getText().toUpperCase() + "(R" + jComboBox10.getSelectedItem() + ")");
-                    tempinst.setLabel(labeladdress);
-
-                    if (labeladdress.matches("NO LABEL")) {
-                        Object[] obj = {instruction + " R" + jComboBox9.getSelectedItem() + ", " + jTextField2.getText().toUpperCase() + "(R" + jComboBox10.getSelectedItem() + ")", ' '};
-                        opcodemodel.addRow(obj);
+                    if (Integer.parseInt(jTextField2.getText(), 16) < 8192 || Integer.parseInt(jTextField2.getText(), 16) > 16383) {
+                        jLabel23.setText("Invalid Offset");
                     } else {
-                        Object[] obj = {labeladdress + ": " + instruction + " R" + jComboBox9.getSelectedItem() + ", " + jTextField2.getText().toUpperCase() + "(R" + jComboBox10.getSelectedItem() + ")", ' '};
-                        opcodemodel.addRow(obj);
-                    }
+                        rd = jComboBox9.getSelectedIndex();
+                        rs = jComboBox10.getSelectedIndex();
 
-                    if (instruction.matches("SW")) {
-                        //store dependency
-                        if (rd == 0 && rs == 0) {
-                            tempinst.setDependency("none");
-                        } else if (rd == 0) {
-                            tempinst.setDependency('R' + Integer.toString(rs));
-                        } else if (rs == 0) {
-                            tempinst.setDependency('R' + Integer.toString(rd));
-                        } else {
-                            tempinst.setDependency('R' + Integer.toString(rd) + ", R" + Integer.toString(rs));
+                        //increment pc by 4
+                        pc = pc + 4;
+                        tempinst.setPc(padZeros(Integer.toHexString(pc), 16));
+
+                        //opcode binary
+                        if (instruction.matches("LW")) {
+                            opcode = 35;
+                        } else if (instruction.matches("LWU")) {
+                            opcode = 39;
+                        } else if (instruction.matches("SW")) {
+                            opcode = 43;
                         }
-                        tempinst.setAnswer("none");
-                    } else {
-                        if (rs != 0) {
-                            tempinst.setDependency('R' + Integer.toString(rs));
+
+                        opcodebin = Integer.toBinaryString(opcode);
+                        opcodebin = padZeros(opcodebin, 6);
+
+                        //rd binary
+                        rdbin = Integer.toBinaryString(rd);
+                        rdbin = padZeros(rdbin, 5);
+
+                        //rs binary
+                        rsbin = Integer.toBinaryString(rs);
+                        rsbin = padZeros(rsbin, 5);
+
+                        offsetbin = Integer.toBinaryString(Integer.parseInt(jTextField2.getText(), 16));
+                        offsetbin = padZeros(offsetbin, 16);
+
+                        //address in binary
+                        addressbin = opcodebin + rsbin + rdbin + offsetbin;
+
+                        addresshex = new BigInteger(addressbin, 2).toString(16);
+                        addresshex = padZeros(addresshex, 8);
+
+                        tempinst.setOpcode(addresshex.toUpperCase());
+
+                        tempinst.setInst(instruction + " R" + jComboBox9.getSelectedItem() + ", " + jTextField2.getText().toUpperCase() + "(R" + jComboBox10.getSelectedItem() + ")");
+                        tempinst.setLabel(labeladdress);
+
+                        if (labeladdress.matches("NO LABEL")) {
+                            Object[] obj = {instruction + " R" + jComboBox9.getSelectedItem() + ", " + jTextField2.getText().toUpperCase() + "(R" + jComboBox10.getSelectedItem() + ")", ' '};
+                            opcodemodel.addRow(obj);
                         } else {
-                            tempinst.setDependency("none");
+                            Object[] obj = {labeladdress + ": " + instruction + " R" + jComboBox9.getSelectedItem() + ", " + jTextField2.getText().toUpperCase() + "(R" + jComboBox10.getSelectedItem() + ")", ' '};
+                            opcodemodel.addRow(obj);
                         }
-                        tempinst.setAnswer('R' + Integer.toString(rd));
-                    }
-                    if (instlist.add(tempinst)) {
-                        jLabel23.setText("Successfully added!");
+
+                        if (instruction.matches("SW")) {
+                            //store dependency
+                            if (rd == 0 && rs == 0) {
+                                tempinst.setDependency("none");
+                            } else if (rd == 0) {
+                                tempinst.setDependency('R' + Integer.toString(rs));
+                            } else if (rs == 0) {
+                                tempinst.setDependency('R' + Integer.toString(rd));
+                            } else {
+                                tempinst.setDependency('R' + Integer.toString(rd) + ", R" + Integer.toString(rs));
+                            }
+                            tempinst.setAnswer("none");
+                        } else {
+                            if (rs != 0) {
+                                tempinst.setDependency('R' + Integer.toString(rs));
+                            } else {
+                                tempinst.setDependency("none");
+                            }
+                            tempinst.setAnswer('R' + Integer.toString(rd));
+                        }
+                        if (instlist.add(tempinst)) {
+                            jLabel23.setText("Successfully added!");
+                        }
                     }
                 }
 
@@ -2073,8 +2287,8 @@ public class NewJFrame extends javax.swing.JFrame {
                 }
 
             } else if (instruction.matches("J")) {
-                m = p.matcher(jTextField4.getText());
-                if (jTextField4.getText().matches("") || m.find()) { //special characters
+                m = labelcheck.matcher(jTextField4.getText());
+                if (jTextField4.getText().matches("") || !m.find()) { //special characters
                     jLabel23.setText("Invalid Offset");
                 } else {
 
@@ -2105,11 +2319,12 @@ public class NewJFrame extends javax.swing.JFrame {
             jLabel23.setText("Invalid label");
         }
 
-        reset();
+        resetAddCommand();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        jLabel23.setText("");
         opcodemodel.getDataVector().removeAllElements();
         opcodemodel.fireTableDataChanged();
         jButton1.setEnabled(false);
@@ -2130,8 +2345,13 @@ public class NewJFrame extends javax.swing.JFrame {
                     proceed = false;
                 } else { //label above
                     offset = j - (i + 1);
-                    offsetbin = Integer.toBinaryString(offset);
-                    offsetbin = signExtend(offsetbin, 64, "binary");
+                    if (offset > 0) {
+                        offsetbin = Integer.toBinaryString(offset);
+                        offsetbin = padZeros(offsetbin, 16);
+                    } else {
+                        offsetbin = Integer.toBinaryString(offset);
+                        offsetbin = signExtend(offsetbin, 16, "binary");
+                    }
 
                     offsetbin = instlist.get(i).getOpcode() + offsetbin;
 
@@ -2141,13 +2361,13 @@ public class NewJFrame extends javax.swing.JFrame {
                 }
             } else if (instlist.get(i).getInst().contains("J")) {
                 int ctr = 0;
-                label = instlist.get(i).getLabel().substring(2);
+                label = instlist.get(i).getInst().substring(2);
                 for (j = 0; j < instlist.size(); j++) {
                     if (instlist.get(j).getLabel().matches(label)) {
                         break;
                     }
                 }
-                if (j == instlist.size()) {
+                if (j == instlist.size()) { //label not found
                     proceed = false;
                 } else {
                     ctr = ((Integer.parseInt(instlist.get(j).getPc(), 16)) - 4) / 4;
@@ -2163,39 +2383,36 @@ public class NewJFrame extends javax.swing.JFrame {
         }
 
         if (proceed) {
-            int intvalue = 0;
             String binvalue = "";
             for (i = 0; i < instlist.size(); i++) {
                 binvalue = new BigInteger(instlist.get(i).getOpcode(), 16).toString(2);
                 binvalue = padZeros(binvalue, 32);
                 if (instlist.get(i).getLabel().matches("NO LABEL")) {
-                    Object[] obj = {instlist.get(i).getInst(), instlist.get(i).getOpcode(), binvalue.substring(0, 6), binvalue.substring(6, 11), binvalue.substring(11, 16), binvalue.substring(16, 32)};
+                    Object[] obj = {instlist.get(i).getInst(), instlist.get(i).getOpcode(), binvalue.substring(0, 6), binvalue.substring(6, 11), binvalue.substring(11, 16), binvalue.substring(16, 20) + " " + binvalue.substring(20, 24) + " " + binvalue.substring(24, 28) + " " + binvalue.substring(28, 32)};
                     opcodemodel.addRow(obj);
+
+                    codesegmentmodel.setValueAt(instlist.get(i).getOpcode(), i, 1);
+                    codesegmentmodel.setValueAt(instlist.get(i).getInst(), i, 3);
+                    codesegmentmodel.fireTableDataChanged();
+
                 } else {
-                    Object[] obj = {instlist.get(i).getLabel() + ": " + instlist.get(i).getInst(), instlist.get(i).getOpcode(), binvalue.substring(0, 6), binvalue.substring(6, 11), binvalue.substring(11, 16), binvalue.substring(16, 32)};
+                    Object[] obj = {instlist.get(i).getLabel() + ": " + instlist.get(i).getInst(), instlist.get(i).getOpcode(), binvalue.substring(0, 6), binvalue.substring(6, 11), binvalue.substring(11, 16), binvalue.substring(16, 20) + " " + binvalue.substring(20, 24) + " " + binvalue.substring(24, 28) + " " + binvalue.substring(28, 32)};
                     opcodemodel.addRow(obj);
+
+                    codesegmentmodel.setValueAt(instlist.get(i).getOpcode(), i, 1);
+                    codesegmentmodel.setValueAt(instlist.get(i).getLabel(), i, 2);
+                    codesegmentmodel.setValueAt(instlist.get(i).getInst(), i, 3);
                 }
             }
         } else {
-            jLabel23.setText("Error");
+            JOptionPane.showMessageDialog(null, "Label not found", "Error", JOptionPane.ERROR_MESSAGE);
+            resetAll();
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
-        reset();
-        jButton1.setEnabled(true);
-        jButton2.setEnabled(true);
-        jButton4.setEnabled(false);
-        instlist.clear();
-        cyclelist.clear();
-        opcodemodel.getDataVector().removeAllElements();
-        opcodemodel.fireTableDataChanged();
-        InitializeCS();
-        InitializeDS();
-        //SET REGISTER TO ZERO
-        //REMOVE PIPELINE MAP
-        //REMOVE EXECUTION
+        resetAll();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void addCycle(int instnum, int at) {
@@ -2235,9 +2452,9 @@ public class NewJFrame extends javax.swing.JFrame {
         }
     }
 
-    private void setRegister(int reg, String value) {
+    private void setRegister(int reg, String value, Register register) {
         value = padZeros(value, 16).toUpperCase();
-        register.set(reg, value);
+        register.setRegister(reg, value);
 
         switch (reg) {
             case 0: {
@@ -2373,49 +2590,26 @@ public class NewJFrame extends javax.swing.JFrame {
 
     public void addIFtoWB(int index) {
         String IR = "", NPC = "", PC = "";
-        String A = "", B = "", IMM = "", ALUOUTPUT = "", LMD = "", MEMALU = "", REG = "";
+        String A = "", B = "", IMM = "", ALUOUTPUT = "", LMD = "", MEMALU = "";
         String charA, charB;
         int COND = 0, tempint;
-        long templong;
-        long templo, temphi;
+        long templong, templo, temphi;
         String tempstr, tempA, tempB;
 
         //IF
         IR = instlist.get(index).getOpcode();
-        if (index != 0) {
-            if (instlist.get(index - 1).getInst().contains("J")) {
-                tempstr = instlist.get(index - 1).getOpcode().substring(4);
-                templong = Long.parseLong(tempstr, 16) * 4;
-                NPC = Long.toHexString(templong);
-                NPC = padZeros(NPC, 16);
-                PC = NPC;
-            } else if (instlist.get(index - 1).getEX().getCOND() == 1 && instlist.get(index - 1).getInst().contains("BEQ")) {
-                tempstr = instlist.get(index - 1).getOpcode().substring(4);
-                templong = Long.parseLong(tempstr, 16) * 4 + Long.parseLong(instlist.get(index).getPc(), 16);
-                NPC = Long.toHexString(templong);
-                NPC = padZeros(NPC, 16);
-                PC = NPC;
-            } else {
-                NPC = instlist.get(index).getPc();
-                PC = instlist.get(index).getPc();
-            }
-        } else {
-            NPC = instlist.get(index).getPc();
-            PC = instlist.get(index).getPc();
-        }
+        NPC = instlist.get(index).getPc();
+        PC = instlist.get(index).getPc();
         instlist.get(index).setIF(IR, NPC, PC);
 
         //ID
         tempstr = new BigInteger(instlist.get(index).getOpcode(), 16).toString(2);
         tempstr = padZeros(tempstr, 32);
         tempint = Integer.parseInt(tempstr.substring(6, 11), 2);
-        System.out.println(tempint);
-        A = register.get(tempint);
-        System.out.println(A);
+        A = register.getRegister(tempint);
 
         tempint = Integer.parseInt(tempstr.substring(11, 16), 2);
-        B = register.get(tempint);
-        System.out.println(B);
+        B = register.getRegister(tempint);
 
         IMM = instlist.get(index).getOpcode().substring(4, 8);
         IMM = padZeros(IMM, 16);
@@ -2427,24 +2621,27 @@ public class NewJFrame extends javax.swing.JFrame {
             templong = Long.parseLong(instlist.get(index).getID().getA(), 16) - Long.parseLong(instlist.get(index).getID().getB(), 16);
 
             ALUOUTPUT = Long.toHexString(templong).toUpperCase();
-            ALUOUTPUT = signExtend(ALUOUTPUT, 16, "hex");
+            if (templong < 0) {
+                ALUOUTPUT = signExtend(ALUOUTPUT, 16, "hex");
+            } else {
+                ALUOUTPUT = padZeros(ALUOUTPUT, 16);
+            }
+
             COND = 0;
         } else if (instlist.get(index).getInst().contains("DDIV")) {
             templo = Long.parseLong(instlist.get(index).getID().getA(), 16) / Long.parseLong(instlist.get(index).getID().getB());
             temphi = Long.parseLong(instlist.get(index).getID().getA(), 16) % Long.parseLong(instlist.get(index).getID().getB());
 
-            lo = Long.toHexString(templo).toUpperCase();
-            lo = padZeros(lo, 16);
-            hi = Long.toHexString(temphi).toUpperCase();
-            hi = padZeros(hi, 16);
+            register.setLo(padZeros(Long.toHexString(templo).toUpperCase(), 16));
+            register.setHi(padZeros(Long.toHexString(temphi).toUpperCase(), 16));
 
-            ALUOUTPUT = lo;
+            ALUOUTPUT = register.getLo();
             COND = 0;
         } else if (instlist.get(index).getInst().contains("AND")) {
             tempA = new BigInteger(A, 16).toString(2);
             tempB = new BigInteger(B, 16).toString(2);
             tempA = padZeros(tempA, 64);
-            tempB = padZeros(tempA, 64);
+            tempB = padZeros(tempB, 64);
 
             tempstr = "";
             for (int i = 0; i < 64; i++) {
@@ -2474,10 +2671,103 @@ public class NewJFrame extends javax.swing.JFrame {
 
             COND = 0;
         } else if (instlist.get(index).getInst().contains("SLT")) {
+            Long cmpA, cmpB;
+            String Abin, Bbin, sltalu="";
+            int m, in, ctr=0;
+            charA = "";
+            charB = "";
+
+            if (instlist.get(index).getID().getA().substring(0, 1).matches("8") || instlist.get(index).getID().getA().substring(0, 1).matches("9")
+                    || instlist.get(index).getID().getA().substring(0, 1).matches("A") || instlist.get(index).getID().getA().substring(0, 1).matches("B")
+                    || instlist.get(index).getID().getA().substring(0, 1).matches("C") || instlist.get(index).getID().getA().substring(0, 1).matches("D")
+                    || instlist.get(index).getID().getA().substring(0, 1).matches("E") || instlist.get(index).getID().getA().substring(0, 1).matches("F")) {
+                Abin = new BigInteger(instlist.get(index).getID().getA(), 16).toString(2);
+                Abin = padZeros(Abin, 64);
+                
+                in = 63;
+                for(m=0; m<64; m++) {
+                    charA = Character.toString(Abin.charAt(in));
+                    if(m==0) {
+                        if(charA.matches("0")) {
+                            while(charA.matches("0")) {
+                                sltalu = "0" + sltalu;
+                                in--;
+                                m++;
+                                charA=Character.toString(Abin.charAt(in));
+                            }
+                            sltalu = "1" + sltalu;
+                            in--;
+                        }
+                        else {
+                            sltalu = "1" + sltalu;
+                            in--;
+                        }
+                    } else {
+                        if(charA.matches("0")) {
+                            sltalu = "1" + sltalu;
+                        } else if(charA.matches("1")){
+                            sltalu = "0" + sltalu;
+                        }
+                        in--;
+                    }
+                }
+                cmpA = 0 - new BigInteger(sltalu, 2).longValue();
+                System.out.println("cmpA: " + cmpA);
+            } else {
+                cmpA = Long.parseLong(new BigInteger(instlist.get(index).getID().getA(), 16).toString(2), 2);
+            }
+
+            if (instlist.get(index).getID().getB().substring(0, 1).matches("8") || instlist.get(index).getID().getB().substring(0, 1).matches("9")
+                    || instlist.get(index).getID().getB().substring(0, 1).matches("A") || instlist.get(index).getID().getB().substring(0, 1).matches("B")
+                    || instlist.get(index).getID().getB().substring(0, 1).matches("C") || instlist.get(index).getID().getB().substring(0, 1).matches("D")
+                    || instlist.get(index).getID().getB().substring(0, 1).matches("E") || instlist.get(index).getID().getB().substring(0, 1).matches("F")) {
+                Bbin = new BigInteger(instlist.get(index).getID().getB(), 16).toString(2);
+                Bbin = padZeros(Bbin, 64);
+                
+                in = 63;
+                for(m=0; m<64; m++) {
+                    charB = Character.toString(Bbin.charAt(in));
+                    if(m==0) {
+                        if(charB.matches("0")) {
+                            while(charB.matches("0")) {
+                                sltalu = "0" + sltalu;
+                                in--;
+                                m++;
+                                charA=Character.toString(Bbin.charAt(in));
+                                
+                            }
+                            sltalu = "1" + sltalu;
+                            in--;
+                        }
+                        else {
+                            sltalu = "1" + sltalu;
+                            in--;
+                        }
+                    } else {
+                        if(charB.matches("0")) {
+                            sltalu = "1" + sltalu;
+                        } else {
+                            sltalu = "0" + sltalu;
+                        }
+                        in--;
+                    }
+                }
+                cmpB = 0 - new BigInteger(sltalu, 2).longValue();
+                System.out.println("cmpB: " + cmpB);
+            } else {
+                cmpB = Long.parseLong(new BigInteger(instlist.get(index).getID().getB(), 16).toString(2), 2);
+                System.out.println("cmpB: " + cmpB);
+            }
+
+            if (cmpA < cmpB) {
+                ALUOUTPUT = padZeros("1", 16);
+            } else {
+                ALUOUTPUT = padZeros("0", 16);
+            }
 
             COND = 0;
         } else if (instlist.get(index).getInst().contains("BEQ")) {
-            templong = Long.parseLong(instlist.get(index).getIF().getNPC(), 16) + (Integer.parseInt(IMM, 16) * 4);
+            templong = Long.parseLong(instlist.get(index).getIF().getNPC(), 16) + (Long.parseLong(IMM, 16) * 4);
 
             ALUOUTPUT = Long.toHexString(templong).toUpperCase();
             ALUOUTPUT = padZeros(ALUOUTPUT, 16);
@@ -2491,8 +2781,13 @@ public class NewJFrame extends javax.swing.JFrame {
                 || instlist.get(index).getInst().contains("SW")
                 || instlist.get(index).getInst().contains("LW")) {
             templong = Long.parseLong(instlist.get(index).getID().getA(), 16) + Long.parseLong(instlist.get(index).getID().getIMM(), 16);
-            ALUOUTPUT = Long.toHexString(templong).toUpperCase();
-            ALUOUTPUT = padZeros(ALUOUTPUT, 16);
+            if (templong < 8192 || templong > 16383) {
+                JOptionPane.showMessageDialog(null, "Data segment address not found", "Error", JOptionPane.ERROR_MESSAGE);
+                resetAll();
+            } else {
+                ALUOUTPUT = Long.toHexString(templong).toUpperCase();
+                ALUOUTPUT = padZeros(ALUOUTPUT, 16);
+            }
 
             COND = 0;
         } else if (instlist.get(index).getInst().contains("DADDIU")) {
@@ -2503,7 +2798,7 @@ public class NewJFrame extends javax.swing.JFrame {
             COND = 0;
         } else if (instlist.get(index).getInst().contains("ORI")) {
             tempA = new BigInteger(A, 16).toString(2);
-            tempB = new BigInteger(B, 16).toString(2);
+            tempB = new BigInteger(IMM, 16).toString(2);
             tempA = padZeros(tempA, 64);
             tempB = padZeros(tempB, 64);
 
@@ -2549,22 +2844,10 @@ public class NewJFrame extends javax.swing.JFrame {
             temp = "";
             LMD = "";
             tempstr = ALUOUTPUT.substring(12, 16);
-            for (int x = 0; x < 2048; x++) {
+            for (int x = 0; x < 8192; x++) {
                 if (LMD.length() != 8) {
-                    if (tempstr.matches(Integer.toHexString((x * 4) + 8192)) && LMD.length() != 8) {
-                        LMD = LMD + datasegment.get(x).substring(6, 8);
-                        tempstr = Long.toHexString(Long.parseLong(tempstr, 16) + 1);
-                    }
-                    if (tempstr.matches(Integer.toHexString((x * 4) + 8193)) && LMD.length() != 8) {
-                        LMD = LMD + datasegment.get(x).substring(4, 6);
-                        tempstr = Long.toHexString(Long.parseLong(tempstr, 16) + 1);
-                    }
-                    if (tempstr.matches(Integer.toHexString((x * 4) + 8194)) && LMD.length() != 8) {
-                        LMD = LMD + datasegment.get(x).substring(2, 4);
-                        tempstr = Long.toHexString(Long.parseLong(tempstr, 16) + 1);
-                    }
-                    if (tempstr.matches(Integer.toHexString((x * 4) + 8195)) && LMD.length() != 8) {
-                        LMD = LMD + datasegment.get(x).substring(0, 2);
+                    if (tempstr.matches(Long.toHexString(x + 8192))) {
+                        LMD = LMD + datasegment.get(x);
                         tempstr = Long.toHexString(Long.parseLong(tempstr, 16) + 1);
                     }
                 } else {
@@ -2578,13 +2861,26 @@ public class NewJFrame extends javax.swing.JFrame {
                 LMD = signExtend(LMD, 16, "hex");
             }
 
-            ALUOUTPUT = "N/A";
+            ALUOUTPUT = instlist.get(index).getEX().getALUOUTPUT();
             MEMALU = "N/A";
         } else if (instlist.get(index).getInst().contains("SW")) {
-            //MEMALU
+            tempstr = instlist.get(index).getEX().getALUOUTPUT().substring(12, 16);
+            tempint = Integer.parseInt(tempstr, 16) - 8192;
+            tempB = instlist.get(index).getID().getB().substring(8, 16);
+            int from, to;
+            from = 8;
+            to = 10;
 
+            for (int x = tempint; x < tempint + 4; x++) {
+                tempB = instlist.get(index).getID().getB().substring(from, to);
+                datasegment.set(x, tempB);
+                from = from + 2;
+                to = to + 2;
+            }
+            //UpdateDS();
+            MEMALU = Integer.toHexString(tempint).toString() + "-" + Integer.toHexString(tempint + 4).toString();
             LMD = "N/A";
-            ALUOUTPUT = "N/A";
+            ALUOUTPUT = instlist.get(index).getEX().getALUOUTPUT();
         } else if (instlist.get(index).getInst().contains("BEQ")
                 || instlist.get(index).getInst().contains("J")) {
 
@@ -2599,54 +2895,80 @@ public class NewJFrame extends javax.swing.JFrame {
         tempstr = instlist.get(index).getAnswer().substring(1);
 
         if (tempstr.contains("one")) {
-            REG = "N/A";
-            instlist.get(index).setWB(REG);
+            instlist.get(index).setWB("N/A", "N/A");
         } else {
             tempint = Integer.parseInt(tempstr);
 
             if (instlist.get(index).getInst().contains("LW")
                     || instlist.get(index).getInst().contains("LWU")) {
-                setRegister(tempint, LMD);
-                instlist.get(index).setWB(LMD);
+                register.setRegister(tempint, LMD);
+                instlist.get(index).setWB(Integer.toString(tempint), LMD);
             } else {
-                setRegister(tempint, ALUOUTPUT);
-                instlist.get(index).setWB(ALUOUTPUT);
-
-                hi = padZeros(hi, 16).toUpperCase();
-                jTextField37.setText(tempstr);
-                lo = padZeros(lo, 16).toUpperCase();
-                jTextField38.setText(tempstr);
+                register.setRegister(tempint, ALUOUTPUT);
+                instlist.get(index).setWB(Integer.toString(tempint), ALUOUTPUT);
             }
         }
     }
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
+        initialregister = new Register(register);
+        datasegmentinitial = new ArrayList<String>(datasegment);
         jButton4.setEnabled(false);
+        jButton5.setEnabled(true);
+        jButton6.setEnabled(true);
         String label;
-        long cmpR1, cmpR2;
-        int comR1, comR2, startsat = 0;
+        int startsat = 0;
         int depCheck = -1, j = 0;
+        String IR, NPC, PC;
 
         ArrayList<Integer> endlist = new ArrayList<Integer>();
         for (int i = 0; i < instlist.size(); i++) {
             depCheck = -1;
 
-            if (instlist.get(i).getInst().contains("DSUBU") || instlist.get(i).getInst().contains("DDIV") || instlist.get(i).getInst().contains("AND")
-                    || instlist.get(i).getInst().contains("DSRLV") || instlist.get(i).getInst().contains("SLT") || instlist.get(i).getInst().contains("LW")
-                    || instlist.get(i).getInst().contains("LWU") || instlist.get(i).getInst().contains("SW") || instlist.get(i).getInst().contains("DADDIU")
-                    || instlist.get(i).getInst().contains("ORI")) {
-                if (i == 0) {
-                    addCycle(i + 1, startsat);
-                    endlist.add(startsat + 4);
-                    startsat++;
-                } else {
-                    for (j = 0; j < i; j++) {
-                        if (instlist.get(i).getDependency().contains(instlist.get(j).getAnswer())) {
-                            depCheck = j;
+            if (i == 0 || instlist.get(i - 1).getEX().getCOND() == 0) {
+                if (instlist.get(i).getInst().contains("DSUBU") || instlist.get(i).getInst().contains("DDIV") || instlist.get(i).getInst().contains("AND")
+                        || instlist.get(i).getInst().contains("DSRLV") || instlist.get(i).getInst().contains("SLT") || instlist.get(i).getInst().contains("LW")
+                        || instlist.get(i).getInst().contains("LWU") || instlist.get(i).getInst().contains("SW") || instlist.get(i).getInst().contains("DADDIU")
+                        || instlist.get(i).getInst().contains("ORI")) {
+                    if (i == 0) {
+                        addCycle(i + 1, startsat);
+                        endlist.add(startsat + 4);
+                        startsat++;
+                    } else {
+                        if (instlist.get(i).getDependency().matches("none")) {
+
+                        } else {
+                            for (j = 0; j < i; j++) {
+                                if (instlist.get(i).getDependency().contains(instlist.get(j).getAnswer())) {
+                                    depCheck = j;
+                                }
+                            }
+                        }
+                        if (depCheck == -1) {
+                            addCycle(i + 1, startsat);
+                            endlist.add(startsat + 4);
+                            startsat++;
+                        } else {
+                            addIf(i + 1, startsat);
+                            startsat++;
+                            addStall(i + 1, startsat, endlist.get(depCheck) - startsat); //endlist.get(j)-startsat;
+                            startsat = startsat + (endlist.get(depCheck) - startsat) + 1;
+                            addCont(i + 1, startsat);
+                            endlist.add(startsat + 3);
                         }
                     }
-                    if (depCheck == -1) {
+                } else if (instlist.get(i).getInst().contains("BEQ")) {
+                    if (instlist.get(i).getDependency().matches("none")) {
+
+                    } else {
+                        for (j = 0; j < i; j++) {
+                            if (instlist.get(i).getDependency().contains(instlist.get(j).getAnswer())) {
+                                depCheck = j;
+                            }
+                        }
+                    }
+                    if (depCheck == -1 || i == 0) {
                         addCycle(i + 1, startsat);
                         endlist.add(startsat + 4);
                         startsat++;
@@ -2658,76 +2980,45 @@ public class NewJFrame extends javax.swing.JFrame {
                         addCont(i + 1, startsat);
                         endlist.add(startsat + 3);
                     }
-                }
-            } else if (instlist.get(i).getInst().contains("BEQ")) {
-                //inst = "BEQ";
-
-                for (j = 0; j < i; j++) {
-                    if (instlist.get(i).getDependency().contains(instlist.get(j).getAnswer())) {
-                        depCheck = j;
-                    }
-                }
-                if (depCheck == -1) {
+                } else if (instlist.get(i).getInst().contains("J")) {
                     addCycle(i + 1, startsat);
                     endlist.add(startsat + 4);
                     startsat++;
-                } else {
-                    addIf(i + 1, startsat);
-                    startsat++;
-                    addStall(i + 1, startsat, endlist.get(depCheck) - startsat); //endlist.get(j)-startsat;
-                    startsat = startsat + (endlist.get(depCheck) - startsat) + 1;
-                    addCont(i + 1, startsat);
-                    endlist.add(startsat + 3);
                 }
-
-                comR1 = Integer.parseInt(instlist.get(i).getInst().substring(5, instlist.get(i).getInst().indexOf(",")));
-                comR2 = Integer.parseInt(instlist.get(i).getInst().substring(instlist.get(i).getInst().lastIndexOf(", R") + 3, instlist.get(i).getInst().lastIndexOf(", ")));
-                cmpR1 = Long.parseLong(register.get(comR1), 16);
-                cmpR2 = Long.parseLong(register.get(comR2), 16);
-
-                if (cmpR1 != cmpR2) {
+                addIFtoWB(i);
+            } else {
+                IR = instlist.get(i).getOpcode();
+                if (instlist.get(i - 1).getInst().contains("BEQ")) {
+                    label = instlist.get(i - 1).getInst().substring(instlist.get(i - 1).getInst().lastIndexOf(", ") + 2);
                 } else {
-                    label = instlist.get(i).getInst().substring(instlist.get(i).getInst().lastIndexOf(", ") + 2);
-
-                    i++;
-                    addIf(i + 1, startsat);
-                    endlist.add(startsat);
-
-                    for (j = i; j < instlist.size(); j++) {
-                        if (label.matches(instlist.get(j).getLabel())) {
-                            i = j - 1;
-                            break;
-                        }
-                    }
-
-                    for (int k = 0; k < j; k++) {
-                        endlist.add(startsat);
-                    }
-                    startsat++;
+                    label = instlist.get(i - 1).getInst().substring(instlist.get(i - 1).getInst().indexOf(" ") + 1);
                 }
-            } else if (instlist.get(i).getLabel().contains("J")) {
-                addCycle(i + 1, startsat);
-                endlist.add(startsat + 4);
-                startsat++;
-
-                label = instlist.get(i).getLabel().substring(instlist.get(i).getLabel().indexOf(" ") + 1);
-
-                i++;
                 addIf(i + 1, startsat);
                 endlist.add(startsat);
 
-                for (j = i; j < instlist.size(); j++) {
+                int index = 0;
+                for (j = 0; j < instlist.size(); j++) {
                     if (label.matches(instlist.get(j).getLabel())) {
-                        i = j - 1;
+                        index = j;
                         break;
                     }
                 }
+
+                NPC = instlist.get(index).getPc();
+                NPC = padZeros(NPC, 16);
+                PC = NPC;
+                instlist.get(i).setIF(IR, NPC, PC);
+
+                for (int y = i + 1; y < index + 1; y++) {
+                    instlist.get(y).setEX("", "", "", 0);
+                }
+
+                i = index - 1;
                 for (int k = 0; k < j; k++) {
                     endlist.add(startsat);
                 }
                 startsat++;
             }
-            addIFtoWB(i);
         }
 
         //display pipeline map
@@ -2742,7 +3033,6 @@ public class NewJFrame extends javax.swing.JFrame {
         for (int i = 1; i <= cyclelist.size(); i++) {
             tc = tcm.getColumn(i);
             tc.setHeaderValue("Cycle " + i);
-            //jTextArea3.setText(jTextArea3.getText() + '\n' + "Cycle " + (i + 1) + ": " + cyclelist.get(i));
         }
         th.repaint();
         pipelinemodel.fireTableDataChanged();
@@ -2772,406 +3062,519 @@ public class NewJFrame extends javax.swing.JFrame {
         pipelinemodel.fireTableDataChanged();
     }//GEN-LAST:event_jButton4ActionPerformed
 
-    private String IntToHex(int r) {
-        String tempReg = Integer.toHexString(r);
-        tempReg = padZeros(tempReg, 16);
-        return tempReg;
-    }
-
     private void jTextField6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField6MouseClicked
         // TODO add your handling code here:
-        String tempR1 = register.get(1).toUpperCase();
-        tempR1 = JOptionPane.showInputDialog("Enter R1", tempR1);
-        m = immediate.matcher(tempR1);
-        if (tempR1.matches("") || tempR1.length() > 16 || m.find()) { //error checking
-            System.out.println("here");
-        } else {
-            setRegister(1, tempR1);
+        try {
+            String tempR1 = register.getRegister(1).toUpperCase();
+            tempR1 = JOptionPane.showInputDialog("Enter R1", tempR1);
+            m = immediate.matcher(tempR1);
+            if (tempR1 == null || tempR1.matches("") || tempR1.length() > 16 || m.find()) { //error checking
+            } else {
+                setRegister(1, tempR1, register);
+            }
+        } catch (Exception e) {
+
         }
     }//GEN-LAST:event_jTextField6MouseClicked
 
     private void jTextField7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField7MouseClicked
         // TODO add your handling code here:
-        String tempR2 = register.get(2).toUpperCase();
-        tempR2 = JOptionPane.showInputDialog("Enter R2", tempR2);
-        m = immediate.matcher(tempR2);
-        if (tempR2.matches("") || tempR2.length() > 16 || m.find()) {
+        try {
+            String tempR2 = register.getRegister(2).toUpperCase();
+            tempR2 = JOptionPane.showInputDialog("Enter R2", tempR2);
+            m = immediate.matcher(tempR2);
+            if (tempR2.matches("") || tempR2.length() > 16 || m.find()) {
 
-        } else {
-            setRegister(2, tempR2);
+            } else {
+                setRegister(2, tempR2, register);
+            }
+        } catch (Exception e) {
+
         }
     }//GEN-LAST:event_jTextField7MouseClicked
 
     private void jTextField8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField8MouseClicked
         // TODO add your handling code here:
-        String tempR3 = register.get(3).toUpperCase();
-        tempR3 = JOptionPane.showInputDialog("Enter R3", tempR3);
-        m = immediate.matcher(tempR3);
-        if (tempR3.matches("") || tempR3.length() > 16 || m.find()) {
+        try {
+            String tempR3 = register.getRegister(3).toUpperCase();
+            tempR3 = JOptionPane.showInputDialog("Enter R3", tempR3);
+            m = immediate.matcher(tempR3);
+            if (tempR3.matches("") || tempR3.length() > 16 || m.find()) {
 
-        } else {
-            setRegister(3, tempR3);
+            } else {
+                setRegister(3, tempR3, register);
+            }
+        } catch (Exception e) {
+
         }
     }//GEN-LAST:event_jTextField8MouseClicked
 
     private void jTextField9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField9MouseClicked
         // TODO add your handling code here:
-        String tempR4 = register.get(4).toUpperCase();
-        tempR4 = JOptionPane.showInputDialog("Enter R4", tempR4);
-        m = immediate.matcher(tempR4);
-        if (tempR4.matches("") || tempR4.length() > 16 || m.find()) {
+        try {
+            String tempR4 = register.getRegister(4).toUpperCase();
+            tempR4 = JOptionPane.showInputDialog("Enter R4", tempR4);
+            m = immediate.matcher(tempR4);
+            if (tempR4.matches("") || tempR4.length() > 16 || m.find()) {
 
-        } else {
-            setRegister(4, tempR4);
+            } else {
+                setRegister(4, tempR4, register);
+            }
+        } catch (Exception e) {
+
         }
     }//GEN-LAST:event_jTextField9MouseClicked
 
     private void jTextField10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField10MouseClicked
         // TODO add your handling code here:
-        String tempR5 = register.get(5).toUpperCase();
-        tempR5 = JOptionPane.showInputDialog("Enter R5", tempR5);
-        m = immediate.matcher(tempR5);
-        if (tempR5.matches("") || tempR5.length() > 16 || m.find()) {
+        try {
+            String tempR5 = register.getRegister(5).toUpperCase();
+            tempR5 = JOptionPane.showInputDialog("Enter R5", tempR5);
+            m = immediate.matcher(tempR5);
+            if (tempR5.matches("") || tempR5.length() > 16 || m.find()) {
 
-        } else {
-            setRegister(5, tempR5);
+            } else {
+                setRegister(5, tempR5, register);
+            }
+        } catch (Exception e) {
+
         }
     }//GEN-LAST:event_jTextField10MouseClicked
 
     private void jTextField11MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField11MouseClicked
         // TODO add your handling code here:
-        String tempR6 = register.get(6).toUpperCase();
-        tempR6 = JOptionPane.showInputDialog("Enter R6", tempR6);
-        m = immediate.matcher(tempR6);
-        if (tempR6.matches("") || tempR6.length() > 16 || m.find()) {
+        try {
+            String tempR6 = register.getRegister(6).toUpperCase();
+            tempR6 = JOptionPane.showInputDialog("Enter R6", tempR6);
+            m = immediate.matcher(tempR6);
+            if (tempR6.matches("") || tempR6.length() > 16 || m.find()) {
 
-        } else {
-            setRegister(6, tempR6);
+            } else {
+                setRegister(6, tempR6, register);
+            }
+        } catch (Exception e) {
+
         }
     }//GEN-LAST:event_jTextField11MouseClicked
 
     private void jTextField12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField12MouseClicked
         // TODO add your handling code here:
-        String tempR7 = register.get(7).toUpperCase();
-        tempR7 = JOptionPane.showInputDialog("Enter R7", tempR7);
-        m = immediate.matcher(tempR7);
-        if (tempR7.matches("") || tempR7.length() > 16 || m.find()) {
+        try {
+            String tempR7 = register.getRegister(7).toUpperCase();
+            tempR7 = JOptionPane.showInputDialog("Enter R7", tempR7);
+            m = immediate.matcher(tempR7);
+            if (tempR7.matches("") || tempR7.length() > 16 || m.find()) {
 
-        } else {
-            setRegister(7, tempR7);
+            } else {
+                setRegister(7, tempR7, register);
+            }
+        } catch (Exception e) {
+
         }
     }//GEN-LAST:event_jTextField12MouseClicked
 
     private void jTextField13MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField13MouseClicked
         // TODO add your handling code here:
-        String tempR8 = register.get(8).toUpperCase();
-        tempR8 = JOptionPane.showInputDialog("Enter R8", tempR8);
-        m = immediate.matcher(tempR8);
-        if (tempR8.matches("") || tempR8.length() > 16 || m.find()) {
+        try {
+            String tempR8 = register.getRegister(8).toUpperCase();
+            tempR8 = JOptionPane.showInputDialog("Enter R8", tempR8);
+            m = immediate.matcher(tempR8);
+            if (tempR8.matches("") || tempR8.length() > 16 || m.find()) {
 
-        } else {
-            setRegister(8, tempR8);
+            } else {
+                setRegister(8, tempR8, register);
+            }
+        } catch (Exception e) {
+
         }
     }//GEN-LAST:event_jTextField13MouseClicked
 
     private void jTextField14MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField14MouseClicked
         // TODO add your handling code here:
-        String tempR9 = register.get(9).toUpperCase();
-        tempR9 = JOptionPane.showInputDialog("Enter R9", tempR9);
-        m = immediate.matcher(tempR9);
-        if (tempR9.matches("") || tempR9.length() > 16 || m.find()) {
+        try {
+            String tempR9 = register.getRegister(9).toUpperCase();
+            tempR9 = JOptionPane.showInputDialog("Enter R9", tempR9);
+            m = immediate.matcher(tempR9);
+            if (tempR9.matches("") || tempR9.length() > 16 || m.find()) {
 
-        } else {
-            setRegister(9, tempR9);
+            } else {
+                setRegister(9, tempR9, register);
+            }
+        } catch (Exception e) {
+
         }
     }//GEN-LAST:event_jTextField14MouseClicked
 
     private void jTextField15MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField15MouseClicked
         // TODO add your handling code here:
-        String tempR10 = register.get(10).toUpperCase();
-        tempR10 = JOptionPane.showInputDialog("Enter R10", tempR10);
-        m = immediate.matcher(tempR10);
-        if (tempR10.matches("") || tempR10.length() > 16 || m.find()) {
+        try {
+            String tempR10 = register.getRegister(10).toUpperCase();
+            tempR10 = JOptionPane.showInputDialog("Enter R10", tempR10);
+            m = immediate.matcher(tempR10);
+            if (tempR10.matches("") || tempR10.length() > 16 || m.find()) {
 
-        } else {
-            setRegister(10, tempR10);
+            } else {
+                setRegister(10, tempR10, register);
+            }
+        } catch (Exception e) {
+
         }
     }//GEN-LAST:event_jTextField15MouseClicked
 
     private void jTextField16MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField16MouseClicked
         // TODO add your handling code here:
-        String tempR11 = register.get(11).toUpperCase();
-        tempR11 = JOptionPane.showInputDialog("Enter R11", tempR11);
-        m = immediate.matcher(tempR11);
-        if (tempR11.matches("") || tempR11.length() > 16 || m.equals(lo)) {
+        try {
+            String tempR11 = register.getRegister(11).toUpperCase();
+            tempR11 = JOptionPane.showInputDialog("Enter R11", tempR11);
+            m = immediate.matcher(tempR11);
+            if (tempR11.matches("") || tempR11.length() > 16 || m.find()) {
 
-        } else {
-            setRegister(11, tempR11);
+            } else {
+                setRegister(11, tempR11, register);
+            }
+        } catch (Exception e) {
+
         }
     }//GEN-LAST:event_jTextField16MouseClicked
 
     private void jTextField17MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField17MouseClicked
         // TODO add your handling code here:
-        String tempR12 = register.get(12).toUpperCase();
-        tempR12 = JOptionPane.showInputDialog("Enter R12", tempR12);
-        m = immediate.matcher(tempR12);
-        if (tempR12.matches("") || tempR12.length() > 16 || m.find()) {
+        try {
+            String tempR12 = register.getRegister(12).toUpperCase();
+            tempR12 = JOptionPane.showInputDialog("Enter R12", tempR12);
+            m = immediate.matcher(tempR12);
+            if (tempR12.matches("") || tempR12.length() > 16 || m.find()) {
 
-        } else {
-            setRegister(12, tempR12);
+            } else {
+                setRegister(12, tempR12, register);
+            }
+        } catch (Exception e) {
+
         }
     }//GEN-LAST:event_jTextField17MouseClicked
 
     private void jTextField18MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField18MouseClicked
         // TODO add your handling code here:
-        String tempR13 = register.get(13).toUpperCase();
-        tempR13 = JOptionPane.showInputDialog("Enter R13", tempR13);
-        m = immediate.matcher(tempR13);
-        if (tempR13.matches("") || tempR13.length() > 16 || m.find()) {
+        try {
+            String tempR13 = register.getRegister(13).toUpperCase();
+            tempR13 = JOptionPane.showInputDialog("Enter R13", tempR13);
+            m = immediate.matcher(tempR13);
+            if (tempR13.matches("") || tempR13.length() > 16 || m.find()) {
 
-        } else {
-            setRegister(13, tempR13);
+            } else {
+                setRegister(13, tempR13, register);
+            }
+        } catch (Exception e) {
         }
+
     }//GEN-LAST:event_jTextField18MouseClicked
 
     private void jTextField19MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField19MouseClicked
         // TODO add your handling code here:
-        String tempR14 = register.get(14).toUpperCase();
-        tempR14 = JOptionPane.showInputDialog("Enter R14", tempR14);
-        m = immediate.matcher(tempR14);
-        if (tempR14.matches("") || tempR14.length() > 16 || m.equals(lo)) {
+        try {
+            String tempR14 = register.getRegister(14).toUpperCase();
+            tempR14 = JOptionPane.showInputDialog("Enter R14", tempR14);
+            m = immediate.matcher(tempR14);
+            if (tempR14.matches("") || tempR14.length() > 16 || m.find()) {
 
-        } else {
-            setRegister(14, tempR14);
+            } else {
+                setRegister(14, tempR14, register);
+            }
+        } catch (Exception e) {
+
         }
     }//GEN-LAST:event_jTextField19MouseClicked
 
     private void jTextField20MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField20MouseClicked
         // TODO add your handling code here:
-        String tempR15 = register.get(15).toUpperCase();
-        tempR15 = JOptionPane.showInputDialog("Enter R15", tempR15);
-        m = immediate.matcher(tempR15);
-        if (tempR15.matches("") || tempR15.length() > 16 || m.find()) {
+        try {
+            String tempR15 = register.getRegister(15).toUpperCase();
+            tempR15 = JOptionPane.showInputDialog("Enter R15", tempR15);
+            m = immediate.matcher(tempR15);
+            if (tempR15.matches("") || tempR15.length() > 16 || m.find()) {
 
-        } else {
-            setRegister(15, tempR15);
+            } else {
+                setRegister(15, tempR15, register);
+            }
+        } catch (Exception e) {
+
         }
     }//GEN-LAST:event_jTextField20MouseClicked
 
     private void jTextField21MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField21MouseClicked
         // TODO add your handling code here:
-        String tempR16 = register.get(16).toUpperCase();
-        tempR16 = JOptionPane.showInputDialog("Enter R16", tempR16);
-        m = immediate.matcher(tempR16);
-        if (tempR16.matches("") || tempR16.length() > 16 || m.find()) {
+        try {
+            String tempR16 = register.getRegister(16).toUpperCase();
+            tempR16 = JOptionPane.showInputDialog("Enter R16", tempR16);
+            m = immediate.matcher(tempR16);
+            if (tempR16.matches("") || tempR16.length() > 16 || m.find()) {
 
-        } else {
-            setRegister(16, tempR16);
+            } else {
+                setRegister(16, tempR16, register);
+            }
+        } catch (Exception e) {
+
         }
     }//GEN-LAST:event_jTextField21MouseClicked
 
     private void jTextField22MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField22MouseClicked
         // TODO add your handling code here:
-        String tempR17 = register.get(17).toUpperCase();
-        tempR17 = JOptionPane.showInputDialog("Enter R17", tempR17);
-        m = immediate.matcher(tempR17);
-        if (tempR17.matches("") || tempR17.length() > 16 || m.find()) {
+        try {
+            String tempR17 = register.getRegister(17).toUpperCase();
+            tempR17 = JOptionPane.showInputDialog("Enter R17", tempR17);
+            m = immediate.matcher(tempR17);
+            if (tempR17.matches("") || tempR17.length() > 16 || m.find()) {
 
-        } else {
-            setRegister(17, tempR17);
+            } else {
+                setRegister(17, tempR17, register);
+            }
+        } catch (Exception e) {
+
         }
     }//GEN-LAST:event_jTextField22MouseClicked
 
     private void jTextField23MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField23MouseClicked
         // TODO add your handling code here:
-        String tempR18 = register.get(18).toUpperCase();
-        tempR18 = JOptionPane.showInputDialog("Enter R18", tempR18);
-        m = immediate.matcher(tempR18);
-        if (tempR18.matches("") || tempR18.length() > 16 || m.find()) {
+        try {
+            String tempR18 = register.getRegister(18).toUpperCase();
+            tempR18 = JOptionPane.showInputDialog("Enter R18", tempR18);
+            m = immediate.matcher(tempR18);
+            if (tempR18.matches("") || tempR18.length() > 16 || m.find()) {
 
-        } else {
-            setRegister(18, tempR18);
+            } else {
+                setRegister(18, tempR18, register);
+            }
+        } catch (Exception e) {
+
         }
     }//GEN-LAST:event_jTextField23MouseClicked
 
     private void jTextField24MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField24MouseClicked
         // TODO add your handling code here:
-        String tempR19 = register.get(19).toUpperCase();
-        tempR19 = JOptionPane.showInputDialog("Enter R19", tempR19);
-        m = immediate.matcher(tempR19);
-        if (tempR19.matches("") || tempR19.length() > 16 || m.find()) {
+        try {
+            String tempR19 = register.getRegister(19).toUpperCase();
+            tempR19 = JOptionPane.showInputDialog("Enter R19", tempR19);
+            m = immediate.matcher(tempR19);
+            if (tempR19.matches("") || tempR19.length() > 16 || m.find()) {
 
-        } else {
-            setRegister(19, tempR19);
+            } else {
+                setRegister(19, tempR19, register);
+            }
+        } catch (Exception e) {
+
         }
     }//GEN-LAST:event_jTextField24MouseClicked
 
     private void jTextField25MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField25MouseClicked
         // TODO add your handling code here:
-        String tempR20 = register.get(20).toUpperCase();
-        tempR20 = JOptionPane.showInputDialog("Enter R20", tempR20);
-        m = immediate.matcher(tempR20);
-        if (tempR20.matches("") || tempR20.length() > 16 || m.find()) {
+        try {
+            String tempR20 = register.getRegister(20).toUpperCase();
+            tempR20 = JOptionPane.showInputDialog("Enter R20", tempR20);
+            m = immediate.matcher(tempR20);
+            if (tempR20.matches("") || tempR20.length() > 16 || m.find()) {
 
-        } else {
-            setRegister(20, tempR20);
+            } else {
+                setRegister(20, tempR20, register);
+            }
+        } catch (Exception e) {
+
         }
     }//GEN-LAST:event_jTextField25MouseClicked
 
     private void jTextField26MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField26MouseClicked
         // TODO add your handling code here:
-        String tempR21 = register.get(21).toUpperCase();
-        tempR21 = JOptionPane.showInputDialog("Enter R21", tempR21);
-        m = immediate.matcher(tempR21);
-        if (tempR21.matches("") || tempR21.length() > 16 || m.find()) {
+        try {
+            String tempR21 = register.getRegister(21).toUpperCase();
+            tempR21 = JOptionPane.showInputDialog("Enter R21", tempR21);
+            m = immediate.matcher(tempR21);
+            if (tempR21.matches("") || tempR21.length() > 16 || m.find()) {
 
-        } else {
-            setRegister(21, tempR21);
+            } else {
+                setRegister(21, tempR21, register);
+            }
+        } catch (Exception e) {
+
         }
     }//GEN-LAST:event_jTextField26MouseClicked
 
     private void jTextField27MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField27MouseClicked
         // TODO add your handling code here:
-        String tempR22 = register.get(22).toUpperCase();
-        tempR22 = JOptionPane.showInputDialog("Enter R22", tempR22);
-        m = immediate.matcher(tempR22);
-        if (tempR22.matches("") || tempR22.length() > 16 || m.find()) {
+        try {
+            String tempR22 = register.getRegister(22).toUpperCase();
+            tempR22 = JOptionPane.showInputDialog("Enter R22", tempR22);
+            m = immediate.matcher(tempR22);
+            if (tempR22.matches("") || tempR22.length() > 16 || m.find()) {
 
-        } else {
-            setRegister(22, tempR22);
+            } else {
+                setRegister(22, tempR22, register);
+            }
+        } catch (Exception e) {
+
         }
     }//GEN-LAST:event_jTextField27MouseClicked
 
     private void jTextField28MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField28MouseClicked
         // TODO add your handling code here:
-        String tempR23 = register.get(23).toUpperCase();
-        tempR23 = JOptionPane.showInputDialog("Enter R23", tempR23);
-        m = immediate.matcher(tempR23);
-        if (tempR23.matches("") || tempR23.length() > 16 || m.find()) {
+        try {
+            String tempR23 = register.getRegister(23).toUpperCase();
+            tempR23 = JOptionPane.showInputDialog("Enter R23", tempR23);
+            m = immediate.matcher(tempR23);
+            if (tempR23.matches("") || tempR23.length() > 16 || m.find()) {
 
-        } else {
-            setRegister(23, tempR23);
+            } else {
+                setRegister(23, tempR23, register);
+            }
+        } catch (Exception e) {
+
         }
     }//GEN-LAST:event_jTextField28MouseClicked
 
     private void jTextField29MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField29MouseClicked
         // TODO add your handling code here:
-        String tempR24 = register.get(24).toUpperCase();
-        tempR24 = JOptionPane.showInputDialog("Enter R24", tempR24);
-        m = immediate.matcher(tempR24);
-        if (tempR24.matches("") || tempR24.length() > 16 || m.find()) {
+        try {
+            String tempR24 = register.getRegister(24).toUpperCase();
+            tempR24 = JOptionPane.showInputDialog("Enter R24", tempR24);
+            m = immediate.matcher(tempR24);
+            if (tempR24.matches("") || tempR24.length() > 16 || m.find()) {
 
-        } else {
-            setRegister(24, tempR24);
+            } else {
+                setRegister(24, tempR24, register);
+            }
+        } catch (Exception e) {
+
         }
     }//GEN-LAST:event_jTextField29MouseClicked
 
     private void jTextField30MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField30MouseClicked
         // TODO add your handling code here:
-        String tempR25 = register.get(25).toUpperCase();
-        tempR25 = JOptionPane.showInputDialog("Enter R25", tempR25);
-        m = immediate.matcher(tempR25);
-        if (tempR25.matches("") || tempR25.length() > 16 || m.find()) {
+        try {
+            String tempR25 = register.getRegister(25).toUpperCase();
+            tempR25 = JOptionPane.showInputDialog("Enter R25", tempR25);
+            m = immediate.matcher(tempR25);
+            if (tempR25.matches("") || tempR25.length() > 16 || m.find()) {
 
-        } else {
-            setRegister(25, tempR25);
+            } else {
+                setRegister(25, tempR25, register);
+            }
+        } catch (Exception e) {
+
         }
     }//GEN-LAST:event_jTextField30MouseClicked
 
     private void jTextField31MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField31MouseClicked
         // TODO add your handling code here:
-        String tempR26 = register.get(26).toUpperCase();
-        tempR26 = JOptionPane.showInputDialog("Enter R26", tempR26);
-        m = immediate.matcher(tempR26);
-        if (tempR26.matches("") || tempR26.length() > 16 || m.find()) {
+        try {
+            String tempR26 = register.getRegister(26).toUpperCase();
+            tempR26 = JOptionPane.showInputDialog("Enter R26", tempR26);
+            m = immediate.matcher(tempR26);
+            if (tempR26.matches("") || tempR26.length() > 16 || m.find()) {
 
-        } else {
-            setRegister(26, tempR26);
+            } else {
+                setRegister(26, tempR26, register);
+            }
+        } catch (Exception e) {
+
         }
     }//GEN-LAST:event_jTextField31MouseClicked
 
     private void jTextField32MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField32MouseClicked
         // TODO add your handling code here:
-        String tempR27 = register.get(27).toUpperCase();
+        String tempR27 = register.getRegister(27).toUpperCase();
         tempR27 = JOptionPane.showInputDialog("Enter R27", tempR27);
         m = immediate.matcher(tempR27);
         if (tempR27.matches("") || tempR27.length() > 16 || m.find()) {
 
         } else {
-            setRegister(27, tempR27);
+            setRegister(27, tempR27, register);
         }
     }//GEN-LAST:event_jTextField32MouseClicked
 
     private void jTextField33MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField33MouseClicked
         // TODO add your handling code here:
-        String tempR28 = register.get(28).toUpperCase();
-        tempR28 = JOptionPane.showInputDialog("Enter R28", tempR28);
-        m = immediate.matcher(tempR28);
-        if (tempR28.matches("") || tempR28.length() > 16 || m.find()) {
+        try {
+            String tempR28 = register.getRegister(28).toUpperCase();
+            tempR28 = JOptionPane.showInputDialog("Enter R28", tempR28);
+            m = immediate.matcher(tempR28);
+            if (tempR28.matches("") || tempR28.length() > 16 || m.find()) {
 
-        } else {
-            setRegister(28, tempR28);
+            } else {
+                setRegister(28, tempR28, register);
+            }
+        } catch (Exception e) {
+
         }
     }//GEN-LAST:event_jTextField33MouseClicked
 
     private void jTextField34MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField34MouseClicked
         // TODO add your handling code here:
-        String tempR29 = register.get(29).toUpperCase();
-        tempR29 = JOptionPane.showInputDialog("Enter R29", tempR29);
-        m = immediate.matcher(tempR29);
-        if (tempR29.matches("") || tempR29.length() > 16 || m.find()) {
+        try {
+            String tempR29 = register.getRegister(29).toUpperCase();
+            tempR29 = JOptionPane.showInputDialog("Enter R29", tempR29);
+            m = immediate.matcher(tempR29);
+            if (tempR29.matches("") || tempR29.length() > 16 || m.find()) {
 
-        } else {
-            setRegister(29, tempR29);
+            } else {
+                setRegister(29, tempR29, register);
+            }
+        } catch (Exception e) {
+
         }
     }//GEN-LAST:event_jTextField34MouseClicked
 
     private void jTextField35MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField35MouseClicked
         // TODO add your handling code here:
-        String tempR30 = register.get(30).toUpperCase();
-        tempR30 = JOptionPane.showInputDialog("Enter R30", tempR30);
-        m = immediate.matcher(tempR30);
-        if (tempR30.matches("") || tempR30.length() > 16 || m.find()) {
+        try {
+            String tempR30 = register.getRegister(30).toUpperCase();
+            tempR30 = JOptionPane.showInputDialog("Enter R30", tempR30);
+            m = immediate.matcher(tempR30);
+            if (tempR30.matches("") || tempR30.length() > 16 || m.find()) {
 
-        } else {
-            setRegister(30, tempR30);
+            } else {
+                setRegister(30, tempR30, register);
+            }
+        } catch (Exception e) {
+
         }
     }//GEN-LAST:event_jTextField35MouseClicked
 
     private void jTextField36MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField36MouseClicked
         // TODO add your handling code here:
-        String tempR31 = register.get(31).toUpperCase();
-        tempR31 = JOptionPane.showInputDialog("Enter R31", tempR31);
-        m = immediate.matcher(tempR31);
-        if (tempR31.matches("") || tempR31.length() > 16 || m.find()) {
+        try {
+            String tempR31 = register.getRegister(31).toUpperCase();
+            tempR31 = JOptionPane.showInputDialog("Enter R31", tempR31);
+            m = immediate.matcher(tempR31);
+            if (tempR31.matches("") || tempR31.length() > 16 || m.find()) {
 
-        } else {
-            setRegister(31, tempR31);
+            } else {
+                setRegister(31, tempR31, register);
+            }
+        } catch (Exception e) {
+
         }
     }//GEN-LAST:event_jTextField36MouseClicked
 
     private void jTextField37MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField37MouseClicked
         // TODO add your handling code here:
-        String tempHI = hi.toUpperCase();
+        String tempHI = register.getHi().toUpperCase();
         tempHI = JOptionPane.showInputDialog("Enter HI", tempHI);
         m = immediate.matcher(tempHI);
         if (tempHI.matches("") || tempHI.length() > 16 || m.find()) {
 
         } else {
-            hi = tempHI.toUpperCase();
+            register.setHi(tempHI.toUpperCase());
             jTextField37.setText(tempHI);
         }
     }//GEN-LAST:event_jTextField37MouseClicked
 
     private void jTextField38MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField38MouseClicked
         // TODO add your handling code here:
-        String tempLO = lo.toUpperCase();
+        String tempLO = register.getLo().toUpperCase();
         tempLO = JOptionPane.showInputDialog("Enter LO", tempLO);
         m = immediate.matcher(tempLO);
         if (tempLO.matches("") || tempLO.length() > 16 || m.find()) {
 
         } else {
-            lo = lo.toUpperCase();
+            register.setLo(tempLO.toUpperCase());
             jTextField38.setText(tempLO);
         }
     }//GEN-LAST:event_jTextField38MouseClicked
@@ -3179,20 +3582,24 @@ public class NewJFrame extends javax.swing.JFrame {
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
         // TODO add your handling code here:
         String mem = "", value = "", newval = "";
-        int row = jTable1.getSelectedRow();
-        mem = Integer.toHexString((row * 4) + 8192);
+        int temprow = jTable1.getSelectedRow();
+        String actualmem = jTable1.getModel().getValueAt(jTable1.convertRowIndexToModel(temprow), 0).toString();
+        int row = Integer.parseInt(actualmem, 16) - 8192;
+
+        mem = Long.toHexString(row + 8192);
 
         //get value from arraylist data segment
         value = datasegment.get(row);
-        value = padZeros(value, 8);
+        value = padZeros(value, 2);
 
         newval = JOptionPane.showInputDialog(mem, value);
 
         m = immediate.matcher(newval);
-        if (m.find() || newval.length() > 8 || newval.matches("")) {
+        if (m.find() || newval.length() > 2 || newval.matches("")) {
 
         } else {
-            newval = padZeros(newval, 8);
+
+            newval = padZeros(newval, 2).toUpperCase();
 
             //store value to arraylist data segment
             datasegment.set(row, newval);
@@ -3201,11 +3608,11 @@ public class NewJFrame extends javax.swing.JFrame {
             datasegmentmodel.fireTableDataChanged();
 
             //display
-            for (int i = 0; i < 2048; i++) {
+            for (int i = 0; i < 8192; i++) {
                 newval = "";
-                mem = Integer.toHexString((i * 4) + 8192);
+                mem = Long.toHexString(i + 8192);
                 value = datasegment.get(i);
-                newval = padZeros(value, 8);
+                newval = padZeros(value, 2).toUpperCase();
                 Object[] obj = {mem, newval};
                 datasegmentmodel.addRow(obj);
             }
@@ -3215,68 +3622,233 @@ public class NewJFrame extends javax.swing.JFrame {
     private void jTextField40KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField40KeyReleased
         // TODO add your handling code here:
         String mem = jTextField40.getText();
-    }//GEN-LAST:event_jTextField40KeyReleased
+        TableRowSorter<TableModel> sorter = new TableRowSorter<>(jTable1.getModel());
+        jTable1.setRowSorter(sorter);
 
-    private void jTextField40FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField40FocusGained
-        // TODO add your handling code here:
-        jTextField40.setText("");
-    }//GEN-LAST:event_jTextField40FocusGained
+        if (mem.length() == 0) {
+            sorter.setRowFilter(null);
+        } else {
+            sorter.setRowFilter(RowFilter.regexFilter("(?i)" + mem));
+        }
+        jTextField40.setText(mem);
+    }//GEN-LAST:event_jTextField40KeyReleased
 
     private void jTextField40FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField40FocusLost
         // TODO add your handling code here:
-        jTextField40.setText("Search");
+        if (jTextField40.getText().matches("")) {
+            jTextField40.setText("Search");
+        }
     }//GEN-LAST:event_jTextField40FocusLost
 
     private void jTextField41KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField41KeyReleased
         // TODO add your handling code here:
         String mem = jTextField41.getText();
+        TableRowSorter<TableModel> sorter = new TableRowSorter<>(jTable2.getModel());
+        jTable2.setRowSorter(sorter);
+
+        if (mem.length() == 0) {
+            sorter.setRowFilter(null);
+        } else {
+            sorter.setRowFilter(RowFilter.regexFilter("(?i)" + mem));
+        }
+        jTextField41.setText(mem);
+
     }//GEN-LAST:event_jTextField41KeyReleased
 
     private void jTextField41FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField41FocusGained
         // TODO add your handling code here:
-        jTextField41.setText("");
+        if (jTextField41.getText().contains("Search")) {
+            jTextField41.setText("");
+        }
     }//GEN-LAST:event_jTextField41FocusGained
 
     private void jTextField41FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField41FocusLost
         // TODO add your handling code here:
-        jTextField41.setText("Search");
+        if (jTextField41.getText().matches("")) {
+            jTextField41.setText("Search");
+        }
     }//GEN-LAST:event_jTextField41FocusLost
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
+        jPanel16.removeAll();
+        jPanel16.repaint();
+        jPanel16.revalidate();
+
+        jPanel16.add(jPanel18);
+        jPanel16.repaint();
+        jPanel16.revalidate();
+
+        registerforSingle = new Register(initialregister);
+        UpdateRegister(registerforSingle);
+
+        datasegmentSingle = new ArrayList<String>(datasegmentinitial);
+        UpdateDS(datasegmentSingle);
+
+        jLabel8.setText("Cycle 1");
+        SingleExecution();
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         // TODO add your handling code here:
-        jTextArea1.setEditable(false);
+        jPanel16.removeAll();
+        jPanel16.repaint();
+        jPanel16.revalidate();
 
-        //TESTING
-        System.out.println("IF");
-        System.out.println("IF/ID.IR    " + instlist.get(0).getIF().getIR());
-        System.out.println("IF/ID.NPC   " + instlist.get(0).getIF().getNPC());
-        System.out.println("IF/ID.PC    " + instlist.get(0).getIF().getPC());
+        jPanel16.add(jPanel17);
+        jPanel16.repaint();
+        jPanel16.revalidate();
 
-        System.out.println("ID");
-        System.out.println("ID/EX.A     " + instlist.get(0).getID().getA());
-        System.out.println("ID/EX.B     " + instlist.get(0).getID().getB());
-        System.out.println("ID/EX.IMM   " + instlist.get(0).getID().getIMM());
-        System.out.println("ID/EX.IR    " + instlist.get(0).getID().getIR());
+        System.out.println(register.getRegister(3));
+        UpdateRegister(register);
+        UpdateDS(datasegment);
 
-        System.out.println("EX");
-        System.out.println("EX/MEM.ALUOUTPUT    " + instlist.get(0).getEX().getALUOUTPUT());
-        System.out.println("EX/MEM.B            " + instlist.get(0).getEX().getB());
-        System.out.println("EX/MEM.IR           " + instlist.get(0).getEX().getIR());
-        System.out.println("EX/MEM.COND         " + instlist.get(0).getEX().getCOND());
+        fullmodel.getDataVector().removeAllElements();
+        fullmodel.fireTableDataChanged();
 
-        System.out.println("MEM");
-        System.out.println("MEM/WB.ALUOUTPUT    " + instlist.get(0).getMEM().getALUOUTPUT());
-        System.out.println("MEM/WB.IR           " + instlist.get(0).getMEM().getIR());
-        System.out.println("MEM/WB.LMD          " + instlist.get(0).getMEM().getLMD());
-        System.out.println("MEM/WB.MEMALU       " + instlist.get(0).getMEM().getMEMALU());
+        int inst;
+        String op;
+        String[] data;
+        String cycle;
+        for (int i = 0; i < cyclelist.size(); i++) {
+            cycle = "Cycle: " + (i + 1);
+            fullmodel.addRow(new Object[]{cycle});
+            data = cyclelist.get(i).split(", ");
+            for (int j = 0; j < data.length; j++) {
+                inst = Integer.parseInt(data[j].substring(4, cyclelist.get(i).indexOf(" "))) - 1;
+                op = data[j].substring(cyclelist.get(i).indexOf(" ") + 1);
 
-        System.out.println("WB");
-        System.out.println("REG     " + instlist.get(0).getWB().getREG());
+                if (op.matches("IF")) {
+                    fullmodel.addRow(new Object[]{"IF"});
+                    fullmodel.addRow(new Object[]{"IF/ID.IR", instlist.get(inst).getIF().getIR()});
+                    fullmodel.addRow(new Object[]{"IF/ID.NPC", instlist.get(inst).getIF().getNPC()});
+                    fullmodel.addRow(new Object[]{"IF/ID.PC", instlist.get(inst).getIF().getPC()});
+                } else if (op.matches("ID")) {
+                    fullmodel.addRow(new Object[]{"ID"});
+                    fullmodel.addRow(new Object[]{"ID/EX.A", instlist.get(inst).getID().getA()});
+                    fullmodel.addRow(new Object[]{"ID/EX.B", instlist.get(inst).getID().getB()});
+                    fullmodel.addRow(new Object[]{"ID/EX.IMM", instlist.get(inst).getID().getIMM()});
+                    fullmodel.addRow(new Object[]{"ID/EX.IR", instlist.get(inst).getID().getIR()});
+                } else if (op.matches("EX")) {
+                    fullmodel.addRow(new Object[]{"EX"});
+                    fullmodel.addRow(new Object[]{"EX/MEM.ALUOUTPUT", instlist.get(inst).getEX().getALUOUTPUT()});
+                    fullmodel.addRow(new Object[]{"EX/MEM.B", instlist.get(inst).getEX().getB()});
+                    fullmodel.addRow(new Object[]{"EX/MEM.IR", instlist.get(inst).getEX().getIR()});
+                    fullmodel.addRow(new Object[]{"EX/MEM.COND", instlist.get(inst).getEX().getCOND()});
+                } else if (op.matches("MEM")) {
+                    fullmodel.addRow(new Object[]{"MEM"});
+                    fullmodel.addRow(new Object[]{"MEM/WB.ALUOUTPUT", instlist.get(inst).getMEM().getALUOUTPUT()});
+                    fullmodel.addRow(new Object[]{"MEM/WB.IR", instlist.get(inst).getMEM().getIR()});
+                    fullmodel.addRow(new Object[]{"MEM/WB.LMD", instlist.get(inst).getMEM().getLMD()});
+                    fullmodel.addRow(new Object[]{"MEM/WB.MEMALU", instlist.get(inst).getMEM().getMEMALU()});
+                } else if (op.matches("WB")) {
+                    fullmodel.addRow(new Object[]{"WB"});
+                    fullmodel.addRow(new Object[]{"R" + instlist.get(inst).getWB().getREG(), instlist.get(inst).getWB().getValue()});
+                }
+            }
+        }
+
     }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void UpdateRegister(Register register) {
+        for (int i = 0; i < register.getRegister().size(); i++) {
+            setRegister(i, register.getRegister(i), register);
+        }
+        jTextField37.setText(register.getHi());
+        jTextField38.setText(register.getLo());
+    }
+
+    private void SingleExecution() {
+        int cycle = Integer.parseInt(jLabel8.getText().substring(6)) - 1, inst;
+        String[] data;
+        String op, tempstr, tempB;
+        int from, to, tempint;
+        Long templo, temphi;
+
+        singlemodel.getDataVector().removeAllElements();
+        singlemodel.fireTableDataChanged();
+
+        //UpdateRegister(registerforSingle);
+        data = cyclelist.get(cycle).split(", ");
+        for (int j = 0; j < data.length; j++) {
+            inst = Integer.parseInt(data[j].substring(4, cyclelist.get(cycle).indexOf(" "))) - 1;
+            op = data[j].substring(cyclelist.get(cycle).indexOf(" ") + 1);
+
+            if (op.matches("IF")) {
+                singlemodel.addRow(new Object[]{"IF"});
+                singlemodel.addRow(new Object[]{"IF/ID.IR", instlist.get(inst).getIF().getIR()});
+                singlemodel.addRow(new Object[]{"IF/ID.NPC", instlist.get(inst).getIF().getNPC()});
+                singlemodel.addRow(new Object[]{"IF/ID.PC", instlist.get(inst).getIF().getPC()});
+            } else if (op.matches("ID")) {
+                singlemodel.addRow(new Object[]{"ID"});
+                singlemodel.addRow(new Object[]{"ID/EX.A", instlist.get(inst).getID().getA()});
+                singlemodel.addRow(new Object[]{"ID/EX.B", instlist.get(inst).getID().getB()});
+                singlemodel.addRow(new Object[]{"ID/EX.IMM", instlist.get(inst).getID().getIMM()});
+                singlemodel.addRow(new Object[]{"ID/EX.IR", instlist.get(inst).getID().getIR()});
+            } else if (op.matches("EX")) {
+                singlemodel.addRow(new Object[]{"EX"});
+                singlemodel.addRow(new Object[]{"EX/MEM.ALUOUTPUT", instlist.get(inst).getEX().getALUOUTPUT()});
+                singlemodel.addRow(new Object[]{"EX/MEM.B", instlist.get(inst).getEX().getB()});
+                singlemodel.addRow(new Object[]{"EX/MEM.IR", instlist.get(inst).getEX().getIR()});
+                singlemodel.addRow(new Object[]{"EX/MEM.COND", instlist.get(inst).getEX().getCOND()});
+                if (instlist.get(inst).getInst().contains("DDIV")) {
+                    templo = Long.parseLong(instlist.get(inst).getID().getA(), 16) / Long.parseLong(instlist.get(inst).getID().getB());
+                    temphi = Long.parseLong(instlist.get(inst).getID().getA(), 16) % Long.parseLong(instlist.get(inst).getID().getB());
+
+                    registerforSingle.setLo(padZeros(Long.toHexString(templo).toUpperCase(), 16));
+                    registerforSingle.setHi(padZeros(Long.toHexString(temphi).toUpperCase(), 16));
+                    UpdateRegister(registerforSingle);
+                }
+            } else if (op.matches("MEM")) {
+                singlemodel.addRow(new Object[]{"MEM"});
+                singlemodel.addRow(new Object[]{"MEM/WB.ALUOUTPUT", instlist.get(inst).getMEM().getALUOUTPUT()});
+                singlemodel.addRow(new Object[]{"MEM/WB.IR", instlist.get(inst).getMEM().getIR()});
+                singlemodel.addRow(new Object[]{"MEM/WB.LMD", instlist.get(inst).getMEM().getLMD()});
+                singlemodel.addRow(new Object[]{"MEM/WB.MEMALU", instlist.get(inst).getMEM().getMEMALU()});
+                if (instlist.get(inst).getInst().contains("SW")) {
+                    tempstr = instlist.get(inst).getEX().getALUOUTPUT().substring(12, 16);
+                    tempint = Integer.parseInt(tempstr, 16) - 8192;
+                    tempB = instlist.get(inst).getID().getB().substring(8, 16);
+                    from = 8;
+                    to = 10;
+
+                    for (int x = tempint; x < tempint + 4; x++) {
+                        tempB = instlist.get(inst).getID().getB().substring(from, to);
+                        datasegment.set(x, tempB);
+                        from = from + 2;
+                        to = to + 2;
+                    }
+                    UpdateDS(datasegmentSingle);
+                }
+            } else if (op.matches("WB")) {
+                singlemodel.addRow(new Object[]{"WB"});
+                singlemodel.addRow(new Object[]{"R" + instlist.get(inst).getWB().getREG(), instlist.get(inst).getWB().getValue()});
+                if (!instlist.get(inst).getWB().getREG().matches("N/A")) {
+                    registerforSingle.setRegister(Integer.parseInt(instlist.get(inst).getWB().getREG()), instlist.get(inst).getWB().getValue());
+                    UpdateRegister(registerforSingle);
+                }
+            }
+        }
+    }
+
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        // TODO add your handling code here:
+        int cycle = Integer.parseInt(jLabel8.getText().substring(6));
+        if (cyclelist.size() < cycle + 1) {
+
+        } else {
+            jLabel8.setText("Cycle " + (cycle + 1));
+            SingleExecution();
+        }
+    }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void jTextField40FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField40FocusGained
+        // TODO add your handling code here:
+        if (jTextField40.getText().matches("Search")) {
+            jTextField40.setText("");
+        }
+    }//GEN-LAST:event_jTextField40FocusGained
 
     /**
      * @param args the command line arguments
@@ -3326,6 +3898,7 @@ public class NewJFrame extends javax.swing.JFrame {
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
     private javax.swing.JComboBox jComboBox1;
     private javax.swing.JComboBox jComboBox10;
     private javax.swing.JComboBox jComboBox11;
@@ -3403,6 +3976,9 @@ public class NewJFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel15;
+    private javax.swing.JPanel jPanel16;
+    private javax.swing.JPanel jPanel17;
+    private javax.swing.JPanel jPanel18;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
@@ -3416,13 +3992,15 @@ public class NewJFrame extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
     private javax.swing.JTable jTable3;
     private javax.swing.JTable jTable4;
-    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JTable jTable5;
+    private javax.swing.JTable jTable6;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField10;
     private javax.swing.JTextField jTextField11;

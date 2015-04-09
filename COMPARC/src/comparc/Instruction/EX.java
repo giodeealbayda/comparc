@@ -13,7 +13,7 @@ public class EX {
     private String IR;
     private String ALUOUTPUT;
     private String B;
-    private int COND;
+    private int COND=0;
     
     public EX(String IR, String ALU, String B, int COND) {
         this.IR = IR;

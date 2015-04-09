@@ -10,10 +10,13 @@ package comparc.Instruction;
  * @author Danica
  */
 public class WB {
+
     private String REG;
-    
-    public WB(String REG) {
-        this.REG = REG;
+    private String value;
+
+    public WB(String reg, String value) {
+        this.REG = reg;
+        this.value = value;
     }
 
     public String getREG() {
@@ -23,4 +26,13 @@ public class WB {
     public void setREG(String REG) {
         this.REG = REG;
     }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
 }
