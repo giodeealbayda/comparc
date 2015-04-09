@@ -2999,7 +2999,7 @@ public class NewJFrame extends javax.swing.JFrame {
                 int index = 0;
                 for (j = 0; j < instlist.size(); j++) {
                     if (label.matches(instlist.get(j).getLabel())) {
-                        index = j;
+                        index = j - 1;
                         break;
                     }
                 }
@@ -3013,7 +3013,7 @@ public class NewJFrame extends javax.swing.JFrame {
                     instlist.get(y).setEX("", "", "", 0);
                 }
 
-                i = index - 1;
+                i = index;
                 for (int k = 0; k < j; k++) {
                     endlist.add(startsat);
                 }
