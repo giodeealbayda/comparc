@@ -2826,15 +2826,16 @@ public class NewJFrame extends javax.swing.JFrame {
             from = 8;
             to = 10;
 
-            for (int x = tempint; x < tempint + 4; x++) {
+            for (int x = tempint + 3; x >= tempint; x--) {
                 tempB = instlist.get(index).getID().getB().substring(from, to);
                 datasegment.set(x, tempB);
                 from = from + 2;
                 to = to + 2;
             }
-            MEMALU = Integer.toHexString(tempint).toString() + "-" + Integer.toHexString(tempint + 4).toString();
+            MEMALU = padZeros(Integer.toHexString(tempint).toString(), 4) + "-" + padZeros(Integer.toHexString(tempint + 4).toString(), 4);
             LMD = "N/A";
             ALUOUTPUT = instlist.get(index).getEX().getALUOUTPUT();
+            System.out.println(MEMALU);
         } else if (instlist.get(index).getInst().contains("BEQ")
                 || instlist.get(index).getInst().contains("J")) {
 
@@ -3777,7 +3778,7 @@ public class NewJFrame extends javax.swing.JFrame {
                         from = 8;
                         to = 10;
 
-                        for (int x = tempint; x < tempint + 4; x++) {
+                        for (int x = tempint + 3; x >= tempint; x--) {
                             tempB = instlist.get(inst).getID().getB().substring(from, to);
                             datasegment.set(x, tempB);
                             from = from + 2;
