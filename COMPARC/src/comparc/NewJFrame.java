@@ -2606,9 +2606,11 @@ public class NewJFrame extends javax.swing.JFrame {
         tempstr = padZeros(tempstr, 32);
         tempint = Integer.parseInt(tempstr.substring(6, 11), 2);
         A = register.getRegister(tempint);
+        A = padZeros(A, 16);
 
         tempint = Integer.parseInt(tempstr.substring(11, 16), 2);
         B = register.getRegister(tempint);
+        B = padZeros(B, 16);
 
         IMM = instlist.get(index).getOpcode().substring(4, 8);
         if (instlist.get(index).getInst().contains("DADDIU")) {
@@ -2628,6 +2630,7 @@ public class NewJFrame extends javax.swing.JFrame {
                 ALUOUTPUT = Long.toHexString(difference.longValue());
             } else {
                 ALUOUTPUT = difference.toString(16).toUpperCase();
+                ALUOUTPUT = padZeros(ALUOUTPUT, 16);
             }
 
             COND = 0;
@@ -2685,6 +2688,7 @@ public class NewJFrame extends javax.swing.JFrame {
             COND = 0;
         } else if (instlist.get(index).getInst().contains("AND")) {
             ALUOUTPUT = new BigInteger(A, 16).and(new BigInteger(B, 16)).toString(16);
+            ALUOUTPUT = padZeros(ALUOUTPUT, 16);
 
             COND = 0;
         } else if (instlist.get(index).getInst().contains("DSRLV")) {
@@ -2737,11 +2741,14 @@ public class NewJFrame extends javax.swing.JFrame {
             ALUOUTPUT = Long.toHexString(templong).toUpperCase();
             ALUOUTPUT = padZeros(ALUOUTPUT, 16);
 
+            System.out.println(A);
+            System.out.println(B);
             if (A.matches(B)) {
                 COND = 1;
             } else {
                 COND = 0;
             }
+            System.out.println(COND);
         } else if (instlist.get(index).getInst().contains("LWU")
                 || instlist.get(index).getInst().contains("SW")
                 || instlist.get(index).getInst().contains("LW")) {
