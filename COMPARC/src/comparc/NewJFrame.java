@@ -639,7 +639,7 @@ public class NewJFrame extends javax.swing.JFrame {
                                 .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap())
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -1808,7 +1808,7 @@ public class NewJFrame extends javax.swing.JFrame {
 
     private void InitializeCS() {
         String addTemp = "", repTemp = "00000000";
-        for (int i = 0; i < 8192; i+=4) { /////// dito dito
+        for (int i = 0; i < 8192; i += 4) { /////// dito dito
             addTemp = Integer.toHexString(i);
             addTemp = padZeros(addTemp, 4);
             Object[] obj = {addTemp, repTemp};
@@ -1983,7 +1983,7 @@ public class NewJFrame extends javax.swing.JFrame {
                 if (instruction.matches("DDIV")) {
                     rs = jComboBox5.getSelectedIndex();
                     rt = jComboBox6.getSelectedIndex();
-                    if(rt == 0){
+                    if (rt == 0) {
                         JOptionPane.showMessageDialog(null, "ERROR: RT can not be 0. Changing RT to R1.");
                         jComboBox6.setSelectedIndex(1);
                         rt = 1;
@@ -2675,8 +2675,8 @@ public class NewJFrame extends javax.swing.JFrame {
             COND = 0;
         } else if (instlist.get(index).getInst().contains("SLT")) {
             Long cmpA, cmpB;
-            String Abin, Bbin, sltalu="";
-            int m, in, ctr=0;
+            String Abin, Bbin, sltalu = "";
+            int m, in, ctr = 0;
             charA = "";
             charB = "";
 
@@ -2686,29 +2686,28 @@ public class NewJFrame extends javax.swing.JFrame {
                     || instlist.get(index).getID().getA().substring(0, 1).matches("E") || instlist.get(index).getID().getA().substring(0, 1).matches("F")) {
                 Abin = new BigInteger(instlist.get(index).getID().getA(), 16).toString(2);
                 Abin = padZeros(Abin, 64);
-                
+
                 in = 63;
-                for(m=0; m<64; m++) {
+                for (m = 0; m < 64; m++) {
                     charA = Character.toString(Abin.charAt(in));
-                    if(m==0) {
-                        if(charA.matches("0")) {
-                            while(charA.matches("0")) {
+                    if (m == 0) {
+                        if (charA.matches("0")) {
+                            while (charA.matches("0")) {
                                 sltalu = "0" + sltalu;
                                 in--;
                                 m++;
-                                charA=Character.toString(Abin.charAt(in));
+                                charA = Character.toString(Abin.charAt(in));
                             }
                             sltalu = "1" + sltalu;
                             in--;
-                        }
-                        else {
+                        } else {
                             sltalu = "1" + sltalu;
                             in--;
                         }
                     } else {
-                        if(charA.matches("0")) {
+                        if (charA.matches("0")) {
                             sltalu = "1" + sltalu;
-                        } else if(charA.matches("1")){
+                        } else if (charA.matches("1")) {
                             sltalu = "0" + sltalu;
                         }
                         in--;
@@ -2726,28 +2725,27 @@ public class NewJFrame extends javax.swing.JFrame {
                     || instlist.get(index).getID().getB().substring(0, 1).matches("E") || instlist.get(index).getID().getB().substring(0, 1).matches("F")) {
                 Bbin = new BigInteger(instlist.get(index).getID().getB(), 16).toString(2);
                 Bbin = padZeros(Bbin, 64);
-                
+
                 in = 63;
-                for(m=0; m<64; m++) {
+                for (m = 0; m < 64; m++) {
                     charB = Character.toString(Bbin.charAt(in));
-                    if(m==0) {
-                        if(charB.matches("0")) {
-                            while(charB.matches("0")) {
+                    if (m == 0) {
+                        if (charB.matches("0")) {
+                            while (charB.matches("0")) {
                                 sltalu = "0" + sltalu;
                                 in--;
                                 m++;
-                                charA=Character.toString(Bbin.charAt(in));
-                                
+                                charA = Character.toString(Bbin.charAt(in));
+
                             }
                             sltalu = "1" + sltalu;
                             in--;
-                        }
-                        else {
+                        } else {
                             sltalu = "1" + sltalu;
                             in--;
                         }
                     } else {
-                        if(charB.matches("0")) {
+                        if (charB.matches("0")) {
                             sltalu = "1" + sltalu;
                         } else {
                             sltalu = "0" + sltalu;
@@ -3794,41 +3792,42 @@ public class NewJFrame extends javax.swing.JFrame {
                 singlemodel.addRow(new Object[]{"EX/MEM.B", instlist.get(inst).getEX().getB()});
                 singlemodel.addRow(new Object[]{"EX/MEM.IR", instlist.get(inst).getEX().getIR()});
                 singlemodel.addRow(new Object[]{"EX/MEM.COND", instlist.get(inst).getEX().getCOND()});
-                if (instlist.get(inst).getInst().contains("DDIV")) {
-                    templo = Long.parseLong(instlist.get(inst).getID().getA(), 16) / Long.parseLong(instlist.get(inst).getID().getB());
-                    temphi = Long.parseLong(instlist.get(inst).getID().getA(), 16) % Long.parseLong(instlist.get(inst).getID().getB());
-
-                    registerforSingle.setLo(padZeros(Long.toHexString(templo).toUpperCase(), 16));
-                    registerforSingle.setHi(padZeros(Long.toHexString(temphi).toUpperCase(), 16));
-                    UpdateRegister(registerforSingle);
-                }
             } else if (op.matches("MEM")) {
                 singlemodel.addRow(new Object[]{"MEM"});
                 singlemodel.addRow(new Object[]{"MEM/WB.ALUOUTPUT", instlist.get(inst).getMEM().getALUOUTPUT()});
                 singlemodel.addRow(new Object[]{"MEM/WB.IR", instlist.get(inst).getMEM().getIR()});
                 singlemodel.addRow(new Object[]{"MEM/WB.LMD", instlist.get(inst).getMEM().getLMD()});
                 singlemodel.addRow(new Object[]{"MEM/WB.MEMALU", instlist.get(inst).getMEM().getMEMALU()});
-                if (instlist.get(inst).getInst().contains("SW")) {
-                    tempstr = instlist.get(inst).getEX().getALUOUTPUT().substring(12, 16);
-                    tempint = Integer.parseInt(tempstr, 16) - 8192;
-                    tempB = instlist.get(inst).getID().getB().substring(8, 16);
-                    from = 8;
-                    to = 10;
 
-                    for (int x = tempint; x < tempint + 4; x++) {
-                        tempB = instlist.get(inst).getID().getB().substring(from, to);
-                        datasegment.set(x, tempB);
-                        from = from + 2;
-                        to = to + 2;
-                    }
-                    UpdateDS(datasegmentSingle);
-                }
             } else if (op.matches("WB")) {
                 singlemodel.addRow(new Object[]{"WB"});
                 singlemodel.addRow(new Object[]{"R" + instlist.get(inst).getWB().getREG(), instlist.get(inst).getWB().getValue()});
                 if (!instlist.get(inst).getWB().getREG().matches("N/A")) {
-                    registerforSingle.setRegister(Integer.parseInt(instlist.get(inst).getWB().getREG()), instlist.get(inst).getWB().getValue());
-                    UpdateRegister(registerforSingle);
+                    if (instlist.get(inst).getInst().contains("DDIV")) {
+                        templo = Long.parseLong(instlist.get(inst).getID().getA(), 16) / Long.parseLong(instlist.get(inst).getID().getB());
+                        temphi = Long.parseLong(instlist.get(inst).getID().getA(), 16) % Long.parseLong(instlist.get(inst).getID().getB());
+
+                        registerforSingle.setLo(padZeros(Long.toHexString(templo).toUpperCase(), 16));
+                        registerforSingle.setHi(padZeros(Long.toHexString(temphi).toUpperCase(), 16));
+                        UpdateRegister(registerforSingle);
+                    } else if (instlist.get(inst).getInst().contains("SW")) {
+                        tempstr = instlist.get(inst).getEX().getALUOUTPUT().substring(12, 16);
+                        tempint = Integer.parseInt(tempstr, 16) - 8192;
+                        tempB = instlist.get(inst).getID().getB().substring(8, 16);
+                        from = 8;
+                        to = 10;
+
+                        for (int x = tempint; x < tempint + 4; x++) {
+                            tempB = instlist.get(inst).getID().getB().substring(from, to);
+                            datasegment.set(x, tempB);
+                            from = from + 2;
+                            to = to + 2;
+                        }
+                        UpdateDS(datasegmentSingle);
+                    } else {
+                        registerforSingle.setRegister(Integer.parseInt(instlist.get(inst).getWB().getREG()), instlist.get(inst).getWB().getValue());
+                        UpdateRegister(registerforSingle);
+                    }
                 }
             }
         }
