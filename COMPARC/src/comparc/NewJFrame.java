@@ -1984,9 +1984,7 @@ public class NewJFrame extends javax.swing.JFrame {
                     rs = jComboBox5.getSelectedIndex();
                     rt = jComboBox6.getSelectedIndex();
                     if (rt == 0) {
-                        JOptionPane.showMessageDialog(null, "ERROR: RT can not be 0. Changing RT to R1.");
-                        jComboBox6.setSelectedIndex(1);
-                        rt = 1;
+                        JOptionPane.showMessageDialog(null, "ERROR: Division by zero.");
                     }
                 } else {
                     rd = jComboBox4.getSelectedIndex();
@@ -2632,11 +2630,16 @@ public class NewJFrame extends javax.swing.JFrame {
 
             COND = 0;
         } else if (instlist.get(index).getInst().contains("DDIV")) {
-            templo = Long.parseLong(instlist.get(index).getID().getA(), 16) / Long.parseLong(instlist.get(index).getID().getB());
-            temphi = Long.parseLong(instlist.get(index).getID().getA(), 16) % Long.parseLong(instlist.get(index).getID().getB());
+            try {
+                templo = Long.parseLong(instlist.get(index).getID().getA(), 16) / Long.parseLong(instlist.get(index).getID().getB());
+                temphi = Long.parseLong(instlist.get(index).getID().getA(), 16) % Long.parseLong(instlist.get(index).getID().getB());
 
-            register.setLo(padZeros(Long.toHexString(templo).toUpperCase(), 16));
-            register.setHi(padZeros(Long.toHexString(temphi).toUpperCase(), 16));
+                register.setLo(padZeros(Long.toHexString(templo).toUpperCase(), 16));
+                register.setHi(padZeros(Long.toHexString(temphi).toUpperCase(), 16));
+            } catch (Exception e) {
+                register.setLo(padZeros("0", 16));
+                register.setHi(padZeros("0", 16));
+            }
 
             ALUOUTPUT = register.getLo();
             COND = 0;
@@ -2714,7 +2717,6 @@ public class NewJFrame extends javax.swing.JFrame {
                     }
                 }
                 cmpA = 0 - new BigInteger(sltalu, 2).longValue();
-                System.out.println("cmpA: " + cmpA);
             } else {
                 cmpA = Long.parseLong(new BigInteger(instlist.get(index).getID().getA(), 16).toString(2), 2);
             }
@@ -2754,10 +2756,8 @@ public class NewJFrame extends javax.swing.JFrame {
                     }
                 }
                 cmpB = 0 - new BigInteger(sltalu, 2).longValue();
-                System.out.println("cmpB: " + cmpB);
             } else {
                 cmpB = Long.parseLong(new BigInteger(instlist.get(index).getID().getB(), 16).toString(2), 2);
-                System.out.println("cmpB: " + cmpB);
             }
 
             if (cmpA < cmpB) {
@@ -2878,7 +2878,6 @@ public class NewJFrame extends javax.swing.JFrame {
                 from = from + 2;
                 to = to + 2;
             }
-            //UpdateDS();
             MEMALU = Integer.toHexString(tempint).toString() + "-" + Integer.toHexString(tempint + 4).toString();
             LMD = "N/A";
             ALUOUTPUT = instlist.get(index).getEX().getALUOUTPUT();
@@ -3700,7 +3699,6 @@ public class NewJFrame extends javax.swing.JFrame {
         jPanel16.repaint();
         jPanel16.revalidate();
 
-        System.out.println(register.getRegister(3));
         UpdateRegister(register);
         UpdateDS(datasegment);
 
