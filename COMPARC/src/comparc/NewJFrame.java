@@ -2610,7 +2610,11 @@ public class NewJFrame extends javax.swing.JFrame {
         B = register.getRegister(tempint);
 
         IMM = instlist.get(index).getOpcode().substring(4, 8);
-        IMM = padZeros(IMM, 16);
+        if(instlist.get(index).getInst().contains("DADDIU")) {
+            IMM = signExtend(IMM, 16, "hex");
+        } else {
+            IMM = padZeros(IMM, 16);
+        }
 
         instlist.get(index).setID(A, B, IMM, IR);
 
@@ -2688,10 +2692,10 @@ public class NewJFrame extends javax.swing.JFrame {
         } else if (instlist.get(index).getInst().contains("SLT")) {
             Long cmpA, cmpB;
             String Abin, Bbin, sltalu = "";
-            int m, in, ctr = 0;
+            int m, in;
             charA = "";
             charB = "";
-
+            
             if (instlist.get(index).getID().getA().substring(0, 1).matches("8") || instlist.get(index).getID().getA().substring(0, 1).matches("9")
                     || instlist.get(index).getID().getA().substring(0, 1).matches("A") || instlist.get(index).getID().getA().substring(0, 1).matches("B")
                     || instlist.get(index).getID().getA().substring(0, 1).matches("C") || instlist.get(index).getID().getA().substring(0, 1).matches("D")
@@ -2807,23 +2811,7 @@ public class NewJFrame extends javax.swing.JFrame {
 
             COND = 0;
         } else if (instlist.get(index).getInst().contains("ORI")) {
-            tempA = new BigInteger(A, 16).toString(2);
-            tempB = new BigInteger(IMM, 16).toString(2);
-            tempA = padZeros(tempA, 64);
-            tempB = padZeros(tempB, 64);
-
-            tempstr = "";
-            for (int i = 0; i < 64; i++) {
-                charA = Character.toString(tempA.charAt(i));
-                charB = Character.toString(tempB.charAt(i));
-                if (charA.matches("0") && charB.matches("0")) {
-                    tempstr = tempstr + '0';
-                } else {
-                    tempstr = tempstr + '1';
-                }
-            }
-
-            ALUOUTPUT = new BigInteger(tempstr, 2).toString(16).toUpperCase();
+            ALUOUTPUT = new BigInteger(A, 16).or(new BigInteger(IMM, 16)).toString(16);
             ALUOUTPUT = padZeros(ALUOUTPUT, 16);
 
             COND = 0;
