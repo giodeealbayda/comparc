@@ -2591,7 +2591,6 @@ public class NewJFrame extends javax.swing.JFrame {
     public void addIFtoWB(int index) {
         String IR = "", NPC = "", PC = "";
         String A = "", B = "", IMM = "", ALUOUTPUT = "", LMD = "", MEMALU = "";
-        String charA, charB;
         int COND = 0, tempint;
         long templong;
         String tempstr, tempA, tempB;
@@ -2655,11 +2654,11 @@ public class NewJFrame extends javax.swing.JFrame {
                 } else {
                     divisor = Long.parseLong(instlist.get(index).getID().getB(), 16);
                 }
-                
+
                 quotient = dividend / divisor;
                 remainder = dividend % divisor;
-                
-                if(quotient < 0) {
+
+                if (quotient < 0) {
                     ALUOUTPUT = new BigInteger(Long.toHexString(quotient), 16).toString(16);
                     ALUOUTPUT = padZeros(ALUOUTPUT, 16);
                     register.setLo(ALUOUTPUT);
@@ -2668,15 +2667,15 @@ public class NewJFrame extends javax.swing.JFrame {
                     ALUOUTPUT = padZeros(ALUOUTPUT, 16);
                     register.setLo(ALUOUTPUT);
                 }
-                
-                if(remainder < 0) {
-                    ALUOUTPUT =new BigInteger(Long.toHexString(remainder), 16).toString(16);
+
+                if (remainder < 0) {
+                    ALUOUTPUT = new BigInteger(Long.toHexString(remainder), 16).toString(16);
                     ALUOUTPUT = padZeros(ALUOUTPUT, 16);
                 } else {
                     ALUOUTPUT = Long.toHexString(remainder);
                     ALUOUTPUT = padZeros(ALUOUTPUT, 16);
                     register.setHi(padZeros(Long.toHexString(remainder).toString().toUpperCase(), 16));
-                }                
+                }
             } catch (Exception e) {
                 System.out.println("jump then fall into me");
                 register.setLo(padZeros("0", 16));
@@ -2705,14 +2704,12 @@ public class NewJFrame extends javax.swing.JFrame {
         } else if (instlist.get(index).getInst().contains("SLT")) {
             Long cmpA, cmpB;
             int m;
-            charA = "";
-            charB = "";
 
             if (instlist.get(index).getID().getA().substring(0, 1).matches("8") || instlist.get(index).getID().getA().substring(0, 1).matches("9")
                     || instlist.get(index).getID().getA().substring(0, 1).matches("A") || instlist.get(index).getID().getA().substring(0, 1).matches("B")
                     || instlist.get(index).getID().getA().substring(0, 1).matches("C") || instlist.get(index).getID().getA().substring(0, 1).matches("D")
                     || instlist.get(index).getID().getA().substring(0, 1).matches("E") || instlist.get(index).getID().getA().substring(0, 1).matches("F")) {
-                
+
                 cmpA = new BigInteger(instlist.get(index).getID().getA(), 16).longValue();
             } else {
                 cmpA = Long.parseLong(instlist.get(index).getID().getA(), 16);
@@ -2907,12 +2904,18 @@ public class NewJFrame extends javax.swing.JFrame {
                             endlist.add(startsat + 4);
                             startsat++;
                         } else {
-                            addIf(i + 1, startsat);
-                            startsat++;
-                            addStall(i + 1, startsat, endlist.get(depCheck) - startsat); //endlist.get(j)-startsat;
-                            startsat = startsat + (endlist.get(depCheck) - startsat) + 1;
-                            addCont(i + 1, startsat);
-                            endlist.add(startsat + 3);
+                            addIf((i + 1), startsat);
+                            if (startsat > endlist.get(depCheck)) {
+                                startsat++;
+                                addCont(i + 1, startsat);
+                                endlist.add(startsat + 3);
+                            } else {
+                                startsat++;
+                                addStall(i + 1, startsat, endlist.get(depCheck) - startsat); //endlist.get(j)-startsat;
+                                startsat = startsat + (endlist.get(depCheck) - startsat) + 1;
+                                addCont(i + 1, startsat);
+                                endlist.add(startsat + 3);
+                            }
                         }
                     }
                 } else if (instlist.get(i).getInst().contains("BEQ")) {
@@ -2930,12 +2933,18 @@ public class NewJFrame extends javax.swing.JFrame {
                         endlist.add(startsat + 4);
                         startsat++;
                     } else {
-                        addIf(i + 1, startsat);
-                        startsat++;
-                        addStall(i + 1, startsat, endlist.get(depCheck) - startsat); //endlist.get(j)-startsat;
-                        startsat = startsat + (endlist.get(depCheck) - startsat) + 1;
-                        addCont(i + 1, startsat);
-                        endlist.add(startsat + 3);
+                        addIf((i + 1), startsat);
+                        if (startsat > endlist.get(depCheck)) {
+                            startsat++;
+                            addCont(i + 1, startsat);
+                            endlist.add(startsat + 3);
+                        } else {
+                            startsat++;
+                            addStall(i + 1, startsat, endlist.get(depCheck) - startsat); //endlist.get(j)-startsat;
+                            startsat = startsat + (endlist.get(depCheck) - startsat) + 1;
+                            addCont(i + 1, startsat);
+                            endlist.add(startsat + 3);
+                        }
                     }
                 } else if (instlist.get(i).getInst().contains("J")) {
                     addCycle(i + 1, startsat);
@@ -2967,7 +2976,7 @@ public class NewJFrame extends javax.swing.JFrame {
                 instlist.get(i).setIF(IR, NPC, PC);
 
                 for (int y = i + 1; y < index + 1; y++) {
-                    instlist.get(y).setEX("", "", "", 0);
+                    instlist.get(y).setJump(0);
                 }
 
                 i = index;
