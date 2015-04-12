@@ -3019,6 +3019,7 @@ public class NewJFrame extends javax.swing.JFrame {
         }
 
         //display pipeline map
+        
         pipelinemodel.setColumnCount(cyclelist.size() + 1);
         pipelinemodel.fireTableStructureChanged();
 
@@ -3038,24 +3039,19 @@ public class NewJFrame extends javax.swing.JFrame {
             Object[] obj = {instlist.get(i).getInst().toString()};
             pipelinemodel.addRow(obj);
         }
-
-        int start, last, index;
-        String data = "";
-        for (j = 0; j < instlist.size(); j++) {
-            index = j + 1;
-            for (int i = 0; i < cyclelist.size(); i++) {
-                if (cyclelist.get(i).contains("Inst" + index)) {
-                    start = cyclelist.get(i).indexOf(String.valueOf(index)) + 2;
-                    last = cyclelist.get(i).indexOf(",", start);
-                    if (last == -1) {
-                        data = cyclelist.get(i).substring(start);
-                    } else {
-                        data = cyclelist.get(i).substring(start, last);
-                    }
-                    pipelinemodel.setValueAt(data, j, i + 1); //row, column
-                }
+        int num;
+        String[] data;
+        String op;
+        
+        for(int i=0; i<cyclelist.size(); i++) {
+            data = cyclelist.get(i).split(", ");
+            for(j=0; j<data.length; j++) {
+                num = Integer.parseInt(data[j].substring(4, data[j].indexOf(" ")));
+                op = data[j].substring(data[j].indexOf(" ")+1);
+                pipelinemodel.setValueAt(op, num-1, i+1);
             }
         }
+        
         pipelinemodel.fireTableDataChanged();
     }//GEN-LAST:event_jButton4ActionPerformed
 
