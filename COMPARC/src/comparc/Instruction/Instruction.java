@@ -22,6 +22,7 @@ public class Instruction {
     private EX exinst;
     private MEM meminst;
     private WB wbinst;
+    private int jump;
 
     public void setIF(String IR, String NPC, String PC) {
         ifinst = new IF(IR, NPC, PC);
@@ -109,5 +110,13 @@ public class Instruction {
 
     public void setAnswer(String answer) {
         this.answer = answer;
+    }
+    
+    public int getJump() {
+        return jump;
+    }
+    
+    public void setJump(int jump) {
+        this.jump = jump;
     }
 }

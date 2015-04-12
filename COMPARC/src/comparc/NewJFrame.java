@@ -2778,6 +2778,7 @@ public class NewJFrame extends javax.swing.JFrame {
         }
 
         instlist.get(index).setEX(IR, ALUOUTPUT, B, COND);
+        instlist.get(index).setJump(COND);
 
         //MEM
         IR = instlist.get(index).getOpcode();
@@ -2882,7 +2883,7 @@ public class NewJFrame extends javax.swing.JFrame {
         for (int i = 0; i < instlist.size(); i++) {
             depCheck = -1;
 
-            if (i == 0 || instlist.get(i - 1).getEX().getCOND() == 0) {
+            if (i == 0 || instlist.get(i - 1).getJump() == 0) {
                 if (instlist.get(i).getInst().contains("DSUBU") || instlist.get(i).getInst().contains("DDIV") || instlist.get(i).getInst().contains("AND")
                         || instlist.get(i).getInst().contains("DSRLV") || instlist.get(i).getInst().contains("SLT") || instlist.get(i).getInst().contains("LW")
                         || instlist.get(i).getInst().contains("LWU") || instlist.get(i).getInst().contains("SW") || instlist.get(i).getInst().contains("DADDIU")
