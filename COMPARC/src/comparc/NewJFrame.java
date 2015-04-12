@@ -2741,14 +2741,11 @@ public class NewJFrame extends javax.swing.JFrame {
             ALUOUTPUT = Long.toHexString(templong).toUpperCase();
             ALUOUTPUT = padZeros(ALUOUTPUT, 16);
 
-            System.out.println(A);
-            System.out.println(B);
             if (A.matches(B)) {
                 COND = 1;
             } else {
                 COND = 0;
             }
-            System.out.println(COND);
         } else if (instlist.get(index).getInst().contains("LWU")
                 || instlist.get(index).getInst().contains("SW")
                 || instlist.get(index).getInst().contains("LW")) {
@@ -2805,7 +2802,7 @@ public class NewJFrame extends javax.swing.JFrame {
             for (int x = 0; x < 8192; x++) {
                 if (LMD.length() != 8) {
                     if (tempstr.matches(Long.toHexString(x + 8192))) {
-                        LMD = LMD + datasegment.get(x);
+                        LMD = datasegment.get(x) + LMD;
                         tempstr = Long.toHexString(Long.parseLong(tempstr, 16) + 1);
                     }
                 } else {
