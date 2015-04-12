@@ -1507,6 +1507,7 @@ public class NewJFrame extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        jTable2.setColumnSelectionAllowed(true);
         jTable2.getTableHeader().setReorderingAllowed(false);
         jScrollPane5.setViewportView(jTable2);
         if (jTable2.getColumnModel().getColumnCount() > 0) {
@@ -1807,7 +1808,7 @@ public class NewJFrame extends javax.swing.JFrame {
 
     private void InitializeCS() {
         String addTemp = "", repTemp = "00000000";
-        for (int i = 0; i < 8192; i++) {
+        for (int i = 0; i < 8192; i+=4) { /////// dito dito
             addTemp = Integer.toHexString(i);
             addTemp = padZeros(addTemp, 4);
             Object[] obj = {addTemp, repTemp};
@@ -1982,6 +1983,11 @@ public class NewJFrame extends javax.swing.JFrame {
                 if (instruction.matches("DDIV")) {
                     rs = jComboBox5.getSelectedIndex();
                     rt = jComboBox6.getSelectedIndex();
+                    if(rt == 0){
+                        JOptionPane.showMessageDialog(null, "ERROR: RT can not be 0. Changing RT to R1.");
+                        jComboBox6.setSelectedIndex(1);
+                        rt = 1;
+                    }
                 } else {
                     rd = jComboBox4.getSelectedIndex();
                     rs = jComboBox2.getSelectedIndex();
