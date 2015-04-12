@@ -15,9 +15,9 @@ public class IF {
     private String PC;
     
     public IF(String IR, String NPC, String PC) {
-        this.IR = IR;
-        this.NPC = NPC;
-        this.PC = PC;
+        this.IR = IR.toUpperCase();
+        this.NPC = NPC.toUpperCase();
+        this.PC = PC.toUpperCase();
     }
 
     public String getIR() {
@@ -25,7 +25,7 @@ public class IF {
     }
 
     public void setIR(String IR) {
-        this.IR = IR;
+        this.IR = IR.toUpperCase();
     }
 
     public String getNPC() {
@@ -33,7 +33,7 @@ public class IF {
     }
 
     public void setNPC(String NPC) {
-        this.NPC = NPC;
+        this.NPC = NPC.toUpperCase();
     }
 
     public String getPC() {
@@ -41,6 +41,6 @@ public class IF {
     }
 
     public void setPC(String PC) {
-        this.PC = PC;
+        this.PC = PC.toUpperCase();
     }
 }

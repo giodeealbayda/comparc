@@ -41,7 +41,7 @@ public class Register {
     }
     
     public void setRegister(int reg, String value) {
-        register.set(reg, value);
+        register.set(reg, value.toUpperCase());
     }
 
     public String getHi() {
@@ -49,7 +49,7 @@ public class Register {
     }
 
     public void setHi(String hi) {
-        this.hi = hi;
+        this.hi = hi.toUpperCase();
     }
 
     public String getLo() {
@@ -57,6 +57,6 @@ public class Register {
     }
 
     public void setLo(String lo) {
-        this.lo = lo;
+        this.lo = lo.toUpperCase();
     }
 }

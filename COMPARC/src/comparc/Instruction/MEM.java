@@ -16,10 +16,10 @@ public class MEM {
     private String MEMALU;
     
     public MEM(String IR, String ALUOUTPUT, String LMD, String MEMALU) {
-        this.IR = IR;
-        this.ALUOUTPUT = ALUOUTPUT;
-        this.LMD = LMD;
-        this.MEMALU = MEMALU;
+        this.IR = IR.toUpperCase();
+        this.ALUOUTPUT = ALUOUTPUT.toUpperCase();
+        this.LMD = LMD.toUpperCase();
+        this.MEMALU = MEMALU.toUpperCase();
     }
 
     public String getIR() {

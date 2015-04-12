@@ -16,10 +16,10 @@ public class ID {
     private String IR;
     
     public ID(String A, String B, String IMM, String IR) {
-        this.A = A;
-        this.B = B;
-        this.IMM = IMM;
-        this.IR = IR;
+        this.A = A.toUpperCase();
+        this.B = B.toUpperCase();
+        this.IMM = IMM.toUpperCase();
+        this.IR = IR.toUpperCase();
     }
 
     public String getA() {

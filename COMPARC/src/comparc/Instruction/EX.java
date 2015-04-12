@@ -16,9 +16,9 @@ public class EX {
     private int COND=0;
     
     public EX(String IR, String ALU, String B, int COND) {
-        this.IR = IR;
-        this.ALUOUTPUT = ALU;
-        this.B = B;
+        this.IR = IR.toUpperCase();
+        this.ALUOUTPUT = ALU.toUpperCase();
+        this.B = B.toUpperCase();
         this.COND = COND;
     }
 

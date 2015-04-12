@@ -2627,7 +2627,6 @@ public class NewJFrame extends javax.swing.JFrame {
 
             if (difference.compareTo(new BigInteger("0", 10)) == -1) {
                 ALUOUTPUT = Long.toHexString(difference.longValue());
-                System.out.println(ALUOUTPUT);
             } else {
                 ALUOUTPUT = difference.toString(16).toUpperCase();
             }
@@ -2660,9 +2659,6 @@ public class NewJFrame extends javax.swing.JFrame {
                 quotient = dividend / divisor;
                 remainder = dividend % divisor;
                 
-                System.out.println("quotient: " + quotient);
-                System.out.println("remainder: "+remainder);
-                
                 if(quotient < 0) {
                     ALUOUTPUT = new BigInteger(Long.toHexString(quotient), 16).toString(16);
                     ALUOUTPUT = padZeros(ALUOUTPUT, 16);
@@ -2694,7 +2690,7 @@ public class NewJFrame extends javax.swing.JFrame {
             COND = 0;
         } else if (instlist.get(index).getInst().contains("DSRLV")) {
             String answer;
-            tempA = Integer.toBinaryString(Integer.parseInt(A, 16));
+            tempA = new BigInteger(A, 16).toString(2);
             tempA = padZeros(tempA, 64);
             tempB = padZeros(new BigInteger(B, 16).toString(2), 64);
             tempB = tempB.substring(58, 64);
@@ -2708,8 +2704,7 @@ public class NewJFrame extends javax.swing.JFrame {
             COND = 0;
         } else if (instlist.get(index).getInst().contains("SLT")) {
             Long cmpA, cmpB;
-            String Abin, Bbin, sltalu = "";
-            int m, in;
+            int m;
             charA = "";
             charB = "";
 
@@ -2717,77 +2712,19 @@ public class NewJFrame extends javax.swing.JFrame {
                     || instlist.get(index).getID().getA().substring(0, 1).matches("A") || instlist.get(index).getID().getA().substring(0, 1).matches("B")
                     || instlist.get(index).getID().getA().substring(0, 1).matches("C") || instlist.get(index).getID().getA().substring(0, 1).matches("D")
                     || instlist.get(index).getID().getA().substring(0, 1).matches("E") || instlist.get(index).getID().getA().substring(0, 1).matches("F")) {
-                Abin = new BigInteger(instlist.get(index).getID().getA(), 16).toString(2);
-                Abin = padZeros(Abin, 64);
-
-                in = 63;
-                for (m = 0; m < 64; m++) {
-                    charA = Character.toString(Abin.charAt(in));
-                    if (m == 0) {
-                        if (charA.matches("0")) {
-                            while (charA.matches("0")) {
-                                sltalu = "0" + sltalu;
-                                in--;
-                                m++;
-                                charA = Character.toString(Abin.charAt(in));
-                            }
-                            sltalu = "1" + sltalu;
-                            in--;
-                        } else {
-                            sltalu = "1" + sltalu;
-                            in--;
-                        }
-                    } else {
-                        if (charA.matches("0")) {
-                            sltalu = "1" + sltalu;
-                        } else if (charA.matches("1")) {
-                            sltalu = "0" + sltalu;
-                        }
-                        in--;
-                    }
-                }
-                cmpA = 0 - new BigInteger(sltalu, 2).longValue();
+                
+                cmpA = new BigInteger(instlist.get(index).getID().getA(), 16).longValue();
             } else {
-                cmpA = Long.parseLong(new BigInteger(instlist.get(index).getID().getA(), 16).toString(2), 2);
+                cmpA = Long.parseLong(instlist.get(index).getID().getA(), 16);
             }
 
             if (instlist.get(index).getID().getB().substring(0, 1).matches("8") || instlist.get(index).getID().getB().substring(0, 1).matches("9")
                     || instlist.get(index).getID().getB().substring(0, 1).matches("A") || instlist.get(index).getID().getB().substring(0, 1).matches("B")
                     || instlist.get(index).getID().getB().substring(0, 1).matches("C") || instlist.get(index).getID().getB().substring(0, 1).matches("D")
                     || instlist.get(index).getID().getB().substring(0, 1).matches("E") || instlist.get(index).getID().getB().substring(0, 1).matches("F")) {
-                Bbin = new BigInteger(instlist.get(index).getID().getB(), 16).toString(2);
-                Bbin = padZeros(Bbin, 64);
-
-                in = 63;
-                for (m = 0; m < 64; m++) {
-                    charB = Character.toString(Bbin.charAt(in));
-                    if (m == 0) {
-                        if (charB.matches("0")) {
-                            while (charB.matches("0")) {
-                                sltalu = "0" + sltalu;
-                                in--;
-                                m++;
-                                charA = Character.toString(Bbin.charAt(in));
-
-                            }
-                            sltalu = "1" + sltalu;
-                            in--;
-                        } else {
-                            sltalu = "1" + sltalu;
-                            in--;
-                        }
-                    } else {
-                        if (charB.matches("0")) {
-                            sltalu = "1" + sltalu;
-                        } else {
-                            sltalu = "0" + sltalu;
-                        }
-                        in--;
-                    }
-                }
-                cmpB = 0 - new BigInteger(sltalu, 2).longValue();
+                cmpB = new BigInteger(instlist.get(index).getID().getB(), 16).longValue();
             } else {
-                cmpB = Long.parseLong(new BigInteger(instlist.get(index).getID().getB(), 16).toString(2), 2);
+                cmpB = Long.parseLong(instlist.get(index).getID().getB(), 16);
             }
 
             if (cmpA < cmpB) {
