@@ -1937,7 +1937,7 @@ public class NewJFrame extends javax.swing.JFrame {
         register.setLo("00000000");
         jTextField38.setText(register.getLo());
         jLabel23.setText("");
-        pc=0;
+        pc = 0;
     }
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -2619,67 +2619,69 @@ public class NewJFrame extends javax.swing.JFrame {
             BigInteger difference;
             difference = new BigInteger(instlist.get(index).getID().getA(), 16).subtract(new BigInteger(instlist.get(index).getID().getB(), 16));
 
-            System.out.println(new BigInteger(difference.toString(), 16));
-            System.out.println(new BigInteger(difference.toString(), 16));
-            
-            
-            if(difference.compareTo(new BigInteger("0", 10))==-1) {
+            if (difference.compareTo(new BigInteger("0", 10)) == -1) {
                 ALUOUTPUT = Long.toHexString(difference.longValue());
                 System.out.println(ALUOUTPUT);
             } else {
                 ALUOUTPUT = difference.toString(16).toUpperCase();
             }
-            //if (difference < 0) {
-            //    ALUOUTPUT = signExtend(ALUOUTPUT, 16, "hex");
-            //} else {
-            //    ALUOUTPUT = padZeros(ALUOUTPUT, 16);
-            //}
 
             COND = 0;
         } else if (instlist.get(index).getInst().contains("DDIV")) {
+            System.out.println("here");
+            BigInteger quotient, remainder;
             try {
-                templo = Long.parseLong(instlist.get(index).getID().getA(), 16) / Long.parseLong(instlist.get(index).getID().getB());
-                temphi = Long.parseLong(instlist.get(index).getID().getA(), 16) % Long.parseLong(instlist.get(index).getID().getB());
+                /*
+                 templo = Long.parseLong(instlist.get(index).getID().getA(), 16) / Long.parseLong(instlist.get(index).getID().getB());
+                 temphi = Long.parseLong(instlist.get(index).getID().getA(), 16) % Long.parseLong(instlist.get(index).getID().getB());
+                
+                 System.out.println(templo);
+                 System.out.println(temphi);
 
-                register.setLo(padZeros(Long.toHexString(templo).toUpperCase(), 16));
-                register.setHi(padZeros(Long.toHexString(temphi).toUpperCase(), 16));
+                 register.setLo(padZeros(Long.toHexString(templo).toUpperCase(), 16));
+                 register.setHi(padZeros(Long.toHexString(temphi).toUpperCase(), 16));
+                 */
+
+                System.out.println(new BigInteger(instlist.get(index).getID().getA(), 10));
+                System.out.println(new BigInteger(instlist.get(index).getID().getB(), 10));
+                quotient = new BigInteger(instlist.get(index).getID().getA(), 10).divide(new BigInteger(instlist.get(index).getID().getB(), 10));
+                remainder = new BigInteger(instlist.get(index).getID().getA(), 10).mod(new BigInteger(instlist.get(index).getID().getB(), 10));
+
+                if (quotient.compareTo(new BigInteger("0", 10)) == -1) {
+                    ALUOUTPUT = Long.toHexString(quotient.longValue());
+                    register.setLo(ALUOUTPUT);
+                } else {
+                    register.setLo(padZeros(quotient.toString(16).toUpperCase(), 16));
+                }
+
+                if (remainder.compareTo(new BigInteger("0", 10)) == -1) {
+                    ALUOUTPUT = Long.toHexString(remainder.longValue());
+                    register.setHi(ALUOUTPUT);
+                } else {
+                    register.setHi(padZeros(remainder.toString(16).toUpperCase(), 16));
+                }
+
             } catch (Exception e) {
                 register.setLo(padZeros("0", 16));
                 register.setHi(padZeros("0", 16));
             }
 
-            ALUOUTPUT = register.getLo();
             COND = 0;
         } else if (instlist.get(index).getInst().contains("AND")) {
-            tempA = new BigInteger(A, 16).toString(2);
-            tempB = new BigInteger(B, 16).toString(2);
-            tempA = padZeros(tempA, 64);
-            tempB = padZeros(tempB, 64);
-
-            tempstr = "";
-            for (int i = 0; i < 64; i++) {
-                charA = Character.toString(tempA.charAt(i));
-                charB = Character.toString(tempB.charAt(i));
-                if (charA.matches("1") && charB.matches("1")) {
-                    tempstr = tempstr + '1';
-                } else {
-                    tempstr = tempstr + '0';
-                }
-            }
-
-            ALUOUTPUT = new BigInteger(tempstr, 2).toString(16).toUpperCase();
-            ALUOUTPUT = padZeros(ALUOUTPUT, 16);
+            ALUOUTPUT = new BigInteger(A, 16).and(new BigInteger(B, 16)).toString(16);
 
             COND = 0;
         } else if (instlist.get(index).getInst().contains("DSRLV")) {
+            String answer;
             tempA = Integer.toBinaryString(Integer.parseInt(A, 16));
             tempA = padZeros(tempA, 64);
-            tempint = Integer.parseInt(B, 16);
+            tempB = padZeros(new BigInteger(B, 16).toString(2), 64);
+            tempB = tempB.substring(58, 64);
+            tempint = Integer.parseInt(tempB, 2);
+            answer = tempA.substring(0, 64 - tempint);
+            answer = padZeros(answer, 64);            
 
-            tempB = tempA.substring(0, 64 - tempint);
-            tempB = padZeros(tempB, 64);
-
-            ALUOUTPUT = new BigInteger(tempB, 2).toString(16).toUpperCase();
+            ALUOUTPUT = new BigInteger(answer, 2).toString(16);
             ALUOUTPUT = padZeros(ALUOUTPUT, 16);
 
             COND = 0;
@@ -2902,17 +2904,21 @@ public class NewJFrame extends javax.swing.JFrame {
         tempstr = instlist.get(index).getAnswer().substring(1);
 
         if (tempstr.contains("one")) {
-            instlist.get(index).setWB("N/A", "N/A");
+            if (instlist.get(index).getInst().contains("DDIV")) {
+                instlist.get(index).setWB("N/A", "N/A", register.getHi(), register.getLo());
+            } else {
+                instlist.get(index).setWB("N/A", "N/A", "N/A", "N/A");
+            }
         } else {
             tempint = Integer.parseInt(tempstr);
 
             if (instlist.get(index).getInst().contains("LW")
                     || instlist.get(index).getInst().contains("LWU")) {
                 register.setRegister(tempint, LMD);
-                instlist.get(index).setWB(Integer.toString(tempint), LMD);
+                instlist.get(index).setWB(Integer.toString(tempint), LMD, "N/A", "N/A");
             } else {
                 register.setRegister(tempint, ALUOUTPUT);
-                instlist.get(index).setWB(Integer.toString(tempint), ALUOUTPUT);
+                instlist.get(index).setWB(Integer.toString(tempint), ALUOUTPUT, "N/A", "N/A");
             }
         }
     }
@@ -3029,7 +3035,6 @@ public class NewJFrame extends javax.swing.JFrame {
         }
 
         //display pipeline map
-        
         pipelinemodel.setColumnCount(cyclelist.size() + 1);
         pipelinemodel.fireTableStructureChanged();
 
@@ -3052,16 +3057,16 @@ public class NewJFrame extends javax.swing.JFrame {
         int num;
         String[] data;
         String op;
-        
-        for(int i=0; i<cyclelist.size(); i++) {
+
+        for (int i = 0; i < cyclelist.size(); i++) {
             data = cyclelist.get(i).split(", ");
-            for(j=0; j<data.length; j++) {
+            for (j = 0; j < data.length; j++) {
                 num = Integer.parseInt(data[j].substring(4, data[j].indexOf(" ")));
-                op = data[j].substring(data[j].indexOf(" ")+1);
-                pipelinemodel.setValueAt(op, num-1, i+1);
+                op = data[j].substring(data[j].indexOf(" ") + 1);
+                pipelinemodel.setValueAt(op, num - 1, i + 1);
             }
         }
-        
+
         pipelinemodel.fireTableDataChanged();
     }//GEN-LAST:event_jButton4ActionPerformed
 
@@ -3805,11 +3810,8 @@ public class NewJFrame extends javax.swing.JFrame {
                 singlemodel.addRow(new Object[]{"R" + instlist.get(inst).getWB().getREG(), instlist.get(inst).getWB().getValue()});
                 if (!instlist.get(inst).getWB().getREG().matches("N/A")) {
                     if (instlist.get(inst).getInst().contains("DDIV")) {
-                        templo = Long.parseLong(instlist.get(inst).getID().getA(), 16) / Long.parseLong(instlist.get(inst).getID().getB());
-                        temphi = Long.parseLong(instlist.get(inst).getID().getA(), 16) % Long.parseLong(instlist.get(inst).getID().getB());
-
-                        registerforSingle.setLo(padZeros(Long.toHexString(templo).toUpperCase(), 16));
-                        registerforSingle.setHi(padZeros(Long.toHexString(temphi).toUpperCase(), 16));
+                        registerforSingle.setLo(instlist.get(inst).getWB().getLO());
+                        registerforSingle.setHi(instlist.get(inst).getWB().getHI());
                         UpdateRegister(registerforSingle);
                     } else if (instlist.get(inst).getInst().contains("SW")) {
                         tempstr = instlist.get(inst).getEX().getALUOUTPUT().substring(12, 16);

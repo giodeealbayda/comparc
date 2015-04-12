@@ -13,10 +13,15 @@ public class WB {
 
     private String REG;
     private String value;
+    private String HI;
+    private String LO;
+            
 
-    public WB(String reg, String value) {
+    public WB(String reg, String value, String hi, String lo) {
         this.REG = reg;
         this.value = value;
+        this.HI = hi;
+        this.LO = lo;
     }
 
     public String getREG() {
@@ -35,4 +40,19 @@ public class WB {
         this.value = value;
     }
 
+    public String getHI() {
+        return HI;
+    }
+
+    public void setHI(String HI) {
+        this.HI = HI;
+    }
+
+    public String getLO() {
+        return LO;
+    }
+
+    public void setLO(String LO) {
+        this.LO = LO;
+    }
 }
