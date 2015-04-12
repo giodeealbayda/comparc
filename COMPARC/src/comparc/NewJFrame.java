@@ -1609,10 +1609,7 @@ public class NewJFrame extends javax.swing.JFrame {
         jPanel17.setLayout(jPanel17Layout);
         jPanel17Layout.setHorizontalGroup(
             jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel17Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 370, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 390, Short.MAX_VALUE)
         );
         jPanel17Layout.setVerticalGroup(
             jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1913,6 +1910,8 @@ public class NewJFrame extends javax.swing.JFrame {
         jButton6.setEnabled(false);
         instlist.clear();
         cyclelist.clear();
+        instlist = new ArrayList<Instruction>();
+        cyclelist = new ArrayList<String>();
         register = new Register();
         datasegment.clear();
         opcodemodel.getDataVector().removeAllElements();
@@ -1938,6 +1937,7 @@ public class NewJFrame extends javax.swing.JFrame {
         register.setLo("00000000");
         jTextField38.setText(register.getLo());
         jLabel23.setText("");
+        pc=0;
     }
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
