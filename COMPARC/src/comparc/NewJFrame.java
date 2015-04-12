@@ -2635,8 +2635,7 @@ public class NewJFrame extends javax.swing.JFrame {
             COND = 0;
         } else if (instlist.get(index).getInst().contains("DDIV")) {
             long dividend, divisor;
-            String dividendstr, divisorstr;
-            BigInteger quotient, remainder;
+            long quotient, remainder;
             try {
                 if (instlist.get(index).getID().getA().substring(0, 1).matches("8") || instlist.get(index).getID().getA().substring(0, 1).matches("9")
                         || instlist.get(index).getID().getA().substring(0, 1).matches("A") || instlist.get(index).getID().getA().substring(0, 1).matches("B")
@@ -2657,58 +2656,33 @@ public class NewJFrame extends javax.swing.JFrame {
                 } else {
                     divisor = Long.parseLong(instlist.get(index).getID().getB(), 16);
                 }
-
-                dividendstr = Long.toString(dividend);
-                divisorstr = Long.toString(divisor);
                 
-                System.out.println(dividend);
-                System.out.println(dividendstr);
-                System.out.println(divisor);
-                System.out.println(divisorstr);
-
-                quotient = new BigInteger(dividendstr, 16).divide(new BigInteger(divisorstr, 16)); //LO
-                remainder = new BigInteger(divisorstr, 16).mod(new BigInteger(divisorstr, 16)); //HI
-
-                if (quotient.compareTo(new BigInteger("0", 10)) == -1) {
-                    ALUOUTPUT = Long.toHexString(quotient.longValue());
-                    ALUOUTPUT = signExtend(ALUOUTPUT, 16, "hex");
+                quotient = dividend / divisor;
+                remainder = dividend % divisor;
+                
+                System.out.println("quotient: " + quotient);
+                System.out.println("remainder: "+remainder);
+                
+                if(quotient < 0) {
+                    ALUOUTPUT = new BigInteger(Long.toHexString(quotient), 16).toString(16);
+                    ALUOUTPUT = padZeros(ALUOUTPUT, 16);
                     register.setLo(ALUOUTPUT);
                 } else {
-                    ALUOUTPUT = Long.toHexString(quotient.longValue());
-                    register.setLo(padZeros(quotient.toString(16).toUpperCase(), 16));
+                    ALUOUTPUT = Long.toHexString(quotient).toUpperCase();
+                    ALUOUTPUT = padZeros(ALUOUTPUT, 16);
+                    register.setLo(ALUOUTPUT);
                 }
-
-                if (remainder.compareTo(new BigInteger("0", 10)) == -1) {
-                    ALUOUTPUT = Long.toHexString(remainder.longValue());
-                    ALUOUTPUT = signExtend(ALUOUTPUT, 16, "hex");
-                    register.setHi(ALUOUTPUT);
+                
+                if(remainder < 0) {
+                    ALUOUTPUT =new BigInteger(Long.toHexString(remainder), 16).toString(16);
+                    ALUOUTPUT = padZeros(ALUOUTPUT, 16);
                 } else {
-                    ALUOUTPUT = Long.toHexString(remainder.longValue());
-                    register.setHi(padZeros(remainder.toString(16).toUpperCase(), 16));
-                }
-                
-                System.out.println("quotient: "+register.getHi());
-                System.out.println("remainder: "+register.getLo());
-                
-                /*
-                 templo = Long.parseLong(instlist.get(index).getID().getA(), 16) / Long.parseLong(instlist.get(index).getID().getB());
-                 temphi = Long.parseLong(instlist.get(index).getID().getA(), 16) % Long.parseLong(instlist.get(index).getID().getB());
-                
-                 System.out.println(templo);
-                 System.out.println(temphi);
-
-                 register.setLo(padZeros(Long.toHexString(templo).toUpperCase(), 16));
-                 register.setHi(padZeros(Long.toHexString(temphi).toUpperCase(), 16));
-                 */
-                /*
-                 System.out.println(new BigInteger(instlist.get(index).getID().getA(), 10));
-                 System.out.println(new BigInteger(instlist.get(index).getID().getB(), 10));
-                 quotient = new BigInteger(instlist.get(index).getID().getA(), 10).divide(new BigInteger(instlist.get(index).getID().getB(), 10));
-                 remainder = new BigInteger(instlist.get(index).getID().getA(), 10).mod(new BigInteger(instlist.get(index).getID().getB(), 10));
-
-                 */
-
+                    ALUOUTPUT = Long.toHexString(remainder);
+                    ALUOUTPUT = padZeros(ALUOUTPUT, 16);
+                    register.setHi(padZeros(Long.toHexString(remainder).toString().toUpperCase(), 16));
+                }                
             } catch (Exception e) {
+                System.out.println("jump then fall into me");
                 register.setLo(padZeros("0", 16));
                 register.setHi(padZeros("0", 16));
             }
