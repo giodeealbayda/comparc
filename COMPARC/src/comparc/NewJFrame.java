@@ -2616,14 +2616,24 @@ public class NewJFrame extends javax.swing.JFrame {
 
         //EX
         if (instlist.get(index).getInst().contains("DSUBU")) {
-            templong = Long.parseLong(instlist.get(index).getID().getA(), 16) - Long.parseLong(instlist.get(index).getID().getB(), 16);
+            BigInteger difference;
+            difference = new BigInteger(instlist.get(index).getID().getA(), 16).subtract(new BigInteger(instlist.get(index).getID().getB(), 16));
 
-            ALUOUTPUT = Long.toHexString(templong).toUpperCase();
-            if (templong < 0) {
-                ALUOUTPUT = signExtend(ALUOUTPUT, 16, "hex");
+            System.out.println(new BigInteger(difference.toString(), 16));
+            System.out.println(new BigInteger(difference.toString(), 16));
+            
+            
+            if(difference.compareTo(new BigInteger("0", 10))==-1) {
+                ALUOUTPUT = Long.toHexString(difference.longValue());
+                System.out.println(ALUOUTPUT);
             } else {
-                ALUOUTPUT = padZeros(ALUOUTPUT, 16);
+                ALUOUTPUT = difference.toString(16).toUpperCase();
             }
+            //if (difference < 0) {
+            //    ALUOUTPUT = signExtend(ALUOUTPUT, 16, "hex");
+            //} else {
+            //    ALUOUTPUT = padZeros(ALUOUTPUT, 16);
+            //}
 
             COND = 0;
         } else if (instlist.get(index).getInst().contains("DDIV")) {

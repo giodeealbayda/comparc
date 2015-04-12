@@ -55,12 +55,8 @@ public class Sample {
          System.out.println("R" + i + ": " + register.get(i));
          }
          */
-        int val = -2;
-        String hex = Integer.toHexString(val);
-        System.out.println(hex);
-
-        int parsedResult = (int) Long.parseLong("fffffffffffffffc", 16);
-        System.out.println(parsedResult);
+        String val = "-2";
+        System.out.println(new BigInteger("10", 10).toString(16));
     }
 
 }
