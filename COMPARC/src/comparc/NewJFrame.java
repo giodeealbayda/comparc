@@ -1758,6 +1758,8 @@ public class NewJFrame extends javax.swing.JFrame {
                 temp = temp + '0';
             }
             str = temp + str;
+        } else {
+            str = str.substring(str.length() - num, str.length());
         }
         return str;
     }
@@ -2591,7 +2593,7 @@ public class NewJFrame extends javax.swing.JFrame {
         String A = "", B = "", IMM = "", ALUOUTPUT = "", LMD = "", MEMALU = "";
         String charA, charB;
         int COND = 0, tempint;
-        long templong, templo, temphi;
+        long templong;
         String tempstr, tempA, tempB;
 
         //IF
@@ -2610,7 +2612,7 @@ public class NewJFrame extends javax.swing.JFrame {
         B = register.getRegister(tempint);
 
         IMM = instlist.get(index).getOpcode().substring(4, 8);
-        if(instlist.get(index).getInst().contains("DADDIU")) {
+        if (instlist.get(index).getInst().contains("DADDIU")) {
             IMM = signExtend(IMM, 16, "hex");
         } else {
             IMM = padZeros(IMM, 16);
@@ -2632,9 +2634,62 @@ public class NewJFrame extends javax.swing.JFrame {
 
             COND = 0;
         } else if (instlist.get(index).getInst().contains("DDIV")) {
-            System.out.println("here");
+            long dividend, divisor;
+            String dividendstr, divisorstr;
             BigInteger quotient, remainder;
             try {
+                if (instlist.get(index).getID().getA().substring(0, 1).matches("8") || instlist.get(index).getID().getA().substring(0, 1).matches("9")
+                        || instlist.get(index).getID().getA().substring(0, 1).matches("A") || instlist.get(index).getID().getA().substring(0, 1).matches("B")
+                        || instlist.get(index).getID().getA().substring(0, 1).matches("C") || instlist.get(index).getID().getA().substring(0, 1).matches("D")
+                        || instlist.get(index).getID().getA().substring(0, 1).matches("E") || instlist.get(index).getID().getA().substring(0, 1).matches("F")) {
+
+                    dividend = new BigInteger(instlist.get(index).getID().getA(), 16).longValue();
+                } else {
+                    dividend = Long.parseLong(instlist.get(index).getID().getA(), 16);
+                }
+
+                if (instlist.get(index).getID().getB().substring(0, 1).matches("8") || instlist.get(index).getID().getB().substring(0, 1).matches("9")
+                        || instlist.get(index).getID().getB().substring(0, 1).matches("A") || instlist.get(index).getID().getB().substring(0, 1).matches("B")
+                        || instlist.get(index).getID().getB().substring(0, 1).matches("C") || instlist.get(index).getID().getB().substring(0, 1).matches("D")
+                        || instlist.get(index).getID().getB().substring(0, 1).matches("E") || instlist.get(index).getID().getB().substring(0, 1).matches("F")) {
+
+                    divisor = new BigInteger(instlist.get(index).getID().getB(), 16).longValue();
+                } else {
+                    divisor = Long.parseLong(instlist.get(index).getID().getB(), 16);
+                }
+
+                dividendstr = Long.toString(dividend);
+                divisorstr = Long.toString(divisor);
+                
+                System.out.println(dividend);
+                System.out.println(dividendstr);
+                System.out.println(divisor);
+                System.out.println(divisorstr);
+
+                quotient = new BigInteger(dividendstr, 16).divide(new BigInteger(divisorstr, 16)); //LO
+                remainder = new BigInteger(divisorstr, 16).mod(new BigInteger(divisorstr, 16)); //HI
+
+                if (quotient.compareTo(new BigInteger("0", 10)) == -1) {
+                    ALUOUTPUT = Long.toHexString(quotient.longValue());
+                    ALUOUTPUT = signExtend(ALUOUTPUT, 16, "hex");
+                    register.setLo(ALUOUTPUT);
+                } else {
+                    ALUOUTPUT = Long.toHexString(quotient.longValue());
+                    register.setLo(padZeros(quotient.toString(16).toUpperCase(), 16));
+                }
+
+                if (remainder.compareTo(new BigInteger("0", 10)) == -1) {
+                    ALUOUTPUT = Long.toHexString(remainder.longValue());
+                    ALUOUTPUT = signExtend(ALUOUTPUT, 16, "hex");
+                    register.setHi(ALUOUTPUT);
+                } else {
+                    ALUOUTPUT = Long.toHexString(remainder.longValue());
+                    register.setHi(padZeros(remainder.toString(16).toUpperCase(), 16));
+                }
+                
+                System.out.println("quotient: "+register.getHi());
+                System.out.println("remainder: "+register.getLo());
+                
                 /*
                  templo = Long.parseLong(instlist.get(index).getID().getA(), 16) / Long.parseLong(instlist.get(index).getID().getB());
                  temphi = Long.parseLong(instlist.get(index).getID().getA(), 16) % Long.parseLong(instlist.get(index).getID().getB());
@@ -2645,25 +2700,13 @@ public class NewJFrame extends javax.swing.JFrame {
                  register.setLo(padZeros(Long.toHexString(templo).toUpperCase(), 16));
                  register.setHi(padZeros(Long.toHexString(temphi).toUpperCase(), 16));
                  */
+                /*
+                 System.out.println(new BigInteger(instlist.get(index).getID().getA(), 10));
+                 System.out.println(new BigInteger(instlist.get(index).getID().getB(), 10));
+                 quotient = new BigInteger(instlist.get(index).getID().getA(), 10).divide(new BigInteger(instlist.get(index).getID().getB(), 10));
+                 remainder = new BigInteger(instlist.get(index).getID().getA(), 10).mod(new BigInteger(instlist.get(index).getID().getB(), 10));
 
-                System.out.println(new BigInteger(instlist.get(index).getID().getA(), 10));
-                System.out.println(new BigInteger(instlist.get(index).getID().getB(), 10));
-                quotient = new BigInteger(instlist.get(index).getID().getA(), 10).divide(new BigInteger(instlist.get(index).getID().getB(), 10));
-                remainder = new BigInteger(instlist.get(index).getID().getA(), 10).mod(new BigInteger(instlist.get(index).getID().getB(), 10));
-
-                if (quotient.compareTo(new BigInteger("0", 10)) == -1) {
-                    ALUOUTPUT = Long.toHexString(quotient.longValue());
-                    register.setLo(ALUOUTPUT);
-                } else {
-                    register.setLo(padZeros(quotient.toString(16).toUpperCase(), 16));
-                }
-
-                if (remainder.compareTo(new BigInteger("0", 10)) == -1) {
-                    ALUOUTPUT = Long.toHexString(remainder.longValue());
-                    register.setHi(ALUOUTPUT);
-                } else {
-                    register.setHi(padZeros(remainder.toString(16).toUpperCase(), 16));
-                }
+                 */
 
             } catch (Exception e) {
                 register.setLo(padZeros("0", 16));
@@ -2683,7 +2726,7 @@ public class NewJFrame extends javax.swing.JFrame {
             tempB = tempB.substring(58, 64);
             tempint = Integer.parseInt(tempB, 2);
             answer = tempA.substring(0, 64 - tempint);
-            answer = padZeros(answer, 64);            
+            answer = padZeros(answer, 64);
 
             ALUOUTPUT = new BigInteger(answer, 2).toString(16);
             ALUOUTPUT = padZeros(ALUOUTPUT, 16);
@@ -2695,7 +2738,7 @@ public class NewJFrame extends javax.swing.JFrame {
             int m, in;
             charA = "";
             charB = "";
-            
+
             if (instlist.get(index).getID().getA().substring(0, 1).matches("8") || instlist.get(index).getID().getA().substring(0, 1).matches("9")
                     || instlist.get(index).getID().getA().substring(0, 1).matches("A") || instlist.get(index).getID().getA().substring(0, 1).matches("B")
                     || instlist.get(index).getID().getA().substring(0, 1).matches("C") || instlist.get(index).getID().getA().substring(0, 1).matches("D")
@@ -2805,8 +2848,9 @@ public class NewJFrame extends javax.swing.JFrame {
 
             COND = 0;
         } else if (instlist.get(index).getInst().contains("DADDIU")) {
-            templong = Long.parseLong(instlist.get(index).getID().getA(), 16) + Long.parseLong(instlist.get(index).getID().getIMM(), 16);
-            ALUOUTPUT = Long.toHexString(templong).toUpperCase();
+            BigInteger sum;
+            sum = new BigInteger(instlist.get(index).getID().getA(), 16).add(new BigInteger(instlist.get(index).getID().getIMM(), 16));
+            ALUOUTPUT = sum.toString(16);
             ALUOUTPUT = padZeros(ALUOUTPUT, 16);
 
             COND = 0;
